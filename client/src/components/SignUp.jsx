@@ -82,7 +82,7 @@ export function SignupFormDemo() {
         toast.success('Signup successful');
         console.log("Signup successful", data);
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/login');
         }, 1000);
       } else {
         toast.dismiss();
@@ -124,7 +124,7 @@ export function SignupFormDemo() {
             <Label htmlFor="firstname">First name</Label>
             <Input
               id="firstname"
-              placeholder="Jay"
+              placeholder="John"
               type="text"
               value={formData.firstname}
               onChange={handleChange}
@@ -134,7 +134,7 @@ export function SignupFormDemo() {
             <Label htmlFor="lastname">Last name</Label>
             <Input
               id="lastname"
-              placeholder="Patel"
+              placeholder="Doe"
               type="text"
               value={formData.lastname}
               onChange={handleChange}
