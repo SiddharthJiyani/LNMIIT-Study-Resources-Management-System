@@ -14,6 +14,7 @@ export function SignupFormDemo() {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // To show a loading indicator during form submission
 
   const handleChange = (e) => {
     setFormData({
@@ -22,40 +23,69 @@ export function SignupFormDemo() {
     });
   };
 
-  const validateForm = () => {
-    const { firstname, lastname, email, password, confirmPassword } = formData;
+  //***** NOTE: already getting validated from server , can use this for speeding up and unecessary server requests **********
+  // const validateForm = () => {
+  //   const { firstname, lastname, email, password, confirmPassword } = formData;
 
-    if (!firstname || !lastname || !email || !password || !confirmPassword) {
-      setError("All fields are required.");
-      return false;
-    }
+  //   if (!firstname || !lastname || !email || !password || !confirmPassword) {
+  //     setError("All fields are required.");
+  //     return false;
+  //   }
 
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@lnmiit\.ac\.in$/;
-    if (!emailPattern.test(email)) {
-      setError("Please enter a valid LNMIIT email address.");
-      return false;
-    }
+  //   const emailPattern = /^[a-zA-Z0-9._%+-]+@lnmiit\.ac\.in$/; //regex
+  //   if (!emailPattern.test(email)) {
+  //     setError("Please enter a valid LNMIIT email address.");
+  //     return false;
+  //   }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return false;
-    }
+  //   if (password !== confirmPassword) {
+  //     setError("Passwords do not match.");
+  //     return false;
+  //   }
 
-    //clear prev error
-    setError("");
-    return true;
-  };
+  //   setError("");
+  //   return true;
+  // };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //validate
-    if (validateForm()) {
-      // console.log("Form valid. Redirecting to OTP submission...");
-      //then redirect
-      window.location.href = "/sendotp";
+  
+    const signupData = {
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      accountType: "student", 
+      // otp: otpValue,
+    };
+    
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:4000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signupData),
+        credentials: 'include', 
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok && data.success) {
+        console.log("Signup successful", data);
+        window.location.href = "/login"; //*****CHANGE THIS TO OTP ROUTE after testing phase********
+      } else {
+        console.error("Signup error", data.message);
+        setError(data.message || "Signup failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Signup error", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally{
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
@@ -67,7 +97,7 @@ export function SignupFormDemo() {
           Welcome to LNMIIT Resource Management
         </h2>
         <p className="text-neutral-600 text-md max-w-sm mt-2 dark:text-neutral-300 p-2">
-          Sign up if you are a student of LNMIIT and have a lnmiit domain email
+          Sign up if you are a student of LNMIIT and have an LNMIIT domain email
         </p>
       </div>
 
@@ -128,10 +158,11 @@ export function SignupFormDemo() {
         </LabelInputContainer>
 
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          className={`bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${loading && 'opacity-50 cursor-not-allowed'}`}
           type="submit"
+          disabled={loading}
         >
-          Sign up &rarr;
+          {loading ? 'Signing up...' : 'Sign up'}
         </button>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
