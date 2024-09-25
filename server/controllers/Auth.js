@@ -160,6 +160,13 @@ exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body;
 
+    if (!email.includes("@lnmiit.ac.in")) {
+      return res.status(403).send({
+        success: false,
+        message: "Please enter a valid LNMIIT email",
+      });
+    }
+
     // Find user with provided email
     const checkUserPresent = await User.findOne({ email });
     // to be used in case of signup
@@ -209,9 +216,15 @@ exports.forgotPassword = async (req, res) => {
 	try {
 		const { email } = req.body;
 
+    if (!email.includes("@lnmiit.ac.in")) {
+      return res.status(403).send({
+        success: false,
+        message: "Please enter a valid LNMIIT email",
+      });
+    }
+
 		// Check if user exists with provided email
-		const
-			user = await User.findOne ({ email });   
+		const user = await User.findOne ({ email });   
 		if (!user) {
 			return res.status(404).json({
 				success: false,
