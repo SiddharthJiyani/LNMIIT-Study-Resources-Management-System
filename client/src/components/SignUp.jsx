@@ -3,6 +3,9 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/Input";
 import { cn } from "../utils/cn";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -12,6 +15,8 @@ export function SignupFormDemo() {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();   
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // To show a loading indicator during form submission
@@ -49,6 +54,7 @@ export function SignupFormDemo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    toast.loading('Signing up...');
   
     const signupData = {
       email: formData.email,
@@ -72,13 +78,20 @@ export function SignupFormDemo() {
       const data = await response.json();
   
       if (response.ok && data.success) {
+        toast.dismiss();
+        toast.success('Signup successful');
         console.log("Signup successful", data);
-        window.location.href = "/login"; //*****CHANGE THIS TO OTP ROUTE after testing phase********
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
       } else {
+        toast.dismiss();
+        toast.error(data.message || "Signup failed. Please try again.");
         console.error("Signup error", data.message);
         setError(data.message || "Signup failed. Please try again.");
       }
     } catch (error) {
+      toast.dismiss();
       console.error("Signup error", error);
       setError("An unexpected error occurred. Please try again.");
     } finally{
@@ -87,17 +100,19 @@ export function SignupFormDemo() {
   };
   
 
+  // 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-      <div className="flex justify-center pt-10 pb-10">
-        <img src={logo} alt="logo" />
+    <div className="m-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
+      <Toaster/>
+      <div className="flex justify-center pt-1 pb-6">
+        <img width={250} height={250} src={logo} alt="logo" />
       </div>
       <div className="text-center">
         <h2 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
-          Welcome to LNMIIT Resource Management
+          Welcome to LNMIIT Study Resource Management System
         </h2>
         <p className="text-neutral-600 text-md max-w-sm mt-2 dark:text-neutral-300 p-2">
-          Sign up if you are a student of LNMIIT and have an LNMIIT domain email
+          Sign up only if you have LNMIIT domain email address
         </p>
       </div>
 
@@ -109,7 +124,7 @@ export function SignupFormDemo() {
             <Label htmlFor="firstname">First name</Label>
             <Input
               id="firstname"
-              placeholder="David"
+              placeholder="Jay"
               type="text"
               value={formData.firstname}
               onChange={handleChange}
@@ -119,7 +134,7 @@ export function SignupFormDemo() {
             <Label htmlFor="lastname">Last name</Label>
             <Input
               id="lastname"
-              placeholder="Martinez"
+              placeholder="Patel"
               type="text"
               value={formData.lastname}
               onChange={handleChange}
@@ -158,14 +173,14 @@ export function SignupFormDemo() {
         </LabelInputContainer>
 
         <button
-          className={`bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${loading && 'opacity-50 cursor-not-allowed'}`}
+          className={` bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${loading && 'opacity-50 cursor-not-allowed'}`}
           type="submit"
           disabled={loading}
         >
           {loading ? 'Signing up...' : 'Sign up'}
         </button>
 
-        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+        {/* <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" /> */}
       </form>
     </div>
   );
