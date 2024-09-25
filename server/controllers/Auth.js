@@ -10,9 +10,10 @@ const forgotPasswordTemplate = require("../mail/templates/forgotPasswordTemplate
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { email, password, confirmPassword, accountType, otp } = req.body;
+    const { email, password, confirmPassword, accountType } = req.body;
+    console.log(`signup requested by email: ${email}`); //testing phase
     // Check if All Details are there or not
-    if (!email || !password || !confirmPassword || !accountType || !otp) {
+    if (!email || !password || !confirmPassword || !accountType) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required",
@@ -45,21 +46,21 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-    console.log(response);
-    if (response.length === 0) {
-      // OTP not found for the email
-      return res.status(400).json({
-        success: false,
-        message: "The OTP is not valid",
-      });
-    } else if (otp !== response[0].otp) {
-      // Invalid OTP
-      return res.status(400).json({
-        success: false,
-        message: "The OTP is not valid",
-      });
-    }
+    // const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    // console.log(response);
+    // if (response.length === 0) {
+    //   // OTP not found for the email
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "The OTP is not valid",
+    //   });
+    // } else if (otp !== response[0].otp) {
+    //   // Invalid OTP
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "The OTP is not valid",
+    //   });
+    // }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
