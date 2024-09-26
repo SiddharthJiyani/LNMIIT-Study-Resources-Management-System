@@ -82,11 +82,11 @@ export function Login() {
           Welcome Back
         </h2>
         <p className="text-neutral-600 text-md max-w-sm mt-2 dark:text-neutral-300 p-2">
-          Welcome to LNMIIT Study Resource Management System
+          Login to LNMIIT Study Resource Management System
         </p>
       </div>
 
-      {error && <p className="text-red-500 text-center">{error}</p>} {/* Display validation errors */}
+      {/* {error && <p className="text-red-500 text-center">{error}</p>} Display validation errors */}
 
       <form className="my-8" onSubmit={handleSubmit}>
         <LabelInputContainer className="mb-4">
@@ -120,6 +120,19 @@ export function Login() {
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>
+
+      <div className="text-center">
+        <p clasoName="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
+          Don't have an account?{" "}
+          <span
+            className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"
+            onClick={() => navigate("/")}
+          >
+            Signup
+          </span>
+        </p>
+      </div>
+
     </div>
   );
 }

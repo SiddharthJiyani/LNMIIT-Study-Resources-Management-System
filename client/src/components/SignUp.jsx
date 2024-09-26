@@ -9,8 +9,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -57,12 +57,16 @@ export function SignupFormDemo() {
     toast.loading('Signing up...');
   
     const signupData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
       email: formData.email,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
       accountType: "student", 
       // otp: otpValue,
     };
+
+    console.log(signupData);
     
     setLoading(true);
     try {
@@ -76,6 +80,7 @@ export function SignupFormDemo() {
       });
   
       const data = await response.json();
+      console.log(data);
   
       if (response.ok && data.success) {
         toast.dismiss();
@@ -92,6 +97,7 @@ export function SignupFormDemo() {
       }
     } catch (error) {
       toast.dismiss();
+      toast.error("An unexpected error occurred. Please try again.");
       console.error("Signup error", error);
       setError("An unexpected error occurred. Please try again.");
     } finally{
@@ -116,27 +122,27 @@ export function SignupFormDemo() {
         </p>
       </div>
 
-      {error && <p className="text-red-500 text-center">{error}</p>} {/* Display validation errors */}
+      {/* {error && <p className="text-red-500 text-center">{error}</p>} Display validation errors */}
 
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="firstname">First name</Label>
+            <Label htmlFor="firstName">First name</Label>
             <Input
-              id="firstname"
+              id="firstName"
               placeholder="John"
               type="text"
-              value={formData.firstname}
+              value={formData.firstName}
               onChange={handleChange}
             />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
+            <Label htmlFor="lastName">Last name</Label>
             <Input
-              id="lastname"
+              id="lastName"
               placeholder="Doe"
               type="text"
-              value={formData.lastname}
+              value={formData.lastName}
               onChange={handleChange}
             />
           </LabelInputContainer>
@@ -182,6 +188,20 @@ export function SignupFormDemo() {
 
         {/* <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" /> */}
       </form>
+
+      <div className="text-center">
+        <p clasoName="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
+          Already have an account?{" "}
+          <span
+            className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
+        </p>
+      </div>
+
+
     </div>
   );
 }
