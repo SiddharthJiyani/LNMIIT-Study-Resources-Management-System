@@ -9,8 +9,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -57,12 +57,16 @@ export function SignupFormDemo() {
     toast.loading('Signing up...');
   
     const signupData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
       email: formData.email,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
       accountType: "student", 
       // otp: otpValue,
     };
+
+    console.log(signupData);
     
     setLoading(true);
     try {
@@ -76,6 +80,7 @@ export function SignupFormDemo() {
       });
   
       const data = await response.json();
+      console.log(data);
   
       if (response.ok && data.success) {
         toast.dismiss();
@@ -122,22 +127,22 @@ export function SignupFormDemo() {
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="firstname">First name</Label>
+            <Label htmlFor="firstName">First name</Label>
             <Input
-              id="firstname"
+              id="firstName"
               placeholder="John"
               type="text"
-              value={formData.firstname}
+              value={formData.firstName}
               onChange={handleChange}
             />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
+            <Label htmlFor="lastName">Last name</Label>
             <Input
-              id="lastname"
+              id="lastName"
               placeholder="Doe"
               type="text"
-              value={formData.lastname}
+              value={formData.lastName}
               onChange={handleChange}
             />
           </LabelInputContainer>

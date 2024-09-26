@@ -10,13 +10,17 @@ const forgotPasswordTemplate = require("../mail/templates/forgotPasswordTemplate
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { email, password, confirmPassword, accountType } = req.body;
+    const { firstName , lastName,email, password, confirmPassword, accountType } = req.body;
+
+    // Logging the details for testing
+    console.table({ firstName, lastName, email, password, confirmPassword, accountType });
     console.log(`signup requested by email: ${email}`); //testing phase
+    
     // Check if All Details are there or not
-    if (!email || !password || !confirmPassword || !accountType) {
+    if (!email || !password || !confirmPassword || !accountType || !firstName || !lastName) {
       return res.status(403).send({
         success: false,
-        message: "All Fields are required",
+        message: "All Fields are required ",
       });
     }
 
@@ -68,6 +72,8 @@ exports.signup = async (req, res) => {
     // create entry in db
 
     const user = await User.create({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       accountType: accountType,
