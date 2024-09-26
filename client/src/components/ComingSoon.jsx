@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion'; // For subtle animations
 
-const ComingSoon = () => {
+const Dashboard = () => {
     return (
         <div className="relative flex items-center justify-center h-screen bg-gradient-to-br from-indigo-200 via-white to-indigo-500">
             {/* Background pattern */}
@@ -23,12 +23,9 @@ const ComingSoon = () => {
                 <p className="text-xl text-gray-500 mt-4 max-w-lg mx-auto">
                     We're working hard to bring something amazing. Stay tuned for updates!
                 </p>
-
-                {/* Subtle animated wave */}
-             
             </motion.div>
         </div>
     );
 };
 
-export default ComingSoon;
+export default Dashboard;
