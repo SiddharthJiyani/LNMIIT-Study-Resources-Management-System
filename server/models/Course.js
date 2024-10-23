@@ -12,7 +12,7 @@ const courseSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        enum: ['CSE', 'CCE', 'ECE', "MECH"],
+        enum: ['CSE', 'CCE', 'ECE', "MME"],
         required: true
     }, 
     description: {
