@@ -11,15 +11,17 @@ import CalculateCgpa from './components/CalculateCgpa';
 import MarksVsGrade from './components/MarksVsGrade';
 import Contribute from './components/Contribute';
 import Feedback from './components/Feedback';
+
+// ! #### Protected and Public Routes must be implemented here #### 
 function App() {
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<SignupFormDemo />} />
+          <Route path='/' element={<SignupFormDemo />} /> 
           <Route path='/login' element={<Login />} />
-          <Route path='/sendotp' element={<Otp />} />
+          <Route path='/verifyotp' element={<Otp />} />
           <Route path='/my-profile' element={<MyProfile />} />
           <Route path='/my-courses' element={<MyCourses />} />
           <Route path='/all-courses' element={<AllCourses />} />

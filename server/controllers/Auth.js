@@ -10,14 +10,14 @@ const forgotPasswordTemplate = require("../mail/templates/forgotPasswordTemplate
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { firstName , lastName,email, password, confirmPassword, accountType } = req.body;
+    const { firstName , lastName,email, password, confirmPassword, accountType, department , semester, otp } = req.body;
 
     // Logging the details for testing
-    console.table({ firstName, lastName, email, password, confirmPassword, accountType });
+    console.table({ firstName, lastName, email, password, confirmPassword, accountType , department , semester , otp });
     console.log(`signup requested by email: ${email}`); //testing phase
     
     // Check if All Details are there or not
-    if (!email || !password || !confirmPassword || !accountType || !firstName || !lastName) {
+    if (!email || !password || !confirmPassword || !accountType || !firstName || !lastName || !department, !semester || !otp) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required ",
@@ -50,21 +50,21 @@ exports.signup = async (req, res) => {
       });
     }
 
-    // const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-    // console.log(response);
-    // if (response.length === 0) {
-    //   // OTP not found for the email
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "The OTP is not valid",
-    //   });
-    // } else if (otp !== response[0].otp) {
-    //   // Invalid OTP
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "The OTP is not valid",
-    //   });
-    // }
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    console.log(response);
+    if (response.length === 0) {
+      // OTP not found for the email
+      return res.status(400).json({
+        success: false,
+        message: "The OTP is not valid",
+      });
+    } else if (otp !== response[0].otp) {
+      // Invalid OTP
+      return res.status(400).json({
+        success: false,
+        message: "The OTP is not valid",
+      });
+    }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -75,6 +75,8 @@ exports.signup = async (req, res) => {
       firstName,
       lastName,
       email,
+      department,
+      semester,
       password: hashedPassword,
       accountType: accountType,
     });

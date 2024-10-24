@@ -4,8 +4,7 @@ import { Input } from "./ui/Input";
 import { cn } from "@/lib/utils";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
-
+import toast, { Toaster } from "react-hot-toast";
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -14,8 +13,11 @@ export function SignupFormDemo() {
     email: "",
     password: "",
     confirmPassword: "",
+    accountType: "student", 
+    department: "CSE",
+    semester: "1", 
   });
-
+  
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -52,61 +54,95 @@ export function SignupFormDemo() {
   //   return true;
   // };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   toast.loading('Signing up...');
+
+  //   const signupData = {
+  //     firstName: formData.firstName,
+  //     lastName: formData.lastName,
+  //     email: formData.email,
+  //     password: formData.password,
+  //     confirmPassword: formData.confirmPassword,
+  //     accountType: "student",
+  //     // otp: otpValue,
+  //   };
+
+  //   console.log(signupData);
+
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('http://localhost:4000/api/auth/sendotp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(signupData),
+  //       credentials: 'include',
+  //     });
+
+  //     const data = await response.json();
+  //     console.log(data);
+
+  //     if (response.ok && data.success) {
+  //       toast.dismiss();
+  //       toast.success('Signup successful');
+  //       console.log("Signup successful", data);
+  //       setTimeout(() => {
+  //         navigate('/login');
+  //       }, 1000);
+  //     } else {
+  //       toast.dismiss();
+  //       toast.error(data.message || "Signup failed. Please try again.");
+  //       console.error("Signup error", data.message);
+  //       setError(data.message || "Signup failed. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     toast.dismiss();
+  //     toast.error("An unexpected error occurred. Please try again.");
+  //     console.error("Signup error", error);
+  //     setError("An unexpected error occurred. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.loading('Signing up...');
+    toast.loading("Sending OTP...");
 
-    const signupData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-      accountType: "student",
-      // otp: otpValue,
-    };
+    // Save form data to localStorage
+    localStorage.setItem("signupData", JSON.stringify(formData));
 
-    console.log(signupData);
+    // Save form data locally for later use
+    localStorage.setItem("signupData", JSON.stringify(formData));
 
-    setLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("http://localhost:4000/api/auth/sendotp", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(signupData),
-        credentials: 'include',
+        body: JSON.stringify({ email: formData.email }), // Send email to receive OTP
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (response.ok && data.success) {
         toast.dismiss();
-        toast.success('Signup successful');
-        console.log("Signup successful", data);
-        setTimeout(() => {
-          navigate('/login');
-        }, 1000);
+        toast.success("OTP sent to your email");
+        navigate("/verifyotp"); // Redirect to OTP verification page
       } else {
         toast.dismiss();
-        toast.error(data.message || "Signup failed. Please try again.");
-        console.error("Signup error", data.message);
-        setError(data.message || "Signup failed. Please try again.");
+        toast.error(data.message || "Failed to send OTP");
       }
     } catch (error) {
       toast.dismiss();
-      toast.error("An unexpected error occurred. Please try again.");
-      console.error("Signup error", error);
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+      toast.error("Error sending OTP");
     }
   };
 
-
-  // 
+  //
   return (
     <div className="m-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
       <Toaster />
@@ -125,7 +161,22 @@ export function SignupFormDemo() {
       {/* {error && <p className="text-red-500 text-center">{error}</p>} Display validation errors */}
 
       <form className="my-8" onSubmit={handleSubmit}>
+        {/* Account Type */}
+        <div className="flex flex-col w-32 md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label htmlFor="accountType">Account Type</Label>
+            <select
+              id="accountType"
+              value={formData.accountType}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full">
+              <option value="student">Student</option>
+              <option value="faculty">Admin</option>
+            </select>
+          </LabelInputContainer>
+        </div>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          {/* Firstname */}
           <LabelInputContainer>
             <Label htmlFor="firstName">First name</Label>
             <Input
@@ -136,6 +187,8 @@ export function SignupFormDemo() {
               onChange={handleChange}
             />
           </LabelInputContainer>
+
+          {/* Lastname */}
           <LabelInputContainer>
             <Label htmlFor="lastName">Last name</Label>
             <Input
@@ -147,6 +200,8 @@ export function SignupFormDemo() {
             />
           </LabelInputContainer>
         </div>
+
+        {/* Email */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
           <Input
@@ -157,6 +212,43 @@ export function SignupFormDemo() {
             onChange={handleChange}
           />
         </LabelInputContainer>
+
+        {/* department and semsster */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label htmlFor="department">Department</Label>
+            <select
+              id="department"
+              value={formData.department}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full">
+              <option value="CSE">CSE</option>
+              <option value="CCE">CCE</option>
+              <option value="ECE">ECE</option>
+              <option value="ME">MME</option>
+            </select>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="semester">Semester</Label>
+            <select
+              id="semester"
+              value={formData.semester}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </LabelInputContainer>
+        </div>
+
+        {/* Password */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
           <Input
@@ -167,6 +259,8 @@ export function SignupFormDemo() {
             onChange={handleChange}
           />
         </LabelInputContainer>
+
+        {/* Confirm Password */}
         <LabelInputContainer className="mb-8">
           <Label htmlFor="confirm-password">Confirm Password</Label>
           <Input
@@ -179,11 +273,12 @@ export function SignupFormDemo() {
         </LabelInputContainer>
 
         <button
-          className={` bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${loading && 'opacity-50 cursor-not-allowed'}`}
+          className={` bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${
+            loading && "opacity-50 cursor-not-allowed"
+          }`}
           type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Signing up...' : 'Sign up'}
+          disabled={loading}>
+          {loading ? "Signing up..." : "Sign up"}
         </button>
 
         {/* <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" /> */}
@@ -194,14 +289,11 @@ export function SignupFormDemo() {
           Already have an account?{" "}
           <span
             className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"
-            onClick={() => navigate("/login")}
-          >
+            onClick={() => navigate("/login")}>
             Login
           </span>
         </p>
       </div>
-
-
     </div>
   );
 }
