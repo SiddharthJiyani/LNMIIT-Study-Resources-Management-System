@@ -70,7 +70,7 @@ export const Otp = () => {
         localStorage.removeItem('signupData');
         toast.success('Signup successful');
         setTimeout(() => {
-          navigate('/login');
+          navigate('/my-courses');
         }, 1000);
       } else {
         toast.dismiss();
