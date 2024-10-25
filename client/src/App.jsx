@@ -1,39 +1,117 @@
-import './App.css'
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SignupFormDemo } from './components/SignUp'
-import { Login } from './components/Login';
-import { Otp } from './components/Otp';
-import MyCourses from './components/MyCourses';
-import MyProfile from './components/MyProfile';
-import AllCourses from './components/AllCourses';
-import Favourites from './components/Favourites';
-import CalculateCgpa from './components/CalculateCgpa';
-import MarksVsGrade from './components/MarksVsGrade';
-import Contribute from './components/Contribute';
-import Feedback from './components/Feedback';
-
-// ! #### Protected and Public Routes must be implemented here #### 
+import { SignupFormDemo } from "./components/Auth/SignUp";
+import { Login } from "./components/Auth/Login";
+import { Otp } from "./components/Auth/Otp";
+import MyCourses from "./components/MyCourses";
+import MyProfile from "./components/MyProfile";
+import AllCourses from "./components/AllCourses";
+import Favourites from "./components/Favourites";
+import CalculateCgpa from "./components/CalculateCgpa";
+import MarksVsGrade from "./components/MarksVsGrade";
+import Contribute from "./components/Contribute";
+import Feedback from "./components/Feedback";
+import PrivateRoute from "./components/Auth/PrivateRoute";
+import OpenRoute from "./components/Auth/OpenRoute";
+// ! #### Protected and Public Routes must be implemented here ####
 function App() {
-
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<SignupFormDemo />} /> 
-          <Route path='/login' element={<Login />} />
-          <Route path='/verifyotp' element={<Otp />} />
-          <Route path='/my-profile' element={<MyProfile />} />
-          <Route path='/my-courses' element={<MyCourses />} />
-          <Route path='/all-courses' element={<AllCourses />} />
-          <Route path='/favourites' element={<Favourites />} />
-          <Route path='/calculate-cgpa' element={<CalculateCgpa />} />
-          <Route path='/marks-vs-grade' element={<MarksVsGrade />} />
-          <Route path='/contribute' element={<Contribute />} />
-          <Route path='/feedback' element={<Feedback />} />
+          <Route
+            path="/"
+            element={
+              <OpenRoute>
+                <SignupFormDemo />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <OpenRoute>
+                <Login />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="/verifyotp"
+            element={
+              <OpenRoute>
+                <Otp />
+              </OpenRoute>
+            }
+          />
+
+          <Route
+            path="/my-profile"
+            element={
+              <PrivateRoute>
+                <MyProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-courses"
+            element={
+              <PrivateRoute>
+                <MyCourses />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/all-courses"
+            element={
+              <PrivateRoute>
+                <AllCourses />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/favourites"
+            element={
+              <PrivateRoute>
+                <Favourites />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/calculate-cgpa"
+            element={
+              <PrivateRoute>
+                <CalculateCgpa />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/marks-vs-grade"
+            element={
+              <PrivateRoute>
+                <MarksVsGrade />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/contribute"
+            element={
+              <PrivateRoute>
+                <Contribute />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/feedback"
+            element={
+              <PrivateRoute>
+                <Feedback />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

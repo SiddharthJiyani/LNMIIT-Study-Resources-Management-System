@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+const BACKEND = import.meta.env.VITE_BACKEND_URL; 
+
 import {
     Card,
     CardHeader,
@@ -22,10 +24,43 @@ import { Progress } from "@/components/ui/progress";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Book, Star, User, Calendar, Calculator, ChartArea, HandHeart, MessageCircle } from 'lucide-react'
+import toast, { Toaster } from "react-hot-toast";
 
 export default function NavBar() {
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        // call logout api
+        try{
+            toast.loading('Logging out...')
+            const response = await fetch(`${BACKEND}/api/auth/logout`,{
+                method: 'GET',
+                credentials: 'include'
+            })
+            const data = await response.json();
+            if(response.ok && data.success){
+                localStorage.removeItem('token')
+                toast.dismiss()
+                toast.success('Logged out successfully')
+                setTimeout(() => {
+                    navigate('/login')
+                }, 1000)
+                console.log(data.message)
+
+            }else{
+                console.log(data.message)
+            }
+
+        }catch(error){
+            console.error(error)
+        }
+    }
+
+
     return (
         <header className="sticky top-0 z-40 flex h-16 w-full shrink-0 items-center border-b bg-background px-4 md:px-6">
+            <Toaster/>
             <Link to="/" className="mr-6 flex items-center">
                 <Book className="h-6 w-6" />
                 <span className="sr-only">LMS</span>
@@ -71,7 +106,9 @@ export default function NavBar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>Profile</DropdownMenuItem>
                         <DropdownMenuItem>Settings</DropdownMenuItem>
-                        <DropdownMenuItem>Logout</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link onClick={handleLogout} to="/login">Logout</Link>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

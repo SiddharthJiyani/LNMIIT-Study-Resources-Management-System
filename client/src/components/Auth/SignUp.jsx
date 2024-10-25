@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/Input";
+import { Label } from "../ui/label";
+import { Input } from "../ui/Input";
 import { cn } from "@/lib/utils";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -35,7 +37,7 @@ export function SignupFormDemo() {
     localStorage.setItem("signupData", JSON.stringify(formData));
 
     try {
-      const response = await fetch("http://localhost:4000/api/auth/sendotp", {
+      const response = await fetch(`${BACKEND}/api/auth/sendotp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

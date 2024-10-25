@@ -163,6 +163,24 @@ exports.login = async (req, res) => {
   }
 };
 
+// Logout function
+exports.logout = async (req, res) => {
+  try {
+    // Clear the cookie
+    res.clearCookie("token");
+    return res.status(200).json({
+      success: true,
+      message: `User Logged Out Successfully`,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: `Logout Failure Please Try Again`,
+    });
+  }
+};
+
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
   try {

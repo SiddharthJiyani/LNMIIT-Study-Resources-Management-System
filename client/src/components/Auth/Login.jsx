@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/Input";
+import { Label } from "../../components/ui/Label";
+import { Input } from "../../components/ui/Input";
 import { cn } from "@/lib/utils";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 
 
 
@@ -34,9 +36,11 @@ export function Login() {
       password: formData.password,
     };
 
+    console.log("BACKEND", BACKEND);
+
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/login', {
+      const response = await fetch(`${BACKEND}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,9 +50,10 @@ export function Login() {
       });
 
       const data = await response.json();
-
+      const token = data.token;
       if (response.ok && data.success) {
         toast.dismiss();
+        localStorage.setItem('token', token);
         toast.success('Login successful');
         console.log("Login successful", data);
         setTimeout(() => {

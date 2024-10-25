@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import OtpInput from "react-otp-input";
-import { Label } from "./ui/label";
-import logo from "../assets/logo.png";
+import { Label } from "../ui/label";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -55,7 +56,7 @@ export const Otp = () => {
     const signupData = JSON.parse(localStorage.getItem('signupData'));
   
     try {
-      const response = await fetch('http://localhost:4000/api/auth/signup', {
+      const response = await fetch(`${BACKEND}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,9 +65,10 @@ export const Otp = () => {
       });
   
       const data = await response.json();
-  
+      const token = data.token;
       if (response.ok && data.success) {
         toast.dismiss();
+        localStorage.setItem('token', token);
         localStorage.removeItem('signupData');
         toast.success('Signup successful');
         setTimeout(() => {
