@@ -54,6 +54,7 @@ export function Login() {
       if (response.ok && data.success) {
         toast.dismiss();
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         toast.success('Login successful');
         console.log("Login successful", data);
         setTimeout(() => {

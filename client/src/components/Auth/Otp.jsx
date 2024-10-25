@@ -11,42 +11,6 @@ export const Otp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // const handleOtpSubmit = async (e) => {
-  //   e.preventDefault();
-  //   toast.loading("Verifying OTP...");
-  //   setLoading(true);
-
-  //   // Here you will make the OTP verification request.
-  //   try {
-  //     const response = await fetch(
-  //       "http://localhost:4000/api/auth/sendotp",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ otp }),
-  //         credentials: "include",
-  //       }
-  //     );
-
-  //     const data = await response.json();
-  //     if (response.ok && data.success) {
-  //       toast.dismiss();
-  //       toast.success("OTP verified successfully");
-  //       navigate("/success-page");
-  //     } else {
-  //       toast.dismiss();
-  //       toast.error(data.message || "Invalid OTP. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     toast.dismiss();
-  //     toast.error("An unexpected error occurred. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     toast.loading('Verifying OTP and completing signup...');
@@ -69,6 +33,7 @@ export const Otp = () => {
       if (response.ok && data.success) {
         toast.dismiss();
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.removeItem('signupData');
         toast.success('Signup successful');
         setTimeout(() => {

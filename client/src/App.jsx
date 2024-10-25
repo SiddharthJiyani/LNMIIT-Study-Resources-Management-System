@@ -38,9 +38,9 @@ function App() {
           <Route
             path="/verifyotp"
             element={
-              <OpenRoute>
+              <PrivateRoute>
                 <Otp />
-              </OpenRoute>
+              </PrivateRoute>
             }
           />
 
