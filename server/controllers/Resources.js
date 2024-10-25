@@ -62,6 +62,62 @@ exports.uploadFile = async (req, res) => {
   }
 };
 
+//get all approved resources (for student users)
+exports.showApprovedResource = async (req, res) => {
+  try {
+    const approvedResources = await Resource.find({ isApproved: true });
+    res.json(approvedResources);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+}
+
+//show by id (only approved ones)
+exports.showById = async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      // Find the resource by ID and check if it's approved
+      const resource = await Resource.findOne({ _id: id, isApproved: true })
+          .populate('course')
+          .populate('uploadedBy', 'name');
+
+      if (!resource) {
+          return res.status(404).json({ message: 'Resource not found or not approved' });
+      }
+      
+      res.json(resource);
+  } catch (err) {
+      res.status(500).json({ message: 'Server error' });
+  }
+}
+
+//get resources by course (for student users)
+exports.showResourceByCourse = async (req, res) => {
+  try {
+      const { courseName } = req.params;
+
+      // Find the course by its name
+      const course = await Course.findOne({ name: courseName.trim() })
+          .populate({
+              path: 'resources', // Populate the resources field
+              match: { isApproved: true }, // Only fetch approved resources
+              populate: { path: 'uploadedBy', select: 'name' } // Populate uploadedBy with the user's name
+          });
+
+      if (!course) {
+          return res.status(404).json({ message: 'Course not found' });
+      }
+
+      // Return only approved resources for the found course
+      res.json(course.resources);
+  } catch (err) {
+      res.status(500).send('Server error');
+  }
+}
+
+//ADMIN ROLE CONTROLLERS
+
 // approve resource
 exports.approveResource = async (req, res) => {
   try {
@@ -71,7 +127,7 @@ exports.approveResource = async (req, res) => {
     const resource = await Resource.findByIdAndUpdate(
       resourceId,
       { isApproved: true },
-      { new: true }
+      { new: true } 
     );
 
     if (!resource) {
@@ -89,34 +145,34 @@ exports.approveResource = async (req, res) => {
 };
 
 // DELETE /resources/:id/reject - Admin rejects and deletes the resource from both DB and Cloudinary
-exports.rejectAndDelete = async (req, res) => {
-  try {
-    const resourceId = req.params.id;
+// exports.rejectAndDelete = async (req, res) => {
+//   try {
+//     const resourceId = req.params.id;
 
-    // Find resource in DB
-    const resource = await Resource.findById(resourceId);
-    if (!resource) {
-      return res.status(404).json({ error: "Resource not found" });
-    }
+//     // Find resource in DB
+//     const resource = await Resource.findById(resourceId);
+//     if (!resource) {
+//       return res.status(404).json({ error: "Resource not found" });
+//     }
 
-    // Delete the file from Cloudinary
-    const publicId = resource.fileUrl.split("/").pop().split(".")[0]; // Extract public ID from URL
-    await cloudinary.uploader.destroy(
-      `resources/${resource.fileType}/${publicId}`,
-      { resource_type: "auto" }
-    );
+//     // Delete the file from Cloudinary
+//     const publicId = resource.fileUrl.split("/").pop().split(".")[0]; // Extract public ID from URL
+//     await cloudinary.uploader.destroy(
+//       `resources/${resource.fileType}/${publicId}`,
+//       { resource_type: "auto" }
+//     );
 
-    // Delete resource from DB
-    await Resource.findByIdAndDelete(resourceId);
+//     // Delete resource from DB
+//     await Resource.findByIdAndDelete(resourceId);
 
-    res
-      .status(200)
-      .json({ message: "Resource rejected and deleted successfully" });
-  } catch (error) {
-    console.error("Error rejecting resource:", error);
-    res.status(500).json({ error: "Server error while rejecting resource" });
-  }
-};
+//     res
+//       .status(200)
+//       .json({ message: "Resource rejected and deleted successfully" });
+//   } catch (error) {
+//     console.error("Error rejecting resource:", error);
+//     res.status(500).json({ error: "Server error while rejecting resource" });
+//   }
+// };
 
 //delete resource
 exports.deleteResource = async (req, res) => {
@@ -160,6 +216,22 @@ exports.deleteResource = async (req, res) => {
   }
 };
 
-//get all resources
+//get all resources (both approved and unapproved) --> for admin dashboard
+exports.showAllResource = async (req, res) => {
+  try {
+    const resources = await Resource.find({});
+    res.json(resources);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+}
 
-//get resources by course
+//get all unapproved (newly uploaded resources) --> for admin
+exports.showNewUploads = async (req, res) => {
+  try {
+    const unapprovedResources = await Resource.find({isApproved: false})
+    res.json(unapprovedResources);
+  } catch (err){
+    res.status(500).send('Server error');
+  }
+}
