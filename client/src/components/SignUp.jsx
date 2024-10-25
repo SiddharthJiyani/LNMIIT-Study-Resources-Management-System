@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/Input";
-import { cn } from "../utils/cn";
+import { cn } from "@/lib/utils";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
-
+import toast, { Toaster } from "react-hot-toast";
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -14,12 +13,13 @@ export function SignupFormDemo() {
     email: "",
     password: "",
     confirmPassword: "",
+    accountType: "student",
+    department: "CSE",
+    semester: "1",
   });
 
-  const navigate = useNavigate();   
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // To show a loading indicator during form submission
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,106 +28,107 @@ export function SignupFormDemo() {
     });
   };
 
-  //***** NOTE: already getting validated from server , can use this for speeding up and unecessary server requests **********
-  // const validateForm = () => {
-  //   const { firstname, lastname, email, password, confirmPassword } = formData;
-
-  //   if (!firstname || !lastname || !email || !password || !confirmPassword) {
-  //     setError("All fields are required.");
-  //     return false;
-  //   }
-
-  //   const emailPattern = /^[a-zA-Z0-9._%+-]+@lnmiit\.ac\.in$/; //regex
-  //   if (!emailPattern.test(email)) {
-  //     setError("Please enter a valid LNMIIT email address.");
-  //     return false;
-  //   }
-
-  //   if (password !== confirmPassword) {
-  //     setError("Passwords do not match.");
-  //     return false;
-  //   }
-
-  //   setError("");
-  //   return true;
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.loading('Signing up...');
-  
-    const signupData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-      accountType: "student", 
-      // otp: otpValue,
-    };
+    toast.loading("Sending OTP...");
 
-    console.log(signupData);
-    
-    setLoading(true);
+    localStorage.setItem("signupData", JSON.stringify(formData));
+
     try {
-      const response = await fetch('http://localhost:4000/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("http://localhost:4000/api/auth/sendotp", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(signupData),
-        credentials: 'include', 
+        body: JSON.stringify({ email: formData.email }),
       });
-  
+
       const data = await response.json();
-      console.log(data);
-  
+
       if (response.ok && data.success) {
         toast.dismiss();
-        toast.success('Signup successful');
-        console.log("Signup successful", data);
-        setTimeout(() => {
-          navigate('/login');
-        }, 1000);
+        toast.success("OTP sent to your email");
+        navigate("/verifyotp");
       } else {
         toast.dismiss();
-        toast.error(data.message || "Signup failed. Please try again.");
-        console.error("Signup error", data.message);
-        setError(data.message || "Signup failed. Please try again.");
+        toast.error(data.message || "Failed to send OTP");
       }
     } catch (error) {
       toast.dismiss();
-      toast.error("An unexpected error occurred. Please try again.");
-      console.error("Signup error", error);
-      setError("An unexpected error occurred. Please try again.");
-    } finally{
-      setLoading(false);
+      toast.error("Error sending OTP");
     }
   };
-  
 
-  // 
   return (
     <div className="m-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
-      <Toaster/>
+      <Toaster />
       <div className="flex justify-center pt-1 pb-6">
-        <img width={250} height={250} src={logo} alt="logo" />
+        <img width={200} height={200} src={logo} alt="logo" />
       </div>
-      <div className="text-center">
-        <h2 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
+      <div className="text-center mb-4">
+        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
           Welcome to LNMIIT Study Resource Management System
         </h2>
-        <p className="text-neutral-600 text-md max-w-sm mt-2 dark:text-neutral-300 p-2">
-          Sign up only if you have LNMIIT domain email address
+        <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+          Sign up with your LNMIIT email
         </p>
       </div>
 
-      {/* {error && <p className="text-red-500 text-center">{error}</p>} Display validation errors */}
-
-      <form className="my-8" onSubmit={handleSubmit}>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+      <form className="my-4 space-y-4" onSubmit={handleSubmit}>
+        {/* Account Type, Department & Semester */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
           <LabelInputContainer>
-            <Label htmlFor="firstName">First name</Label>
+            <Label htmlFor="accountType">Account Type</Label>
+            <select
+              id="accountType"
+              value={formData.accountType}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+            >
+              <option value="student">Student</option>
+              <option value="faculty">Admin</option>
+            </select>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="department">Department</Label>
+            <select
+              id="department"
+              value={formData.department}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+            >
+              <option value="CSE">CSE</option>
+              <option value="CCE">CCE</option>
+              <option value="ECE">ECE</option>
+              <option value="ME">MME</option>
+            </select>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="semester">Semester</Label>
+            <select
+              id="semester"
+              value={formData.semester}
+              onChange={handleChange}
+              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </LabelInputContainer>
+        </div>
+
+        {/* Name Fields */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+          <LabelInputContainer>
+            <Label htmlFor="firstName">First Name</Label>
             <Input
               id="firstName"
               placeholder="John"
@@ -136,8 +137,9 @@ export function SignupFormDemo() {
               onChange={handleChange}
             />
           </LabelInputContainer>
+
           <LabelInputContainer>
-            <Label htmlFor="lastName">Last name</Label>
+            <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
               placeholder="Doe"
@@ -147,8 +149,10 @@ export function SignupFormDemo() {
             />
           </LabelInputContainer>
         </div>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+
+        {/* Email Field */}
+        <LabelInputContainer>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             placeholder="2xxxxxx@lnmiit.ac.in"
@@ -157,59 +161,59 @@ export function SignupFormDemo() {
             onChange={handleChange}
           />
         </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            placeholder="••••••••"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </LabelInputContainer>
-        <LabelInputContainer className="mb-8">
-          <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            placeholder="••••••••"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-        </LabelInputContainer>
 
+        {/* Password Fields */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+          <LabelInputContainer>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              placeholder="••••••••"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              placeholder="••••••••"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+          </LabelInputContainer>
+        </div>
+
+        {/* Submit Button */}
         <button
-          className={` bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ${loading && 'opacity-50 cursor-not-allowed'}`}
+          className={`bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white w-full rounded-md h-10 font-medium transition-opacity duration-200 ${
+            loading && "opacity-50 cursor-not-allowed"
+          }`}
           type="submit"
           disabled={loading}
         >
-          {loading ? 'Signing up...' : 'Sign up'}
+          {loading ? "Signing up..." : "Sign up"}
         </button>
-
-        {/* <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" /> */}
       </form>
 
-      <div className="text-center">
-        <p clasoName="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
+      <div className="text-center mt-4">
+        <p className="text-neutral-600 dark:text-neutral-300 text-sm">
           Already have an account?{" "}
           <span
-            className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"
+            className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold underline"
             onClick={() => navigate("/login")}
           >
             Login
           </span>
         </p>
       </div>
-
-
     </div>
   );
 }
 
 const LabelInputContainer = ({ children, className }) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
 };

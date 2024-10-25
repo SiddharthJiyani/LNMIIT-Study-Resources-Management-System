@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/Input";
-import { cn } from "../utils/cn";
+import { cn } from "@/lib/utils";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -15,7 +15,7 @@ export function Login() {
   });
 
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -36,13 +36,13 @@ export function Login() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/login', { 
+      const response = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(loginData),
-        credentials: 'include', 
+        credentials: 'include',
       });
 
       const data = await response.json();
@@ -52,9 +52,9 @@ export function Login() {
         toast.success('Login successful');
         console.log("Login successful", data);
         setTimeout(() => {
-          navigate('/comingsoon');
+          navigate('/my-courses');
         }
-        , 1000);
+          , 1000);
       } else {
         toast.dismiss();
         toast.error(data.message || "Login failed. Please try again.");
@@ -73,7 +73,7 @@ export function Login() {
 
   return (
     <div className=" m-16 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
-      <Toaster/>
+      <Toaster />
       <div className="flex justify-center pt-1 pb-6">
         <img width={250} height={250} src={logo} alt="logo" />
       </div>
@@ -122,7 +122,7 @@ export function Login() {
       </form>
 
       <div className="text-center">
-        <p clasoName="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
+        <p className="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
           Don't have an account?{" "}
           <span
             className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"

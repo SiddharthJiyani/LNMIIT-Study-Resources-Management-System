@@ -1,7 +1,7 @@
 // Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
 "use client";;
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils"
 import { useMotionTemplate, useMotionValue, motion } from "framer-motion";
 
 const Input = React.forwardRef(({ className, type, ...props }, ref) => {
@@ -39,7 +39,7 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
       <input
         type={type}
         className={cn(
-          `flex h-10 w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm  file:border-0 file:bg-transparent 
+          `flex h-10 w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white  rounded-md px-3 py-2 text-sm  file:border-0 file:bg-transparent 
         file:text-sm file:font-medium placeholder:text-neutral-400 dark:placeholder-text-neutral-600 
         focus-visible:outline-none focus-visible:ring-[2px]  focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600
          disabled:cursor-not-allowed disabled:opacity-50
@@ -48,6 +48,9 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
          `,
           className
         )}
+        style={{
+          boxShadow: '0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)',
+        }}
         ref={ref}
         {...props} />
     </motion.div>)
