@@ -73,7 +73,7 @@ export default function AllCourses() {
         <div className="flex min-h-screen w-full flex-col bg-background">
             <NavBar />
             <div className="flex flex-1">
-                <aside className="hidden h-full border-r bg-background md:block">
+                <aside className="hidden h-screen border-r bg-background md:block">
                     <SideBar />
                 </aside>
                 <main className="flex-1 p-4 md:p-6">
