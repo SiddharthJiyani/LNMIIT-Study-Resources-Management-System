@@ -18,19 +18,21 @@ const SideBar = () => {
     ];
 
     return (
-        <nav className="flex flex-col gap-2 p-4">
-            {navLinks.map(({ to, label, icon }) => (
-                <Link
-                    key={to}
-                    to={to}
-                    className={`flex h-10 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 ${location.pathname === to ? "bg-muted text-foreground" : ""
-                        }`}
-                >
-                    {icon && <span className="mr-3 h-5 w-5">{icon}</span>}
-                    {label}
-                </Link>
-            ))}
-        </nav>
+        <aside className="hidden h-screen border-r bg-background md:block fixed">
+            <nav className="flex flex-col gap-2 p-4">
+                {navLinks.map(({ to, label, icon }) => (
+                    <Link
+                        key={to}
+                        to={to}
+                        className={`flex h-10 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 ${location.pathname === to ? "bg-muted text-foreground" : ""
+                            }`}
+                    >
+                        {icon && <span className="mr-3 h-5 w-5">{icon}</span>}
+                        {label}
+                    </Link>
+                ))}
+            </nav>
+        </aside>
     );
 };
 

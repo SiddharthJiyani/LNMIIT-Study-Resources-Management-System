@@ -15,9 +15,9 @@ export function SignupFormDemo() {
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "student",
-    department: "CSE",
-    semester: "1",
+    accountType: "",
+    department: "",
+    semester: "",
   });
 
   const navigate = useNavigate();
@@ -61,6 +61,7 @@ export function SignupFormDemo() {
     }
   };
 
+  const shadow = '0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)'
   return (
     <div className="m-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
       <Toaster />
@@ -85,10 +86,15 @@ export function SignupFormDemo() {
               id="accountType"
               value={formData.accountType}
               onChange={handleChange}
-              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+              className=" rounded-md p-2 w-full bg-[#f9fafb]  required:invalid:text-neutral-400 text-sm"
+              style={{
+                boxShadow: shadow,
+              }}
+              required
             >
-              <option value="student">Student</option>
-              <option value="faculty">Admin</option>
+              <option value="" disabled selected className="hidden">Choose</option>
+              <option value="student" className="text-black">Student</option>
+              <option value="faculty" className="text-black">Admin</option>
             </select>
           </LabelInputContainer>
 
@@ -98,12 +104,17 @@ export function SignupFormDemo() {
               id="department"
               value={formData.department}
               onChange={handleChange}
-              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+              className="rounded-md p-2 w-full bg-[#f9fafb] required:invalid:text-neutral-400 text-sm"
+              style={{
+                boxShadow: shadow,
+              }}
+              required
             >
-              <option value="CSE">CSE</option>
-              <option value="CCE">CCE</option>
-              <option value="ECE">ECE</option>
-              <option value="ME">MME</option>
+              <option value="" disabled selected className="hidden ">Choose</option>
+              <option value="CSE" className="text-black">CSE</option>
+              <option value="CCE" className="text-black">CCE</option>
+              <option value="ECE" className="text-black">ECE</option>
+              <option value="ME" className="text-black">MME</option>
             </select>
           </LabelInputContainer>
 
@@ -113,16 +124,21 @@ export function SignupFormDemo() {
               id="semester"
               value={formData.semester}
               onChange={handleChange}
-              className="border border-gray-300 dark:border-neutral-700 rounded-md p-2 w-full"
+              className="rounded-md p-2 w-full bg-[#f9fafb] required:invalid:text-neutral-400 text-sm"
+              style={{
+                boxShadow: shadow,
+              }}
+              required
             >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
+              <option value="" disabled selected className="hidden">Choose</option>
+              <option value="1" className="text-black">1</option>
+              <option value="2" className="text-black">2</option>
+              <option value="3" className="text-black">3</option>
+              <option value="4" className="text-black">4</option>
+              <option value="5" className="text-black">5</option>
+              <option value="6" className="text-black">6</option>
+              <option value="7" className="text-black">7</option>
+              <option value="8" className="text-black">8</option>
             </select>
           </LabelInputContainer>
         </div>
@@ -191,15 +207,14 @@ export function SignupFormDemo() {
 
         {/* Submit Button */}
         <button
-          className={`bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white w-full rounded-md h-10 font-medium transition-opacity duration-200 ${
-            loading && "opacity-50 cursor-not-allowed"
-          }`}
+          className={`bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white w-full rounded-md h-10 font-medium transition-opacity duration-200 ${loading && "opacity-50 cursor-not-allowed"
+            }`}
           type="submit"
           disabled={loading}
         >
           {loading ? "Signing up..." : "Sign up"}
         </button>
-      </form>
+      </form >
 
       <div className="text-center mt-4">
         <p className="text-neutral-600 dark:text-neutral-300 text-sm">
@@ -212,7 +227,7 @@ export function SignupFormDemo() {
           </span>
         </p>
       </div>
-    </div>
+    </div >
   );
 }
 

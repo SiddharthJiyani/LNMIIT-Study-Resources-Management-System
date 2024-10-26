@@ -124,10 +124,8 @@ export const CourseList = () => {
     <div className="flex min-h-screen w-full flex-col bg-zinc-100 dark:bg-zinc-900">
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden h-screen border-r bg-white dark:bg-zinc-950 md:block">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <div className="flex flex-col max-w-3xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
             <div className="mb-4">
               <input

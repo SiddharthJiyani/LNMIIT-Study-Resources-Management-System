@@ -38,9 +38,8 @@ const ResourceCard = () => {
           },
         };
         const response = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-            
+          `${import.meta.env.VITE_BACKEND_URL
+
           }/api/resource/showById/${resourceId}`,
           options
         );
@@ -69,10 +68,8 @@ const ResourceCard = () => {
     <div className="flex min-h-screen w-full flex-col  dark:bg-zinc-900">
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden h-screen border-r bg-background md:block">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <Card className="max-w-lg mx-auto rounded-xl shadow-lg border dark:border-zinc-800">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-semibold text-zinc-800 dark:text-zinc-200">

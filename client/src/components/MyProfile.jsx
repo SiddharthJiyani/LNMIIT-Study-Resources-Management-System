@@ -68,7 +68,7 @@ export default function MyProfile() {
         body: JSON.stringify(editableData),
         credentials: "include",
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         // Assuming the response returns the updated profile data, save it locally
@@ -81,16 +81,14 @@ export default function MyProfile() {
       console.error("Error updating profile:", error);
     }
   };
-  
+
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <NavBar />
       <div className="flex flex-1 bg-zinc-100">
-        <aside className="hidden h-screen border-r bg-background md:block">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
@@ -175,7 +173,7 @@ export default function MyProfile() {
                     )}
                     <span>{" "}</span>
                     <Badge className="hover:bg-gray-100 bg-gray-100 text-black font-medium px-3 py-1 mt-2 rounded-md">
-                      {editableData?.accountType === "student" ? "Student" : "Admin"} 
+                      {editableData?.accountType === "student" ? "Student" : "Admin"}
                     </Badge>
                     <p className="text-sm text-black mt-2">
                       {/* <strong>Department:</strong> {editableData?.department} | */}

@@ -114,7 +114,7 @@ function App() {
             path="/courses/:courseId"
             element={
               <PrivateRoute>
-                <CourseList/>
+                <CourseList />
               </PrivateRoute>
             }
           />
@@ -122,11 +122,11 @@ function App() {
             path="/resources/:resourceId"
             element={
               <PrivateRoute>
-                <ResourceCard/>
+                <ResourceCard />
               </PrivateRoute>
             }
           />
-        
+
         </Routes>
       </BrowserRouter>
     </>

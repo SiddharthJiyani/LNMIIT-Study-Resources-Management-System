@@ -106,10 +106,8 @@ export default function Contribute() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden h-screen border-r bg-background md:block">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <Card className="max-w-xl mx-auto shadow-lg">
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold">
@@ -209,11 +207,10 @@ export default function Contribute() {
 
               {message && (
                 <div
-                  className={`mt-4 flex items-center text-sm px-4 py-3 rounded-md shadow-md transition-colors duration-300 ${
-                    message.includes("successfully")
-                      ? "bg-green-100 text-green-700 border border-green-300 dark:bg-green-800 dark:text-green-200"
-                      : "bg-red-100 text-red-700 border border-red-300 dark:bg-red-800 dark:text-red-200"
-                  }`}>
+                  className={`mt-4 flex items-center text-sm px-4 py-3 rounded-md shadow-md transition-colors duration-300 ${message.includes("successfully")
+                    ? "bg-green-100 text-green-700 border border-green-300 dark:bg-green-800 dark:text-green-200"
+                    : "bg-red-100 text-red-700 border border-red-300 dark:bg-red-800 dark:text-red-200"
+                    }`}>
                   {message.includes("successfully") ? (
                     <AiOutlineCheckCircle className="mr-2" size={18} />
                   ) : (

@@ -91,10 +91,8 @@ export default function MyCourses() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden h-full border-r bg-background md:block">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {courses.map((course) => (
               <Card
