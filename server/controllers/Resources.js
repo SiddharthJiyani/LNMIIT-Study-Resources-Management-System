@@ -8,14 +8,13 @@ const cloudinary = require("cloudinary").v2;
 // upload resource
 exports.uploadFile = async (req, res) => {
   try {
-    const { title, resource, courseId, fileType } = req.body;
+    const { title,description , resource, courseId, fileType } = req.body;
     // assuming course will be a drop down which will already have semester and branch info
     // console.log("----------Request body:-----------", req.files);
 
     const file = req.files.resource;
-    console.log("File: ", file);
-    console.log('user ' , req.user);
     const user = req.user.id;
+
 
     //check if all fields are there or not
     if (!title || !file || !courseId || !fileType) {
@@ -27,13 +26,14 @@ exports.uploadFile = async (req, res) => {
 
     // Upload file to Cloudinary
     const result = await uploadImageToCloudinary(file, "resources");
-    console.log("File uploaded to Cloudinary", result);
+    // console.log("File uploaded to Cloudinary", result);
 
 
     // Create resource
     const newResource = new Resource({
       title,
       resource,
+      description,
       course: courseId,
       uploadedBy: user,
       fileType,

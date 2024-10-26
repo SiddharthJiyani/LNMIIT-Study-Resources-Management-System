@@ -40,6 +40,7 @@ const ResourceCard = () => {
         const response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
+            
           }/api/resource/showById/${resourceId}`,
           options
         );
@@ -83,12 +84,6 @@ const ResourceCard = () => {
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Details</TableHead>
-                    <TableHead>Information</TableHead>
-                  </TableRow>
-                </TableHeader>
                 <TableBody>
                   <TableRow>
                     <TableCell>Type</TableCell>
@@ -123,6 +118,7 @@ const ResourceCard = () => {
             <CardFooter className="flex flex-col items-center gap-4">
               <a
                 href={resource.fileUrl}
+                target="_blank"
                 className="inline-block text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-md transition-colors"
                 download>
                 Download Resource
