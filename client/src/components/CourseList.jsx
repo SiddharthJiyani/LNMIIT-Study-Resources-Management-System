@@ -23,9 +23,7 @@ export const CourseList = () => {
           },
         };
         const response = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/resource/showByCourse/${courseId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/resource/showByCourse/${courseId}`,
           options
         );
         if (!response.ok) throw new Error("Network response was not ok");
@@ -33,6 +31,11 @@ export const CourseList = () => {
         const data = await response.json();
         setResources(data);
         setLoading(false);
+
+        // Check favorites for each resource after fetching
+        data.forEach((resource) => {
+          fetchFavoriteStatus(resource._id);
+        });
       } catch (error) {
         console.error("Error fetching courses:", error);
         setLoading(false);
@@ -42,18 +45,70 @@ export const CourseList = () => {
     fetchResources();
   }, [courseId]);
 
+  const fetchFavoriteStatus = async (resourceId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/resource/isFavourite/${resourceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.isFavourite) {
+          setFavorites((prevFavorites) => {
+            const newFavorites = new Set(prevFavorites);
+            newFavorites.add(resourceId);
+            return newFavorites;
+          });
+        }
+      } else {
+        console.error("Failed to check favorite status:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error checking favorite status:", error);
+    }
+  };
+
   const handleRowClick = (resourceId) => {
     navigate(`/resources/${resourceId}`);
   };
 
-  const handleFavoriteToggle = (resourceId) => {
-    setFavorites((prevFavorites) => {
-      const newFavorites = new Set(prevFavorites);
-      newFavorites.has(resourceId)
-        ? newFavorites.delete(resourceId)
-        : newFavorites.add(resourceId);
-      return newFavorites;
-    });
+  const handleFavoriteToggle = async (resourceId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/resource/addFavourite/${resourceId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        setFavorites((prevFavorites) => {
+          const newFavorites = new Set(prevFavorites);
+          newFavorites.has(resourceId)
+            ? newFavorites.delete(resourceId)
+            : newFavorites.add(resourceId);
+          return newFavorites;
+        });
+      } else {
+        console.error("Failed to toggle favorite:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
 
   const filteredResources = resources.filter((resource) =>
@@ -69,7 +124,7 @@ export const CourseList = () => {
     <div className="flex min-h-screen w-full flex-col bg-zinc-100 dark:bg-zinc-900">
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden h-screen border-r bg-white dark:bg-zinc-950 md:block ">
+        <aside className="hidden h-screen border-r bg-white dark:bg-zinc-950 md:block">
           <SideBar />
         </aside>
         <main className="flex-1 p-4 md:p-6">

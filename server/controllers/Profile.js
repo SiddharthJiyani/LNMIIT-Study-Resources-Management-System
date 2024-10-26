@@ -3,25 +3,28 @@ const User = require("../models/User");
 // get all detail of a user
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    // Populate favorites with details from the Resource model
+    const user = await User.findById(req.user.id).populate("favorites");
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
+ 
     return res.status(200).json({
       success: true,
       user,
-    }); 
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Error in getProfile:", error);
     return res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "An error occurred while retrieving the user profile",
     });
   }
 };
+
 
 
 // edit user profile

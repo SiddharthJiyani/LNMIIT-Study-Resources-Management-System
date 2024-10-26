@@ -1,5 +1,6 @@
 const { auth } = require("../middleware/auth");
 const Course = require("../models/Course");
+const User = require("../models/User");
 const Resource = require("../models/Resource");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const cloudinary = require("cloudinary").v2;
@@ -8,13 +9,12 @@ const cloudinary = require("cloudinary").v2;
 // upload resource
 exports.uploadFile = async (req, res) => {
   try {
-    const { title,description , resource, courseId, fileType } = req.body;
+    const { title, description, resource, courseId, fileType } = req.body;
     // assuming course will be a drop down which will already have semester and branch info
     // console.log("----------Request body:-----------", req.files);
 
     const file = req.files.resource;
     const user = req.user.id;
-
 
     //check if all fields are there or not
     if (!title || !file || !courseId || !fileType) {
@@ -27,7 +27,6 @@ exports.uploadFile = async (req, res) => {
     // Upload file to Cloudinary
     const result = await uploadImageToCloudinary(file, "resources");
     // console.log("File uploaded to Cloudinary", result);
-
 
     // Create resource
     const newResource = new Resource({
@@ -68,53 +67,107 @@ exports.showApprovedResource = async (req, res) => {
     const approvedResources = await Resource.find({ isApproved: true });
     res.json(approvedResources);
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
-}
+};
 
 //show by id (only approved ones)
 exports.showById = async (req, res) => {
   try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      // Find the resource by ID and check if it's approved
-      const resource = await Resource.findOne({ _id: id, isApproved: true })
-          .populate('course')
-          .populate('uploadedBy', 'firstName lastName');
+    // Find the resource by ID and check if it's approved
+    const resource = await Resource.findOne({ _id: id, isApproved: true })
+      .populate("course")
+      .populate("uploadedBy", "firstName lastName");
 
-      if (!resource) {
-          return res.status(404).json({ message: 'Resource not found or not approved' });
-      }
-      
-      res.json(resource);
+    if (!resource) {
+      return res
+        .status(404)
+        .json({ message: "Resource not found or not approved" });
+    }
+
+    res.json(resource);
   } catch (err) {
-      res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
 
 //get resources by course (for student users)
 exports.showResourceByCourse = async (req, res) => {
   try {
-      const { courseId } = req.params;
+    const { courseId } = req.params;
 
-      // Find the course by its name
-      const course = await Course.findOne({ _id: courseId.trim() })
-          .populate({
-              path: 'resources', // Populate the resources field
-              match: { isApproved: true }, // Only fetch approved resources
-              populate: { path: 'uploadedBy', select: 'name' } // Populate uploadedBy with the user's name
-          });
+    // Find the course by its name
+    const course = await Course.findOne({ _id: courseId.trim() }).populate({
+      path: "resources", // Populate the resources field
+      match: { isApproved: true }, // Only fetch approved resources
+      populate: { path: "uploadedBy", select: "name" }, // Populate uploadedBy with the user's name
+    });
 
-      if (!course) {
-          return res.status(404).json({ message: 'Course not found' });
-      }
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
 
-      // Return only approved resources for the found course
-      res.json(course.resources);
+    // Return only approved resources for the found course
+    res.json(course.resources);
   } catch (err) {
-      res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
-}
+};
+
+// add resource to favourites
+exports.addFavourite = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    // Find the resource
+    const resource = await Resource.findById(id).populate("uploadedBy", "firstName lastName");
+    if (!resource) {
+      return res.status(404).json({ message: "Resource not found" });
+    }
+
+    const user = await User.findById(userId).select("favorites");
+    user.favorites = user.favorites || []; 
+
+    const isFavourite = user.favorites.includes(id);
+
+    if (isFavourite) {
+      // Remove from favorites if it exists
+      user.favorites = user.favorites.filter((favId) => favId.toString() !== id);
+      await user.save();
+      return res.json({ message: "Resource removed from favorites", resource });
+    } else {
+      // Add to favorites if it doesn't exist
+      user.favorites.push(id);
+      await user.save();
+      return res.json({ message: "Resource added to favorites", resource });
+    }
+  } catch (err) {
+    console.error("Error in toggleFavourite:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// check if resource is in favourites
+exports.checkFavourite = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).select("favorites");
+    user.favorites = user.favorites || [];
+
+    const isFavourite = user.favorites.includes(id);
+
+    res.json({ isFavourite });
+  } catch (err) {
+    console.error("Error in checkFavourite:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 
 //ADMIN ROLE CONTROLLERS
 
@@ -127,7 +180,7 @@ exports.approveResource = async (req, res) => {
     const resource = await Resource.findByIdAndUpdate(
       resourceId,
       { isApproved: true },
-      { new: true } 
+      { new: true }
     );
 
     if (!resource) {
@@ -196,7 +249,9 @@ exports.deleteResource = async (req, res) => {
       `resources/${resource.fileType}/${publicId}`,
 
       //! ### may need more modification and testing  ####
-      fileExtension === "pdf" ? { resource_type: "image" } : { resource_type: "auto" } 
+      fileExtension === "pdf"
+        ? { resource_type: "image" }
+        : { resource_type: "auto" }
     );
 
     // Remove resource from course
@@ -222,16 +277,16 @@ exports.showAllResource = async (req, res) => {
     const resources = await Resource.find({});
     res.json(resources);
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
-}
+};
 
 //get all unapproved (newly uploaded resources) --> for admin
 exports.showNewUploads = async (req, res) => {
   try {
-    const unapprovedResources = await Resource.find({isApproved: false})
+    const unapprovedResources = await Resource.find({ isApproved: false });
     res.json(unapprovedResources);
-  } catch (err){
-    res.status(500).send('Server error');
+  } catch (err) {
+    res.status(500).send("Server error");
   }
-}
+};

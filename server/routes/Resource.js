@@ -7,7 +7,9 @@ const { uploadFile,
     showResourceByCourse,
     showApprovedResource,
     showById,
-    showNewUploads } = require("../controllers/Resources");
+    showNewUploads, 
+    addFavourite,
+    checkFavourite} = require("../controllers/Resources");
 const { auth, isAdmin } = require("../middleware/auth");
 
 // POST: Upload a new resource (Only authenticated users)
@@ -15,6 +17,8 @@ router.post("/upload", auth, uploadFile);
 router.get("/showByCourse/:courseId", auth, showResourceByCourse);
 router.get('/showApprovedResource', auth, showApprovedResource);
 router.get('/showById/:id',auth, showById);
+router.post('/addFavourite/:id', auth, addFavourite);
+router.get('/isFavourite/:id', auth, checkFavourite);
 
 
 //admin routes

@@ -40,6 +40,8 @@ export default function Favourites() {
     getProfileDetails();
   }, []);
 
+  console.log('favorites', favorites);
+
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -71,7 +73,7 @@ export default function Favourites() {
                         </div>
                         <Button
                           variant="ghost"
-                          onClick={() => navigate(`/material/${material.id}`)}>
+                          onClick={() => navigate(`/resources/${material._id}`)}>
                           View
                         </Button>
                       </div>
