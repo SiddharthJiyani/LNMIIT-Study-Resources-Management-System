@@ -9,7 +9,8 @@ const { uploadFile,
     showById,
     showNewUploads, 
     addFavourite,
-    checkFavourite} = require("../controllers/Resources");
+    checkFavourite,
+    getUserResources} = require("../controllers/Resources");
 const { auth, isAdmin } = require("../middleware/auth");
 
 // POST: Upload a new resource (Only authenticated users)
@@ -19,6 +20,9 @@ router.get('/showApprovedResource', auth, showApprovedResource);
 router.get('/showById/:id',auth, showById);
 router.post('/addFavourite/:id', auth, addFavourite);
 router.get('/isFavourite/:id', auth, checkFavourite);
+
+// GET /resources/user/:userId - Get all resources by a specific user
+router.get("/user/:userId",auth, getUserResources);
 
 
 //admin routes
