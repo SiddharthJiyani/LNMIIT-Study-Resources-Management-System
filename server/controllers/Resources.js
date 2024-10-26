@@ -80,7 +80,7 @@ exports.showById = async (req, res) => {
       // Find the resource by ID and check if it's approved
       const resource = await Resource.findOne({ _id: id, isApproved: true })
           .populate('course')
-          .populate('uploadedBy', 'name');
+          .populate('uploadedBy', 'firstName lastName');
 
       if (!resource) {
           return res.status(404).json({ message: 'Resource not found or not approved' });
@@ -95,10 +95,10 @@ exports.showById = async (req, res) => {
 //get resources by course (for student users)
 exports.showResourceByCourse = async (req, res) => {
   try {
-      const { courseName } = req.params;
+      const { courseId } = req.params;
 
       // Find the course by its name
-      const course = await Course.findOne({ name: courseName.trim() })
+      const course = await Course.findOne({ _id: courseId.trim() })
           .populate({
               path: 'resources', // Populate the resources field
               match: { isApproved: true }, // Only fetch approved resources

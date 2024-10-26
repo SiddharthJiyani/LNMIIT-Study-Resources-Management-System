@@ -11,6 +11,8 @@ import CalculateCgpa from "./components/CalculateCgpa";
 import MarksVsGrade from "./components/MarksVsGrade";
 import Contribute from "./components/Contribute";
 import Feedback from "./components/Feedback";
+import { CourseList } from "./components/CourseList";
+import ResourceCard from "./components/ResourceCard";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import OpenRoute from "./components/Auth/OpenRoute";
 // ! #### Protected and Public Routes must be implemented here ####
@@ -108,6 +110,23 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/courses/:courseId"
+            element={
+              <PrivateRoute>
+                <CourseList/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/resources/:resourceId"
+            element={
+              <PrivateRoute>
+                <ResourceCard/>
+              </PrivateRoute>
+            }
+          />
+        
         </Routes>
       </BrowserRouter>
     </>

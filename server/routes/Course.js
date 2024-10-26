@@ -5,15 +5,19 @@ const {
   getCoursesByDepartmentAndSemester,
   getCoursesBySemester,
   deleteCourse,
+  getCourses
 } = require("../controllers/Course");
 
 const { auth, isAdmin } = require("../middleware/auth");
+
+// GET: all courses 
+router.get('/all',auth, getCourses);
 
 // POST: Create a new course (Only authenticated users)
 router.post("/create", auth, isAdmin, createCourse);
 
 // get courses by department and semester
-router.get("/:department/:semester", getCoursesByDepartmentAndSemester);
+router.get("/:department/:semester",auth, getCoursesByDepartmentAndSemester);
 
 // GET: Get all courses by semester (Public)
 router.get("/:semester",auth, getCoursesBySemester);

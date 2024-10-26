@@ -24,7 +24,50 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Book, Star, User, Calendar, Calculator, ChartArea, HandHeart, MessageCircle } from 'lucide-react'
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 export default function MyCourses() {
+
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const profileData = JSON.parse(localStorage.getItem("user"));
+    const userDepartment = profileData?.department;
+    const userSemester = profileData?.semester;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                const options = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                };
+                const response = await fetch(`${BACKEND}/api/course/${userDepartment}/${userSemester}`, options);
+                if (!response.ok) throw new Error("Network response was not ok");
+
+                const data = await response.json();
+                setCourses(data.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchCourses();
+    }, [userDepartment, userSemester]);
+
+    const handleCourseClick = (courseId) => {
+        navigate(`/courses/${courseId}`);
+    };
+
+    if (loading) return <div>Loading...</div>; //replace with preloader
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-background">
@@ -35,31 +78,13 @@ export default function MyCourses() {
                 </aside>
                 <main className="flex-1 p-4 md:p-6">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>Operating Systems</CardTitle>
-                            </CardHeader>
-                        </Card>
-                        <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>Computer Networks</CardTitle>
-                            </CardHeader>
-                        </Card>
-                        <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>DBMS</CardTitle>
-                            </CardHeader>
-                        </Card>
-                        <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>Computer Organization and Architecture</CardTitle>
-                            </CardHeader>
-                        </Card>
-                        <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>OOPs</CardTitle>
-                            </CardHeader>
-                        </Card>
+                         {courses.map((course) => (
+                            <Card key={course._id} className="transition-transform hover:scale-105" onClick={() => handleCourseClick(course._id)}>
+                                <CardHeader>
+                                    <CardTitle>{course.name}</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        ))}
                     </div>
                 </main>
             </div>

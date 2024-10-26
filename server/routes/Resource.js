@@ -12,7 +12,7 @@ const { auth, isAdmin } = require("../middleware/auth");
 
 // POST: Upload a new resource (Only authenticated users)
 router.post("/upload", auth, uploadFile);
-router.get("/showByCourse/:courseName", auth, showResourceByCourse);
+router.get("/showByCourse/:courseId", auth, showResourceByCourse);
 router.get('/showApprovedResource', auth, showApprovedResource);
 router.get('/showById/:id',auth, showById);
 
