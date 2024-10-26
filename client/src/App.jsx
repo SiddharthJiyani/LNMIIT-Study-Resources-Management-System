@@ -13,6 +13,7 @@ import Contribute from "./components/Contribute";
 import Feedback from "./components/Feedback";
 import { CourseList } from "./components/CourseList";
 import ResourceCard from "./components/ResourceCard";
+import MyContributions from "./components/MyContributions";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import OpenRoute from "./components/Auth/OpenRoute";
 // ! #### Protected and Public Routes must be implemented here ####
@@ -123,6 +124,14 @@ function App() {
             element={
               <PrivateRoute>
                 <ResourceCard/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-contributions"
+            element={
+              <PrivateRoute>
+                <MyContributions/>
               </PrivateRoute>
             }
           />

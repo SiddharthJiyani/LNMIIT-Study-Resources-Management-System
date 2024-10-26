@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy } from 'lucide-react';
+import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
 
 const SideBar = () => {
     const location = useLocation(); // Get the current route
@@ -14,7 +14,8 @@ const SideBar = () => {
         { to: "/calculate-cgpa", label: "Calculate CGPA", icon: <Calculator /> },
         { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
         { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
-        { to: "/feedback", label: "Feedback", icon: <MessageCircle /> },
+        { to: "/my-contributions", label: "My Contributions", icon: <FileCheck />},
+        { to: "/feedback", label: "Feedback", icon: <MessageCircle /> }
     ];
 
     return (

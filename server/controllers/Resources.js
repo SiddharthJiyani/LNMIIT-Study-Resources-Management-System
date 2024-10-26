@@ -116,6 +116,30 @@ exports.showResourceByCourse = async (req, res) => {
   }
 };
 
+//get resource by user
+exports.getUserResources = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find all resources uploaded by this user
+    const resources = await Resource.find({ uploadedBy: userId })
+      .populate("course", "name") // populate course with its name
+      .select("title description fileType isApproved createdAt"); // select specific fields to return
+
+    if (!resources || resources.length === 0) {
+      return res.status(404).json({ message: "No resources found for this user" });
+    }
+
+    res.status(200).json({
+      success: true,
+      resources,
+    });
+  } catch (error) {
+    console.error("Error fetching user resources:", error);
+    res.status(500).json({ error: "Server error while fetching resources" });
+  }
+};
+
 // add resource to favourites
 exports.addFavourite = async (req, res) => {
   try {
