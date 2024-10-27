@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Check, FileCheck2, FilePlus, Menu, X } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
@@ -16,7 +16,8 @@ const navLinks = [
   { to: "/calculate-cgpa", label: "Calculate CGPA", icon: <Calculator /> },
   { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
   { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
-  { to: "/my-contributions", label: "My Contributions", icon: <FileCheck /> },
+  { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
+  { to: "/approve", label: "Approve", icon: <FileCheck /> },
   { to: "/feedback", label: "Feedback", icon: <MessageCircle /> }
 ];
 
@@ -24,7 +25,9 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  
   const user = JSON.parse(localStorage.getItem("user"));
+  const accountType = user.accountType;
   const userName = user.firstName + " " + user.lastName;
   const initials = userName
     .split(" ")
@@ -99,6 +102,7 @@ export default function NavBar() {
         <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
           <div className="flex flex-col items-start p-4 space-y-2">
             {navLinks.map(({ to, label, icon }) => (
+              label === "Approve" && accountType !== "admin" ? null :
               <Link
                 key={to}
                 to={to}

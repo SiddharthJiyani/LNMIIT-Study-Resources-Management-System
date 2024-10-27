@@ -308,7 +308,7 @@ exports.showAllResource = async (req, res) => {
 //get all unapproved (newly uploaded resources) --> for admin
 exports.showNewUploads = async (req, res) => {
   try {
-    const unapprovedResources = await Resource.find({ isApproved: false });
+    const unapprovedResources = await Resource.find({ isApproved: false }).populate('uploadedBy').populate('course' , 'department semester name');
     res.json(unapprovedResources);
   } catch (err) {
     res.status(500).send("Server error");

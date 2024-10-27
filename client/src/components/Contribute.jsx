@@ -90,7 +90,7 @@ export default function Contribute() {
       if (response.ok) {
         const data = await response.json();
         setMessage(data.message);
-        setTimeout(() => navigate("/courses"), 2000);
+        setTimeout(() => navigate("/my-contributions"), 2000);
       } else {
         const errorData = await response.json();
         setMessage(errorData.message || "Error uploading resource.");
@@ -191,8 +191,8 @@ export default function Contribute() {
                   </option>
                   <option value="notes">Notes</option>
                   <option value="slides">Slides</option>
-                  <option value="assignments">Assignments</option>
-                  <option value="exams">Exam Papers</option>
+                  <option value="assignment">Assignments</option>
+                  <option value="pyqs">PYQs</option>
                   <option value="other">Other</option>
                 </select>
               </form>

@@ -16,8 +16,13 @@ import ResourceCard from "./components/ResourceCard";
 import MyContributions from "./components/MyContributions";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import OpenRoute from "./components/Auth/OpenRoute";
+import Approve from "./components/Approve";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accountType = user.accountType;
+
   return (
     <>
       <BrowserRouter>
@@ -135,6 +140,19 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          {
+            accountType === "admin" && (
+              <Route
+                path="/approve"
+                element={
+                  <PrivateRoute>
+                    <Approve />
+                  </PrivateRoute>
+                }
+              />
+            )
+          }
 
         </Routes>
       </BrowserRouter>

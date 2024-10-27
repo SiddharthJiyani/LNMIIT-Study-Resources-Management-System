@@ -1,9 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
+import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, FileCheck2, FilePlus } from 'lucide-react';
 
 const SideBar = () => {
     const location = useLocation(); // Get the current route
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accountType = user.accountType;
 
     // Define the navigation links
     const navLinks = [
@@ -14,14 +16,16 @@ const SideBar = () => {
         { to: "/calculate-cgpa", label: "Calculate CGPA", icon: <Calculator /> },
         { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
         { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
-        { to: "/my-contributions", label: "My Contributions", icon: <FileCheck />},
+        { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
+        { to: "/approve", label: "Approve", icon: <FileCheck /> },
         { to: "/feedback", label: "Feedback", icon: <MessageCircle /> }
-    ];
+      ];
 
     return (
         <aside className="hidden h-screen border-r bg-background md:block fixed">
             <nav className="flex flex-col gap-2 p-4">
                 {navLinks.map(({ to, label, icon }) => (
+                    label === 'Approve' && accountType != 'admin' ? null :
                     <Link
                         key={to}
                         to={to}
