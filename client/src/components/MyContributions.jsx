@@ -148,30 +148,30 @@ const MyContributions = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {resources?.resources.length > 0 ? (
-                    resources.resources.map((resource, index) => (
+                  {resources?.resources?.length > 0 ? (
+                    resources?.resources?.map((resource, index) => (
                       <tr
-                        key={resource._id}
+                        key={resource?._id}
                         className="border-t hover:bg-gray-50 dark:hover:bg-zinc-700">
                         <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
                           {index + 1}
                         </td>
                         <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
-                          {resource.title}
+                          {resource?.title}
                         </td>
                         <td className="py-3 px-4">
                           <span
                             className={`px-2 py-1 rounded-full text-sm font-medium ${
-                              resource.isApproved
+                              resource?.isApproved
                                 ? "bg-green-200 text-green-800 dark:bg-green-700 dark:text-green-100"
                                 : "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100"
                             }`}>
-                            {resource.isApproved ? "Approved" : "Pending"}
+                            {resource?.isApproved ? "Approved" : "Pending"}
                           </span>
                         </td>
                         <td className="py-3 px-4">
                           <button
-                            onClick={() => handleDelete(resource._id)}>
+                            onClick={() => handleDelete(resource?._id)}>
                             <Trash className="ml-2 text-red-600 dark:text-red-400 w-6 h-6 hover:text-red-500  dark:hover:text-red-300 transition-colors"/>
                           </button>
                         </td>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, FileCheck2, FilePlus } from 'lucide-react';
+import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, FileCheck2, FilePlus, BookMarked } from 'lucide-react';
 
 const SideBar = () => {
     const location = useLocation(); // Get the current route
@@ -18,6 +18,7 @@ const SideBar = () => {
         { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
         { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
         { to: "/approve", label: "Approve", icon: <FileCheck /> },
+        { to: "/manage-course", label: "Manage Course", icon: <BookMarked /> },
         { to: "/feedback", label: "Feedback", icon: <MessageCircle /> }
       ];
 
@@ -25,7 +26,7 @@ const SideBar = () => {
         <aside className="hidden h-screen border-r bg-background md:block fixed">
             <nav className="flex flex-col gap-2 p-4">
                 {navLinks.map(({ to, label, icon }) => (
-                    label === 'Approve' && accountType != 'admin' ? null :
+                    (label === 'Approve' || label  === 'Manage Course') && accountType != 'admin' ? null :
                     <Link
                         key={to}
                         to={to}

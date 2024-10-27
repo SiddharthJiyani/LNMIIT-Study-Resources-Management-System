@@ -6,10 +6,19 @@ exports.createCourse = async (req, res) => {
     const { name, description, semester , department} = req.body;
     const user = req.user._id;
 
+    
     if (!name || !description || !semester || !department) {
       return res.status(400).json({
         success: false,
         message: "Please enter all fields",
+      });
+    }
+    // check if course already exists
+    const courseExists = await Course.findOne({ name });
+    if (courseExists) {
+      return res.status(400).json({
+        success: false,
+        message: "Course already exists",
       });
     }
 
@@ -54,6 +63,50 @@ exports.getCourses = async (req, res) => {
     });
   }
 };
+
+//edit course
+exports.editCourse = async (req, res) => {
+  try {
+    const { name, description, semester, department } = req.body;
+    const user = req.user._id;
+    const { id } = req.params;
+
+    if (!name || !description || !semester || !department) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter all fields",
+      });
+    }
+
+    const course = await Course.findById(id);
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+
+    course.name = name;
+    course.description = description;
+    course.semester = semester;
+    course.department = department;
+    course.createdBy = user;
+
+    await course.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Course updated successfully",
+      data: course,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error updating course",
+      error: error.message,
+    });
+  }
+}
 
 // get courses by department and semester
 exports.getCoursesByDepartmentAndSemester = async (req, res) => {
