@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import { AiFillHeart } from "react-icons/ai";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export default function Favourites() {
   const [favorites, setFavorites] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const getProfileDetails = async () => {
@@ -26,167 +23,121 @@ export default function Favourites() {
       if (response.ok) {
         setFavorites(data.user.favorites);
       } else {
-        console.error(
-          "Failed to fetch favourites:",
-          data.message || "Unknown error"
-        );
+        console.error("Failed to fetch favourites:", data.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error fetching favorites:", error);
     }
   };
 
+  const handleFavoriteToggle = async (resourceId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `${BACKEND}/api/resource/addFavourite/${resourceId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        setFavorites((prevFavorites) => {
+          const newFavorites = new Set(prevFavorites);
+          newFavorites.has(resourceId)
+            ? newFavorites.delete(resourceId)
+            : newFavorites.add(resourceId);
+          return newFavorites;
+        });
+      } else {
+        console.error("Failed to toggle favorite:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+
+  const filteredFavorites = favorites.filter((material) =>
+    material.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     getProfileDetails();
   }, []);
-
-  console.log('favorites', favorites);
-
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <NavBar />
       <div className="flex flex-1">
-          <SideBar />
+        <SideBar />
         <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="transition-transform hover:scale-100 col-span-1 md:col-span-2">
-              <CardHeader>
-                <CardTitle>Favorite Materials</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 md:grid-cols-2">
-                  {favorites?.length > 0 ? (
-                    favorites.map((material, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center p-3 bg-muted rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-base">
-                            {material.title}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {material.description}
-                          </p>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          onClick={() => navigate(`/resources/${material._id}`)}>
-                          View
-                        </Button>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-muted-foreground">
-                      No favorite materials yet.
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="transition-transform hover:scale-100 col-span-1 md:col-span-2">
+            <CardHeader>
+              <CardTitle>Favorite Materials</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Search favorites..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full p-2 border border-zinc-300 rounded-md dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+                />
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full border border-zinc-200 shadow-md rounded-lg dark:border-zinc-800">
+                  <thead>
+                    <tr className="bg-zinc-50 dark:bg-zinc-900">
+                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">S. No.</th>
+                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">Title</th>
+                      <th className="py-3 px-4 border-b text-center dark:border-zinc-800">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredFavorites.length > 0 ? (
+                      filteredFavorites.map((material, index) => (
+                        <tr key={material._id} className="hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer">
+                          <td className="py-2 px-4 border-b dark:border-zinc-800">{index + 1}</td>
+                          <td className="py-2 px-4 border-b dark:border-zinc-800">{material.title}</td>
+                          <td className="py-2 px-4 border-b text-center dark:border-zinc-800 flex flex-col sm:flex-row sm:justify-center">
+                            <Button
+                              onClick={() => navigate(`/resources/${material._id}`)}
+                              className="mb-2 sm:mb-0 sm:mr-2"
+                            >
+                              View
+                            </Button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleFavoriteToggle(material._id);
+                                window.location.reload();
+                              }}
+                              aria-label="Add to favorites"
+                            >
+                              <AiFillHeart className="text-red-500 text-2xl ml-3" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="py-4 text-center dark:text-zinc-400">
+                          No favorite materials found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         </main>
       </div>
     </div>
   );
 }
-
-
-// UNCOMMENT BELOW CODE TO SEE HOW UI LOOKS 
-
-
-// import React, { useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardHeader,
-//   CardTitle,
-//   CardContent,
-// } from "@/components/ui/card";
-// import NavBar from "./NavBar";
-// import SideBar from "./SideBar";
-
-// // const BACKEND = import.meta.env.VITE_BACKEND_URL;
-
-// export default function Favourites() {
-//   const navigate = useNavigate();
-  
-//   // Dummy data for preview purposes
-//   const [favorites] = useState([
-//     {
-//       id: 1,
-//       title: "Introduction to React",
-//       description: "An overview of the fundamentals of React, covering components, state, and props.",
-//     },
-//     {
-//       id: 2,
-//       title: "Advanced CSS Techniques",
-//       description: "Learn advanced CSS for creating modern, responsive web designs.",
-//     },
-//     {
-//       id: 3,
-//       title: "JavaScript Best Practices",
-//       description: "A guide to writing clean, maintainable JavaScript code.",
-//     },
-//     {
-//       id: 4,
-//       title: "Building REST APIs",
-//       description: "Explore how to create and manage REST APIs using Node.js and Express.",
-//     },
-//   ]);
-
-//   // Commented out for now to preview with dummy data
-//   // useEffect(() => {
-//   //   getProfileDetails();
-//   // }, []);
-
-//   return (
-//     <div className="flex min-h-screen w-full flex-col bg-background">
-//       <NavBar />
-//       <div className="flex flex-1">
-//         <aside className="hidden h-screen border-r bg-background md:block">
-//           <SideBar />
-//         </aside>
-//         <main className="flex-1 p-4 md:p-6">
-//           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-//             <Card className="transition-transform hover:scale-100 col-span-1 md:col-span-2">
-//               <CardHeader>
-//                 <CardTitle>Favorite Materials</CardTitle>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="grid gap-4 md:grid-cols-2">
-//                   {favorites?.length > 0 ? (
-//                     favorites.map((material, index) => (
-//                       <div
-//                         key={index}
-//                         className="flex items-center p-3 bg-muted rounded-lg shadow-sm hover:shadow-md transition-shadow">
-//                         <div className="flex-1">
-//                           <h4 className="font-semibold text-base">
-//                             {material.title}
-//                           </h4>
-//                           <p className="text-sm text-muted-foreground">
-//                             {material.description}
-//                           </p>
-//                         </div>
-//                         <Button
-//                           variant="ghost"
-//                           onClick={() => navigate(`/material/${material.id}`)}>
-//                           View
-//                         </Button>
-//                       </div>
-//                     ))
-//                   ) : (
-//                     <p className="text-muted-foreground">
-//                       No favorite materials yet.
-//                     </p>
-//                   )}
-//                 </div>
-//               </CardContent>
-//             </Card>
-//           </div>
-//         </main>
-//       </div>
-//     </div>
-//   );
-// }
