@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BookMarked, BookMarkedIcon, Check, FileCheck2, FilePlus, Menu, X } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
 import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
@@ -58,21 +59,23 @@ export default function NavBar() {
       console.error(error);
     }
   };
-
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-end border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
       <Toaster />
       <Link to="/" className="mr-6 flex items-center">
         <img src={logo} alt="" className="h-7" />
         <span className="sr-only">LMS</span>
       </Link>
-      {/* <nav className="hidden md:flex gap-4">
-        <Link to="/courses" className="nav-link">Courses</Link>
-        <Link to="/assignments" className="nav-link">A</DropdownMenuTrigger>ssignments</Link>
-        <Link to="/gradebook" className="nav-link">Gradebook</Link>
-        <Link to="/profile" cla</Avatar>ssName="nav-link">Profile</Link>
-      </nav> */}
-      <div className="ml-auto flex items-center justify-end md:justify-normal gap-4">
+      <Badge variant="secondary" className="hidden md:flex items-center font-dotMatrix text-[14px]">
+        {formattedDate}
+      </Badge>
+      <div className="flex justify-center items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">

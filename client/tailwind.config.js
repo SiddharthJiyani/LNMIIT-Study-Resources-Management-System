@@ -23,7 +23,8 @@ module.exports = {
       },
       fontFamily: {
         heading: ['var(--font-heading)', ...fontFamily.sans],
-        body: ['var(--font-body)', ...fontFamily.sans]
+        body: ['var(--font-body)', ...fontFamily.sans],
+        dotMatrix: ['dot_matrix', 'sans-serif']
       },
       colors: {
         border: 'hsl(var(--border))',
