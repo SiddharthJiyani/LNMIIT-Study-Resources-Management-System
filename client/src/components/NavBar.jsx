@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
 import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
-import logo from "../assets/logo.png";
+import logo from "../assets/navLogo.png";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const navLinks = [
