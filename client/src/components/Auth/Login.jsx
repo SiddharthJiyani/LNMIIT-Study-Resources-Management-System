@@ -78,10 +78,10 @@ export function Login() {
   };
 
   return (
-    <div className=" m-16 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
+    <div className=" m-7 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
       <Toaster />
-      <div className="flex justify-center pt-1 pb-6">
-        <img width={250} height={250} src={logo} alt="logo" />
+      <div className="flex justify-center pt-1 pb-4">
+        <img width={200} height={200} src={logo} alt="logo" />
       </div>
       <div className="text-center">
         <h2 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
@@ -94,7 +94,7 @@ export function Login() {
 
       {/* {error && <p className="text-red-500 text-center">{error}</p>} Display validation errors */}
 
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="my-5" onSubmit={handleSubmit}>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
           <Input
@@ -124,7 +124,7 @@ export function Login() {
           {loading ? 'Logging in...' : 'Log in'}
         </button>
 
-        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-4 h-[1px] w-full" />
       </form>
 
       <div className="text-center">

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -61,9 +60,10 @@ export function SignupFormDemo() {
     }
   };
 
-  const shadow = '0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)'
+  const shadow =
+    "0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)";
   return (
-    <div className="m-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
+    <div className="m-7 max-w-md w-full mx-auto rounded-2xl p-5 md:p-8 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-white dark:bg-black">
       <Toaster />
       <div className="flex justify-center pt-1 pb-6">
         <img width={200} height={200} src={logo} alt="logo" />
@@ -78,71 +78,6 @@ export function SignupFormDemo() {
       </div>
 
       <form className="my-4 space-y-4" onSubmit={handleSubmit}>
-        {/* Account Type, Department & Semester */}
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-          <LabelInputContainer>
-            <Label htmlFor="accountType">Account Type</Label>
-            <select
-              id="accountType"
-              value={formData.accountType}
-              onChange={handleChange}
-              className=" rounded-md p-2 w-full bg-[#f9fafb]  required:invalid:text-neutral-400 text-sm"
-              style={{
-                boxShadow: shadow,
-              }}
-              required
-            >
-              <option value="" disabled selected className="hidden">Choose</option>
-              <option value="student" className="text-black">Student</option>
-              <option value="faculty" className="text-black">Admin</option>
-            </select>
-          </LabelInputContainer>
-
-          <LabelInputContainer>
-            <Label htmlFor="department">Department</Label>
-            <select
-              id="department"
-              value={formData.department}
-              onChange={handleChange}
-              className="rounded-md p-2 w-full bg-[#f9fafb] required:invalid:text-neutral-400 text-sm"
-              style={{
-                boxShadow: shadow,
-              }}
-              required
-            >
-              <option value="" disabled selected className="hidden ">Choose</option>
-              <option value="CSE" className="text-black">CSE</option>
-              <option value="CCE" className="text-black">CCE</option>
-              <option value="ECE" className="text-black">ECE</option>
-              <option value="ME" className="text-black">MME</option>
-            </select>
-          </LabelInputContainer>
-
-          <LabelInputContainer>
-            <Label htmlFor="semester">Semester</Label>
-            <select
-              id="semester"
-              value={formData.semester}
-              onChange={handleChange}
-              className="rounded-md p-2 w-full bg-[#f9fafb] required:invalid:text-neutral-400 text-sm"
-              style={{
-                boxShadow: shadow,
-              }}
-              required
-            >
-              <option value="" disabled selected className="hidden">Choose</option>
-              <option value="1" className="text-black">1</option>
-              <option value="2" className="text-black">2</option>
-              <option value="3" className="text-black">3</option>
-              <option value="4" className="text-black">4</option>
-              <option value="5" className="text-black">5</option>
-              <option value="6" className="text-black">6</option>
-              <option value="7" className="text-black">7</option>
-              <option value="8" className="text-black">8</option>
-            </select>
-          </LabelInputContainer>
-        </div>
-
         {/* Name Fields */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
           <LabelInputContainer>
@@ -168,17 +103,60 @@ export function SignupFormDemo() {
           </LabelInputContainer>
         </div>
 
-        {/* Email Field */}
-        <LabelInputContainer>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            placeholder="2xxxxxx@lnmiit.ac.in"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </LabelInputContainer>
+        {/* Email & Semester */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+          <LabelInputContainer>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              placeholder="2xxxxxx@lnmiit.ac.in"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="semester">Semester</Label>
+            <select
+              id="semester"
+              value={formData.semester}
+              onChange={handleChange}
+              className="rounded-md p-2 w-full bg-[#f9fafb] required:invalid:text-neutral-400 text-sm"
+              style={{
+                boxShadow: shadow,
+              }}
+              required>
+              <option value="" disabled selected className="hidden">
+                Choose
+              </option>
+              <option value="1" className="text-black">
+                1
+              </option>
+              <option value="2" className="text-black">
+                2
+              </option>
+              <option value="3" className="text-black">
+                3
+              </option>
+              <option value="4" className="text-black">
+                4
+              </option>
+              <option value="5" className="text-black">
+                5
+              </option>
+              <option value="6" className="text-black">
+                6
+              </option>
+              <option value="7" className="text-black">
+                7
+              </option>
+              <option value="8" className="text-black">
+                8
+              </option>
+            </select>
+          </LabelInputContainer>
+        </div>
 
         {/* Password Fields */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
@@ -207,30 +185,33 @@ export function SignupFormDemo() {
 
         {/* Submit Button */}
         <button
-          className={`bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white w-full rounded-md h-10 font-medium transition-opacity duration-200 ${loading && "opacity-50 cursor-not-allowed"
-            }`}
+          className={`bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white w-full rounded-md h-10 font-medium transition-opacity duration-200 ${
+            loading && "opacity-50 cursor-not-allowed"
+          }`}
           type="submit"
-          disabled={loading}
-        >
+          disabled={loading}>
           {loading ? "Signing up..." : "Sign up"}
         </button>
-      </form >
+      </form>
 
       <div className="text-center mt-4">
         <p className="text-neutral-600 dark:text-neutral-300 text-sm">
           Already have an account?{" "}
           <span
             className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold underline"
-            onClick={() => navigate("/login")}
-          >
+            onClick={() => navigate("/login")}>
             Login
           </span>
         </p>
       </div>
-    </div >
+    </div>
   );
 }
 
 const LabelInputContainer = ({ children, className }) => {
-  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
 };

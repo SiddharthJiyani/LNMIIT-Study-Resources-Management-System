@@ -10,14 +10,15 @@ const forgotPasswordTemplate = require("../mail/templates/forgotPasswordTemplate
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { firstName , lastName,email, password, confirmPassword, accountType, department , semester, otp } = req.body;
-
+    const { firstName , lastName,email, password, confirmPassword, accountType , semester, otp } = req.body;
+    accountType = 'student'; // for now only students can signup
+    
     // Logging the details for testing
-    console.table({ firstName, lastName, email, password, confirmPassword, accountType , department , semester , otp });
-    console.log(`signup requested by email: ${email}`); //testing phase
+    // console.table({ firstName, lastName, email, password, confirmPassword, accountType , semester , otp });
+    // console.log(`signup requested by email: ${email}`); //testing phase
     
     // Check if All Details are there or not
-    if (!email || !password || !confirmPassword || !accountType || !firstName || !lastName || !department, !semester || !otp) {
+    if (!email || !password || !confirmPassword || !firstName || !lastName || !semester || !otp) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required ",
@@ -31,6 +32,31 @@ exports.signup = async (req, res) => {
         message: "Please enter a valid LNMIIT email",
       });
     }
+
+    const emailPrefix = email.split('@')[0];
+    var department = emailPrefix.slice(2, 5);
+    department = department.toUpperCase();
+
+    if (department === "UCS" || department === "DCS") {
+      department = "CSE";
+    }
+    else if (department === "UCC" || department === "DCC") {
+      department = "CCE";
+    }
+    else if (department === "UES" || department === "DES") {
+      department = "ECE";
+    }
+    else if (department === "UME" || department === "DME") {
+      department = "MME";
+    }
+    else {
+      return res.status(403).send({
+        success: false,
+        message: "Please enter a valid LNMIIT email",
+      });
+    }
+
+
 
     // Check if password and confirm password match
     if (password !== confirmPassword) {
