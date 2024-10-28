@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
 import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
+import logo from "../assets/logo.png";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const navLinks = [
@@ -26,7 +27,7 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  
+
   const user = JSON.parse(localStorage.getItem("user"));
   const accountType = user.accountType;
   const userName = user.firstName + " " + user.lastName;
@@ -62,20 +63,20 @@ export default function NavBar() {
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-end border-b bg-background px-4 md:px-6">
       <Toaster />
       <Link to="/" className="mr-6 flex items-center">
-        <Book className="h-6 w-6" />
+        <img src={logo} alt="" className="h-7" />
         <span className="sr-only">LMS</span>
       </Link>
-      <nav className="hidden md:flex gap-4">
+      {/* <nav className="hidden md:flex gap-4">
         <Link to="/courses" className="nav-link">Courses</Link>
-        <Link to="/assignments" className="nav-link">Assignments</Link>
+        <Link to="/assignments" className="nav-link">A</DropdownMenuTrigger>ssignments</Link>
         <Link to="/gradebook" className="nav-link">Gradebook</Link>
-        <Link to="/profile" className="nav-link">Profile</Link>
-      </nav>
+        <Link to="/profile" cla</Avatar>ssName="nav-link">Profile</Link>
+      </nav> */}
       <div className="ml-auto flex items-center justify-end md:justify-normal gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-10 w-10">
                 <AvatarImage src="/placeholder-user.jpg" alt="User Avatar" />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
@@ -104,15 +105,15 @@ export default function NavBar() {
           <div className="flex flex-col items-start p-4 space-y-2">
             {navLinks.map(({ to, label, icon }) => (
               (label === "Approve" || label === "Manage Course") && accountType !== "admin" ? null :
-              <Link
-                key={to}
-                to={to}
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
-              >
-                <span className="">{icon}</span>
-                <span className="font-medium text-gray-900">{label}</span>
-              </Link>
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
+                >
+                  <span className="">{icon}</span>
+                  <span className="font-medium text-gray-900">{label}</span>
+                </Link>
             ))}
           </div>
         </div>
