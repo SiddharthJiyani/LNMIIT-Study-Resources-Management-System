@@ -201,7 +201,7 @@ export default function Contribute() {
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full bg-gray-500 text-white rounded-md">
+                className="w-full text-white rounded-md">
                 {loading ? "Uploading..." : "Upload Resource"}
               </Button>
 

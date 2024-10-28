@@ -26,3 +26,21 @@
     --radius: 0.5rem;
   }
 }
+
+select {
+  background-color: #f9fafb;
+  font-size: 14px;
+  padding: 8px;
+}
+
+select:required:invalid {
+  color: gray;
+}
+
+option[value=""][disabled] {
+  display: none;
+}
+
+option {
+  color: black;
+}

@@ -89,7 +89,7 @@ export default function MyProfile() {
       <div className="flex flex-1 bg-zinc-100">
         <SideBar />
         <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto max-w-[28rem]">
             <Card>
               <CardHeader>
                 <CardTitle>My Profile</CardTitle>
