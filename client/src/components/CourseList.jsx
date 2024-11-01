@@ -168,7 +168,7 @@ export const CourseList = () => {
                           {resource.title}
                         </td>
                         <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">
-                          {resource.ratings || "N/A"}
+                          {resource.averageRating || "N/A"}
                         </td>
                         <td className="py-2 px-2 sm:px-4 border-b text-center dark:border-zinc-800">
                           <button

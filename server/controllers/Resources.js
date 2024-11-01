@@ -343,3 +343,53 @@ exports.showNewUploads = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.rateResource = async (req, res) => {
+  const { resourceId } = req.params;
+  const { userId, rating } = req.body;
+
+  try {
+      // Fetch the existing resource document
+      const resource = await Resource.findById(resourceId);
+      if (!resource) return res.status(404).json({ error: "Resource not found" });
+
+      // Check if the user has already rated this resource
+      const existingRatingIndex = resource.ratings.findIndex(r => r.user.toString() === userId);
+      console.log(existingRatingIndex);
+      
+
+      if (existingRatingIndex !== -1) {
+        console.log("old user rating");
+          // Update existing rating
+          resource.ratings[existingRatingIndex].score = rating;
+      } else {
+        console.log("new user rating");
+          // Add new rating
+          resource.ratings.push({ user: userId, score: rating });
+      }
+
+      // Calculate and update the average rating
+      const total = resource.ratings.reduce((sum, r) => sum + r.score, 0);
+      const updatedAverageRating = total / resource.ratings.length;
+
+      // Update the resource document with new ratings and average
+      resource.averageRating = updatedAverageRating; // Update average rating directly
+
+      // Save the updated resource document
+      await resource.save(); 
+
+      console.log(resource.ratings.length);
+      console.log(resource.ratings);
+      console.log(resource.averageRating);
+
+      res.status(200).json({
+          message: "Rating updated successfully",
+          ratings: resource.ratings,
+          averageRating: updatedAverageRating
+      });
+
+  } catch (error) {
+      console.error("Error updating rating:", error);
+      res.status(500).json({ error: "Server error" });
+  }
+};

@@ -29,13 +29,17 @@ const resourceSchema = new mongoose.Schema({
         type: String, // This could store the location or URL of the uploaded file.
         required: true,
     },
-    resource_type: {    
-        type: String, // This could store the type of resource, like 'video', 'pdf', 'doc', etc.
-        required: true,
-    },
-    ratings: {
-        type: [Number], // Allows users to rate the material.
-        default: []
+    // resource_type: {    //AVOID INCLUDING THIS , IF INCLUDED THEN NEED TO REUPLOAD ALL THE EXISTING RESOURCES OTHERWISE REMOVE REQUIRED FIELD
+    //     type: String, // This could store the type of resource, like 'video', 'pdf', 'doc', etc.
+    //     required: true,
+    // },
+    ratings: [{
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Tracks the user giving the rating
+        score: { type: Number, min: 1, max: 5 } // The rating score, e.g., 1 to 5
+    }],
+    averageRating: { 
+        type: Number, 
+        default: 0 
     },
     feedback: [{
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Refers to the user giving feedback

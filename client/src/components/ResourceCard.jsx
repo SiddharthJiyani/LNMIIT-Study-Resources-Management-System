@@ -11,20 +11,16 @@ import {
   CardContent,
   CardFooter,
 } from "./ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "./ui/table";
+import { Table, TableBody, TableRow, TableCell } from "./ui/table";
+import RatingModal from "./RatingModal"; // Import the RatingModal component
 
 const ResourceCard = () => {
   const { resourceId } = useParams();
   const [resource, setResource] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isRatingModalOpen, setRatingModalOpen] = useState(false); // Modal state
+  const [averageRating, setAverageRating] = useState(null);
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
 
   useEffect(() => {
     const fetchResourceData = async () => {
@@ -38,15 +34,14 @@ const ResourceCard = () => {
           },
         };
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL
-
-          }/api/resource/showById/${resourceId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/resource/showById/${resourceId}`,
           options
         );
         if (!response.ok) throw new Error("Network response was not ok");
 
         const data = await response.json();
         setResource(data);
+        setAverageRating(data.averageRating); // Set the initial average rating
         setLoading(false);
       } catch (error) {
         console.error("Error fetching resources:", error);
@@ -57,6 +52,10 @@ const ResourceCard = () => {
     fetchResourceData();
   }, [resourceId]);
 
+  const handleRatingSubmitted = (newAverageRating) => {
+    setAverageRating(newAverageRating); // Update the average rating in the component
+  };
+
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen text-lg">
@@ -65,7 +64,7 @@ const ResourceCard = () => {
     );
 
   return (
-    <div className="flex min-h-screen w-full flex-col  dark:bg-zinc-900">
+    <div className="flex min-h-screen w-full flex-col dark:bg-zinc-900">
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
@@ -107,7 +106,7 @@ const ResourceCard = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>Rating</TableCell>
-                    <TableCell>{resource.rating || "N/A"}</TableCell>
+                    <TableCell>{averageRating || "N/A"} ({resource.ratings.length})</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -117,14 +116,29 @@ const ResourceCard = () => {
                 href={resource.fileUrl}
                 target="_blank"
                 className="inline-block text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-md transition-colors"
-                download>
+                download
+              >
                 Download Resource
               </a>
-              <Button className="bg-gray-500 text-white hover:bg-gray-600 py-2 px-4 rounded-md transition-colors">
+              <Button
+                onClick={() => setRatingModalOpen(true)}
+                className="bg-gray-500 text-white hover:bg-gray-600 py-2 px-4 rounded-md transition-colors"
+              >
                 Rate Material
               </Button>
             </CardFooter>
           </Card>
+
+          {/* Rating Modal */}
+          {isRatingModalOpen && (
+            <RatingModal
+              isOpen={isRatingModalOpen}
+              onClose={() => setRatingModalOpen(false)}
+              resourceId={resourceId}
+              userId={userId}
+              onRatingSubmitted={handleRatingSubmitted}
+            />
+          )}
         </main>
       </div>
     </div>
