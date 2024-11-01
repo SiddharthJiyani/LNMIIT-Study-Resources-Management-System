@@ -1,9 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
 const RatingModal = ({ isOpen, onClose, resourceId, userId, onRatingSubmitted }) => {
   const [selectedRating, setSelectedRating] = useState(null);
   const [hover, setHover] = useState(null);
+
+  useEffect(() => {
+    const fetchUserRating = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/resource/rate/${resourceId}/${userId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.rating) {
+            setSelectedRating(data.rating);
+          }
+        } else {
+          console.error("Failed to fetch user rating");
+        }
+      } catch (error) {
+        console.error("Error fetching user rating", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchUserRating();
+    }
+  }, [isOpen, resourceId, userId]);
 
   const handleSubmitRating = async () => {
     if (selectedRating) {

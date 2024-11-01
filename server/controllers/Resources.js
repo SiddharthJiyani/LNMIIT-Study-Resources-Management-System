@@ -344,6 +344,8 @@ exports.showNewUploads = async (req, res) => {
   }
 };
 
+//rating system controllers
+
 exports.rateResource = async (req, res) => {
   const { resourceId } = req.params;
   const { userId, rating } = req.body;
@@ -378,9 +380,9 @@ exports.rateResource = async (req, res) => {
       // Save the updated resource document
       await resource.save(); 
 
-      console.log(resource.ratings.length);
-      console.log(resource.ratings);
-      console.log(resource.averageRating);
+      // console.log(resource.ratings.length);
+      // console.log(resource.ratings);
+      // console.log(resource.averageRating);
 
       res.status(200).json({
           message: "Rating updated successfully",
@@ -391,5 +393,26 @@ exports.rateResource = async (req, res) => {
   } catch (error) {
       console.error("Error updating rating:", error);
       res.status(500).json({ error: "Server error" });
+  }
+};
+
+//get the rating user rated for a resource
+exports.getUserRating = async (req, res) => {
+  const { resourceId, userId } = req.params;
+
+  try {
+    const resource = await Resource.findById(resourceId); 
+    if (!resource) return res.status(404).json({ error: "Resource not found" });
+
+    const userRating = resource.ratings.find(rating => rating.user.toString() === userId);
+    
+    if (userRating) {
+      return res.status(200).json({ rating: userRating.score });
+    } else {
+      return res.status(200).json({ rating: null });
+    }
+  } catch (error) {
+    console.error("Error fetching user rating:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };

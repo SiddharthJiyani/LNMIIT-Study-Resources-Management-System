@@ -11,7 +11,8 @@ const { uploadFile,
     addFavourite,
     checkFavourite,
     getUserResources,
-    rateResource} = require("../controllers/Resources");
+    rateResource,
+    getUserRating} = require("../controllers/Resources");
 const { auth, isAdmin } = require("../middleware/auth");
 
 // POST: Upload a new resource (Only authenticated users)
@@ -33,6 +34,7 @@ router.get('/showPendingResource',auth, isAdmin, showNewUploads);
 
 //rating system
 router.patch("/rate/:resourceId",auth, rateResource);
+router.get("/rate/:resourceId/:userId", auth, getUserRating);
 
 module.exports = router;
  
