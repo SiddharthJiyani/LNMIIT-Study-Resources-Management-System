@@ -29,6 +29,10 @@ const resourceSchema = new mongoose.Schema({
         type: String, // This could store the location or URL of the uploaded file.
         required: true,
     },
+    resource_type: {    
+        type: String, // This could store the type of resource, like 'video', 'pdf', 'doc', etc.
+        required: true,
+    },
     ratings: {
         type: [Number], // Allows users to rate the material.
         default: []

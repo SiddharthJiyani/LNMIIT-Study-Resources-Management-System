@@ -10,8 +10,8 @@ const forgotPasswordTemplate = require("../mail/templates/forgotPasswordTemplate
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { firstName , lastName,email, password, confirmPassword, accountType , semester, otp } = req.body;
-    accountType = 'student'; // for now only students can signup
+    const { firstName , lastName,email, password, confirmPassword , semester, otp } = req.body;
+    const accountType = 'student'; // for now only students can signup
     
     // Logging the details for testing
     // console.table({ firstName, lastName, email, password, confirmPassword, accountType , semester , otp });
@@ -52,7 +52,7 @@ exports.signup = async (req, res) => {
     else {
       return res.status(403).send({
         success: false,
-        message: "Please enter a valid LNMIIT email",
+        message: "Please enter a valid LNMIIT email ( Branch not found )",
       });
     }
 

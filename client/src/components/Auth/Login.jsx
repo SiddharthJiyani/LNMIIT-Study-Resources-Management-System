@@ -57,7 +57,6 @@ export function Login() {
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem("tokenExpiryTime", Date.now() + 24 * 60 * 60 * 1000); //1 day expiration from login time
         toast.success('Login successful');
-        console.log("Login successful", data);
         setTimeout(() => {
           navigate('/my-courses');
         }

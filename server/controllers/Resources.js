@@ -6,6 +6,12 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const cloudinary = require("cloudinary").v2;
 // const Course = require("../models/Course");
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 // upload resource
 exports.uploadFile = async (req, res) => {
   try {
@@ -26,6 +32,7 @@ exports.uploadFile = async (req, res) => {
 
     // Upload file to Cloudinary
     const result = await uploadImageToCloudinary(file, "resources");
+    console.log("Result: ", result);
     // console.log("File uploaded to Cloudinary", result);
 
     // Create resource
@@ -35,8 +42,9 @@ exports.uploadFile = async (req, res) => {
       description,
       course: courseId,
       uploadedBy: user,
+      resource_type: result.resource_type,
       fileType,
-      fileUrl: result.secure_url, // File URL from Cloudinary
+      fileUrl: result.secure_url, // File URL from Cloudinary 
     });
 
     // Save resource to MongoDB
@@ -262,6 +270,8 @@ exports.deleteResource = async (req, res) => {
       return res.status(404).json({ error: "Resource not found" });
     }
 
+    const res_type = resource.resource_type;
+
     // extract file extension from fileUrl
     const fileExtension = resource.fileUrl.split(".").pop();
     console.log("File extension: ", fileExtension);
@@ -269,14 +279,33 @@ exports.deleteResource = async (req, res) => {
     // Delete the file from Cloudinary
     const publicId = resource.fileUrl.split("/").pop().split(".")[0]; // Extract public ID from URL
     console.log("Public ID: ", publicId);
-    await cloudinary.uploader.destroy(
-      `resources/${resource.fileType}/${publicId}`,
-
+    await cloudinary.uploader
+    .destroy(
+      `resources/${publicId}`,
       //! ### may need more modification and testing  ####
-      fileExtension === "pdf"
-        ? { resource_type: "image" }
-        : { resource_type: "auto" }
+      {resource_type:res_type || "image"},
+    )
+    .then((result) => {
+      console.log("Deleted resource from Cloudinary", result);
+    }
+    )
+    .catch((error) => {
+      console.error("Error deleting resource from Cloudinary:", error);
+      res.status(500).json({ error: "Server error while deleting resource" });
+    }
     );
+    
+
+
+    // await cloudinary.v2.api
+    //   .delete_resources([`resources/${publicId}`],
+    //     {
+    //       type: "upload",
+    //       resource_type: fileExtension === "pdf" ? "image" : "auto",
+
+    //     }
+        
+    //   )
 
     // Remove resource from course
     const course = await Course.findById(resource.course);

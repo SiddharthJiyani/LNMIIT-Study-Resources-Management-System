@@ -27,7 +27,7 @@ router.get("/user/:userId",auth, getUserResources);
 
 //admin routes
 router.put('/approve/:id', auth, isAdmin, approveResource);
-router.delete('/delete/:id', auth, isAdmin, deleteResource); //rejectAndDelete and deleteResource both handle the same stuff , redundant?? => @Siddharth
+router.delete('/delete/:id', auth,  deleteResource); //rejectAndDelete and deleteResource both handle the same stuff , redundant?? => @Siddharth
 router.get('/all', auth, isAdmin, showAllResource);
 router.get('/showPendingResource',auth, isAdmin, showNewUploads);
 

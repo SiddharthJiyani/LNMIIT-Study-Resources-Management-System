@@ -21,8 +21,8 @@ import ManageCourse from "./components/ManageCourse";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const accountType = user.accountType;
+  const user = JSON.parse(localStorage?.getItem("user"));
+  const accountType = user?.accountType;
 
   return (
     <>
@@ -47,9 +47,9 @@ function App() {
           <Route
             path="/verifyotp"
             element={
-              <PrivateRoute>
+              <OpenRoute>
                 <Otp />
-              </PrivateRoute>
+              </OpenRoute>
             }
           />
 
