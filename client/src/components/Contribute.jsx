@@ -25,10 +25,10 @@ export default function Contribute() {
   const [fileType, setFileType] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [fileSizeWarning, setFileSizeWarning] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch available courses based on department and semester
     const fetchCourses = async () => {
       if (department && semester) {
         try {
@@ -59,7 +59,15 @@ export default function Contribute() {
   }, [department, semester]);
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.size > 10 * 1024 * 1024) { // 10 MB limit
+      setFileSizeWarning("File size should be less than 10 MB.");
+      // setMessage("File size should be less than 10 MB.")
+      setFile(null);
+    } else {
+      setFile(selectedFile);
+      setFileSizeWarning("");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -141,8 +149,7 @@ export default function Contribute() {
                   </option>
                   <option value="CSE">CSE</option>
                   <option value="ECE">ECE</option>
-                  <option value="ECE">ECE</option>
-                  <option value="ME">MME</option>
+                  <option value="MME">MME</option>
                 </select>
                 <select
                   value={semester}
@@ -152,14 +159,9 @@ export default function Contribute() {
                   <option value="" disabled>
                     Select Semester
                   </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                    <option key={sem} value={sem}>{sem}</option>
+                  ))}
                 </select>
                 <select
                   value={courseId}
@@ -181,6 +183,9 @@ export default function Contribute() {
                   required
                   className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
                 />
+                {fileSizeWarning && (
+                  <div className="text-red-600">{fileSizeWarning}</div>
+                )}
                 <select
                   value={fileType}
                   onChange={(e) => setFileType(e.target.value)}
@@ -202,7 +207,33 @@ export default function Contribute() {
                 onClick={handleSubmit}
                 disabled={loading}
                 className="w-full text-white rounded-md">
-                {loading ? "Uploading..." : "Upload Resource"}
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8H4z"
+                      />
+                    </svg>
+                    Uploading...
+                  </span>
+                ) : (
+                  "Upload Resource"
+                )}
               </Button>
 
               {message && (
@@ -216,7 +247,7 @@ export default function Contribute() {
                   ) : (
                     <AiOutlineExclamationCircle className="mr-2" size={18} />
                   )}
-                  <p>{message}</p>
+                  {message}
                 </div>
               )}
             </CardFooter>
