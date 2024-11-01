@@ -25,11 +25,15 @@ export default function Feedback() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem("user"));
+		const email = user.email;
+        const studentName = user.firstName + " " + user.lastName;
         if (!subject || !feedbackType || !subType || !description) {
             setMessage("Please enter all required fields.");
             return;
         }
 
+        console.log('name', name);
         setLoading(true);
         try {
             const response = await fetch(`${BACKEND}/api/feedback/submit`, {
@@ -38,13 +42,13 @@ export default function Feedback() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ subject, feedbackType, subType, description }),
+                body: JSON.stringify({ subject, feedbackType, subType, description , studentName , email }),
             });
 
             if (response.ok) {
                 const data = await response.json();
                 setMessage(data.message);
-                setTimeout(() => navigate("/home"), 2000);
+                setTimeout(() => navigate("/my-profile"), 2000);
             } else {
                 const errorData = await response.json();
                 setMessage(errorData.message || "Error submitting feedback.");

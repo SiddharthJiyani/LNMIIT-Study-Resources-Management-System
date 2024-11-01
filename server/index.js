@@ -38,11 +38,13 @@ const userRoutes = require("./routes/user");
 const resourceRoutes = require("./routes/Resource");
 const courseRoutes = require("./routes/Course");
 const profileRoutes = require("./routes/Profile");
+const feedbackRoutes = require("./routes/Feedback");
 
 app.use("/api/auth", userRoutes);
 app.use("/api/resource", resourceRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 
 
