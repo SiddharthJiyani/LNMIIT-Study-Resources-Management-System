@@ -1,97 +1,143 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent,
-    CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-    Table,
-    TableHeader,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-} from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Book, Star, User, Calendar, Calculator, ChartArea, HandHeart, MessageCircle } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
-import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export default function AllCourses() {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedDept, setSelectedDept] = useState(null);
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const navigate = useNavigate();
 
-    const [courses, setCourses] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const departments = ["CSE", "CCE", "ECE", "MME"];
+  const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                // Get the token from local storage
-                const token = localStorage.getItem("token");
+  const fetchCourses = async () => {
+    if (!selectedDept || !selectedSemester) return;
 
-                // Set up the request options with headers
-                const options = {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                };
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
 
-                const response = await fetch(`${BACKEND}/api/course/all`, options);
-                if (!response.ok) throw new Error("Failed to fetch courses");
+      const response = await fetch(
+        `${BACKEND}/api/course/${selectedDept}/${selectedSemester}`,
+        options
+      );
+      if (!response.ok) throw new Error("Failed to fetch courses");
 
-                const data = await response.json();
-                setCourses(data.data); // Adjust based on your actual response structure
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching courses:", error);
-                setLoading(false);
-            }
-        };
+      const data = await response.json();
+      setCourses(data.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        fetchCourses();
-    }, []);
+  useEffect(() => {
+    fetchCourses();
+  }, [selectedDept, selectedSemester]);
 
-    const handleCourseClick = (courseId) => {
-        navigate(`/courses/${courseId}`);
-    };
+  const handleCourseClick = (courseId) => {
+    navigate(`/courses/${courseId}`);
+  };
 
-    if (loading) return <div>Loading...</div>; //replace with preloader
+  return (
+    <div className="flex min-h-screen w-full flex-col bg-background">
+      <NavBar />
+      <div className="flex flex-1">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+          <div className="flex flex-col items-center space-y-4 md:space-y-6">
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="space-y-2 md:space-y-0 md:space-x-4">
+                {departments.map((dept) => (
+                  <Button
+                    key={dept}
+                    onClick={() => setSelectedDept(dept)}
+                    variant={selectedDept === dept ? "solid" : "outline"}
+                    className="w-full md:w-auto"
+                  >
+                    {dept}
+                  </Button>
+                ))}
+              </div>
 
-    return (
-        <div className="flex min-h-screen w-full flex-col bg-background">
-            <NavBar />
-            <div className="flex flex-1">
-                <SideBar />
-                <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {/* <Card className="transition-transform hover:scale-105">
-                            <CardHeader>
-                                <CardTitle>All Courses</CardTitle>
-                            </CardHeader>
-                        </Card> */}
-                        {courses.map((course) => (
-                            <Card key={course._id} className="transition-transform hover:scale-105" onClick={() => handleCourseClick(course._id)}>
-                                <CardHeader>
-                                    <CardTitle>{course.name}</CardTitle>
-                                </CardHeader>
-                            </Card>
-                        ))}
-                    </div>
-                </main>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="mt-2 md:mt-0 w-full md:w-auto">
+                    {selectedSemester
+                      ? `Semester ${selectedSemester}`
+                      : "Select Semester"}
+                    <ChevronDown className="ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48">
+                  {semesters.map((sem) => (
+                    <DropdownMenuItem
+                      key={sem}
+                      onClick={() => setSelectedSemester(sem)}
+                    >
+                      Semester {sem}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-        </div>
-    );
-}
 
+            {(!selectedDept || !selectedSemester) && (
+              <div className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300">
+                Please select a branch and a semester to explore courses.
+              </div>
+            )}
+
+            {loading ? (
+              <div>Loading...</div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {courses.length > 0 ? (
+                  courses.map((course) => (
+                    <Card
+                      key={course._id}
+                      className="transition-transform hover:scale-105 cursor-pointer"
+                      onClick={() => handleCourseClick(course._id)}
+                    >
+                      <CardHeader>
+                        <CardTitle>{course.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-gray-600 dark:text-gray-300">
+                        {course.description}
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="text-gray-500 dark:text-gray-400 col-span-full">
+                    No courses available for this selection.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}

@@ -5,12 +5,6 @@ const sendFeedback = async (req, res) => {
 	try {
 		const { subject, feedbackType, subType, description, studentName, email} = req.body;
 
-		console.log('subject', subject);
-		console.log('feedbackType', feedbackType);
-		console.log('subType', subType);
-		console.log('description', description);
-		console.log('studentName', studentName);
-		console.log('email', email);
 		// Validate required fields
 		if (!subject || !feedbackType || !subType || !description || !studentName) {
 			return res.status(400).json({ message: "All fields are required" });
