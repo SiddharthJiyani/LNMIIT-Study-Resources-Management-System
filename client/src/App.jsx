@@ -18,6 +18,7 @@ import PrivateRoute from "./components/Auth/PrivateRoute";
 import OpenRoute from "./components/Auth/OpenRoute";
 import Approve from "./components/Approve";
 import ManageCourse from "./components/ManageCourse";
+import AboutDevelopers from "./components/AboutDevelopers";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
@@ -138,6 +139,15 @@ function App() {
             element={
               <PrivateRoute>
                 <MyContributions />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/about-developers"
+            element={
+              <PrivateRoute>
+                <AboutDevelopers />
               </PrivateRoute>
             }
           />

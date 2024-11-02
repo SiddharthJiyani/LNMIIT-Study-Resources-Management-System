@@ -24,6 +24,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Book, Star, User, Calendar, Calculator, ChartArea, HandHeart, MessageCircle } from 'lucide-react'
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import Graph from './Graph'
 export default function MarksVsGrade() {
 
     return (
@@ -35,7 +36,8 @@ export default function MarksVsGrade() {
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         <Card className="transition-transform hover:scale-105">
                             <CardHeader>
-                                <CardTitle>Marks V/S Grade</CardTitle>
+                                <CardTitle>Marks V/S Grade PROTOTYPE</CardTitle>
+                                <Graph />
                             </CardHeader>
                         </Card>
                     </div>
