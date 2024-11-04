@@ -60,6 +60,10 @@ export default function MyProfile() {
 
   const handleSave = async () => {
     try {
+      if (editableData.cgpa < 0 || editableData.cgpa > 10) {
+        alert("CGPA should be between 0 and 10");
+        throw new Error("Invalid CGPA");
+      }
       const response = await fetch(`${BACKEND}/api/profile/update/`, {
         method: "PUT",
         headers: {
@@ -150,7 +154,8 @@ export default function MyProfile() {
                     <div className="flex gap-4 mt-6">
                       <Button
                         onClick={handleSave}
-                        className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-md transition duration-200">
+                        className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-md transition duration-200"
+                        disabled={editableData.cgpa < 0 || editableData.cgpa > 10}>
                         Save
                       </Button>
                       <Button
