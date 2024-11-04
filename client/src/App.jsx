@@ -19,6 +19,7 @@ import OpenRoute from "./components/Auth/OpenRoute";
 import Approve from "./components/Approve";
 import ManageCourse from "./components/ManageCourse";
 import AboutDevelopers from "./components/AboutDevelopers";
+import { AddYT } from "./components/AddYT";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
@@ -171,6 +172,19 @@ function App() {
                 element={
                   <PrivateRoute>
                     <ManageCourse/>
+                  </PrivateRoute>
+                }
+              />
+            )
+          }
+
+          {
+            accountType === "admin" && (
+              <Route
+                path="/add-yt"
+                element={
+                  <PrivateRoute>
+                    <AddYT/>
                   </PrivateRoute>
                 }
               />

@@ -21,6 +21,7 @@ const extractVideoId = (url) => {
 exports.addYTLink = async (req, res) => {
   try {
     const { courseId, url, description } = req.body;
+    // console.log("courseId:", courseId, "url:", url, "description:", description);
 
     if (!courseId || !url) {
       return res.status(400).json({ message: "Course ID and URL are required." });
@@ -36,10 +37,16 @@ exports.addYTLink = async (req, res) => {
     const ytApiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
     const response = await fetch(ytApiUrl);
     const data = await response.json();
+    
+    // console.log("YouTube API response:", data); //debug
+
+    if (!data.items || data.items.length === 0) {
+      return res.status(400).json({ message: "Unable to retrieve video details. Check the video ID or API key." });
+    }
 
     const videoData = data.items[0]?.snippet;
     if (!videoData) {
-      return res.status(400).json({ message: "Unable to retrieve video details." });
+      return res.status(400).json({ message: "Unable to retrieve video snippet details." });
     }
 
     const videoTitle = videoData.title;
@@ -61,7 +68,6 @@ exports.addYTLink = async (req, res) => {
     res.status(500).json({ success: false, message: "Error adding YouTube link", error });
   }
 };
-
 
 
 // Get all YouTube links for a specific course

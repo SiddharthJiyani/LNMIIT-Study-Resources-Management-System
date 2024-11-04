@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, FileCheck2, FilePlus, BookMarked, Users } from 'lucide-react';
+import { User, Book, Star, Calculator, ChartArea, HandHeart, Youtube, 
+    MessageCircle, BookCopy, FileCheck, FilePlus, BookMarked, Users, ChevronDown, ChevronRight, Crown } from 'lucide-react';
 
 const SideBar = () => {
-    const location = useLocation(); // Get the current route
+    const location = useLocation();
     const user = JSON.parse(localStorage.getItem("user"));
-    const accountType = user.accountType;
+    const accountType = user?.accountType;
 
-    // Define the navigation links
+    const [isAdminSectionOpen, setIsAdminSectionOpen] = useState(false);
+
     const navLinks = [
         { to: "/my-profile", label: "My Profile", icon: <User /> },
         { to: "/my-courses", label: "My Courses", icon: <Book /> },
@@ -17,27 +19,59 @@ const SideBar = () => {
         { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
         { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
         { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
-        { to: "/approve", label: "Approve", icon: <FileCheck /> },
-        { to: "/manage-course", label: "Manage Course", icon: <BookMarked /> },
         { to: "/feedback", label: "Feedback", icon: <MessageCircle /> },
         { to: "/about-developers", label: "Our Team", icon: <Users /> }
-      ];
+    ];
+
+    const adminNavLinks = [
+        { to: "/approve", label: "Approve", icon: <FileCheck /> },
+        { to: "/manage-course", label: "Manage Course", icon: <BookMarked /> },
+        { to: "/add-yt", label: "Manage YouTube", icon: <Youtube /> }
+    ];
 
     return (
         <aside className="hidden h-screen border-r bg-background md:block fixed">
             <nav className="flex flex-col gap-2 p-4">
                 {navLinks.map(({ to, label, icon }) => (
-                    (label === 'Approve' || label  === 'Manage Course') && accountType != 'admin' ? null :
                     <Link
                         key={to}
                         to={to}
-                        className={`flex h-10 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 ${location.pathname === to ? "bg-muted text-foreground" : ""
-                            }`}
+                        className={`flex h-10 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 ${location.pathname === to ? "bg-muted text-foreground" : ""}`}
                     >
                         {icon && <span className="mr-3 h-5 w-5">{icon}</span>}
                         {label}
                     </Link>
                 ))}
+
+                {accountType === 'admin' && (
+                    <>
+                        <div 
+                            onClick={() => setIsAdminSectionOpen(!isAdminSectionOpen)}
+                            className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-muted text-sm font-medium transition-colors focus:outline-none focus:ring-1 focus:ring-ring rounded-md"
+                        >
+                            <span className="flex items-center">
+                                <span className="mr-3 h-5 w-5"><Crown /></span>
+                                Admin Options
+                            </span>
+                            {isAdminSectionOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                        </div>
+
+                        {isAdminSectionOpen && (
+                            <div className="ml-6 flex flex-col gap-2">
+                                {adminNavLinks.map(({ to, label, icon }) => (
+                                    <Link
+                                        key={to}
+                                        to={to}
+                                        className={`flex h-10 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 ${location.pathname === to ? "bg-muted text-foreground" : ""}`}
+                                    >
+                                        {icon && <span className="mr-3 h-5 w-5">{icon}</span>}
+                                        {label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </>
+                )}
             </nav>
         </aside>
     );
