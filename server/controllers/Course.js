@@ -3,11 +3,11 @@ const Course = require("../models/Course");
 // Create a new course
 exports.createCourse = async (req, res) => {
   try {
-    const { name, description, semester , department} = req.body;
+    const { name, description, semester , department , credits , isElective} = req.body;
     const user = req.user._id;
 
     
-    if (!name || !description || !semester || !department) {
+    if (!name || !semester || !department || !credits) {
       return res.status(400).json({
         success: false,
         message: "Please enter all fields",
@@ -22,13 +22,18 @@ exports.createCourse = async (req, res) => {
       });
     }
 
+
     const newCourse = new Course({
       name,
       description,
       semester,
+      credits,
+      isElective,
       department,
       createdBy: user,
     });
+
+    console.log('newCourse', newCourse);
 
     await newCourse.save();
 
@@ -38,6 +43,7 @@ exports.createCourse = async (req, res) => {
       data: newCourse,
     });
   } catch (error) {
+    console.error("Error creating course: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error creating course",
@@ -67,17 +73,20 @@ exports.getCourses = async (req, res) => {
 //edit course
 exports.editCourse = async (req, res) => {
   try {
-    const { name, description, semester, department } = req.body;
+    const { name, description, semester, department, credits, isElective } = req.body;
     const user = req.user._id;
     const { id } = req.params;
 
-    if (!name || !description || !semester || !department) {
+
+    // Check for required fields
+    if (!name || !semester || !department || !credits) {
       return res.status(400).json({
         success: false,
-        message: "Please enter all fields",
+        message: "Please enter all required fields",
       });
     }
 
+    // Find the course by ID
     const course = await Course.findById(id);
     if (!course) {
       return res.status(404).json({
@@ -86,12 +95,20 @@ exports.editCourse = async (req, res) => {
       });
     }
 
+    // Update fields
     course.name = name;
     course.description = description;
     course.semester = semester;
     course.department = department;
     course.createdBy = user;
+    course.credits = credits;
 
+    // Update isElective if provided in the request body
+    if (isElective !== undefined) {
+      course.isElective = isElective;
+    }
+
+    // Save updated course
     await course.save();
 
     res.status(200).json({
@@ -106,8 +123,7 @@ exports.editCourse = async (req, res) => {
       error: error.message,
     });
   }
-}
-
+};
 // get courses by department and semester
 exports.getCoursesByDepartmentAndSemester = async (req, res) => {
   try {

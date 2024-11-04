@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { YTLinks } from "./YTLinks";
+const BACKEND = import.meta.env.VITE_BACKEND_URL
 
 export const CourseList = () => {
   const { courseId } = useParams();
@@ -23,7 +25,9 @@ export const CourseList = () => {
           },
         };
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/resource/showByCourse/${courseId}`,
+          `${
+            BACKEND
+          }/api/resource/showByCourse/${courseId}`,
           options
         );
         if (!response.ok) throw new Error("Network response was not ok");
@@ -199,6 +203,7 @@ export const CourseList = () => {
               </table>
             </div>
           </div>
+          <YTLinks courseId={courseId} />
         </main>
       </div>
     </div>

@@ -19,14 +19,18 @@ const courseSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    credits: {
+        type: Number,
+        required: true
+    },
+    isElective:{
+        type: Boolean,
+        default: false,
+    },
     resources: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Resource'
     }], // List of resources within the folder
-    ytLinks: [{ 
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'YTLink'
-    }], // List of youtube links within the folder
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Admin who created the folder

@@ -11,12 +11,7 @@ import {
 } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { Input } from "@/components/ui/Input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./ui/button";
 
 const CustomSelect = ({ value, onChange, children, className }) => {
@@ -39,6 +34,8 @@ const ManageCourse = () => {
     name: "",
     description: "",
     semester: "",
+    credits: "",
+    isElective: false,
     department: "",
   });
   const [selectedSemester, setSelectedSemester] = useState("5");
@@ -100,6 +97,8 @@ const ManageCourse = () => {
           name: "",
           description: "",
           semester: "",
+          credits: "",
+          isElective: false,
           department: "",
         });
         toast.success("Course added successfully");
@@ -140,7 +139,9 @@ const ManageCourse = () => {
 
   const handleEditCourse = (course) => {
     setEditingCourseId(course._id);
-    setEditedCourse(course);
+    setEditedCourse({
+      ...course,
+    });
   };
 
   const handleSaveCourse = async () => {
@@ -282,6 +283,42 @@ const ManageCourse = () => {
                         ))}
                       </CustomSelect>
                     </div>
+                    {/* Credits */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Credits
+                      </label>
+                      <Input
+                        type="number"
+                        name="credits"
+                        placeholder="Enter course credits"
+                        value={newCourse?.credits}
+                        onChange={handleInputChange}
+                        className="w-full"
+                        required
+                      />
+                    </div>
+                    {/* isElective? */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Is Elective?
+                      </label>
+                      {/* checkbox */}
+                      <input
+                        type="checkbox"
+                        name="isElective"
+                        checked={newCourse?.isElective}
+                        onChange={(e) =>
+                          setNewCourse({
+                            ...newCourse,
+                            isElective: e.target.checked,
+                          })
+                        }
+                        className="w-6 h-6 text-blue-600 dark:text-blue-500"
+                      />
+                    </div>
+
+                    {/* Description */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         Description
@@ -384,6 +421,31 @@ const ManageCourse = () => {
                               }
                               className="flex-1"
                             />
+                            <Input
+                              type="number"
+                              value={editedCourse?.credits}
+                              onChange={(e) =>
+                                setEditedCourse({
+                                  ...editedCourse,
+                                  credits: e.target.value,
+                                })
+                              }
+                              className="flex-1"
+                            />
+                            <div className="flex items-center">
+                              <label className="mr-2">Is Elective?</label>
+                              <input
+                                type="checkbox"
+                                checked={editedCourse?.isElective}
+                                onChange={(e) =>
+                                  setEditedCourse({
+                                    ...editedCourse,
+                                    isElective: e.target.checked,
+                                  })
+                                }
+                                className="w-6 h-6 text-blue-600 dark:text-blue-500"
+                              />
+                            </div>
                             <div className="flex gap-2">
                               <Button
                                 onClick={handleSaveCourse}
@@ -405,6 +467,12 @@ const ManageCourse = () => {
                               </h3>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {course.description}
+                              </p>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Credits: {course.credits}
+                              </p>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Is Elective: {course.isElective ? "Yes" : "No"}
                               </p>
                             </div>
                             <div className="flex gap-2">
