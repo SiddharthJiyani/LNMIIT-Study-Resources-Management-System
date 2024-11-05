@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Label } from "../ui/label";
+import { Label } from "../ui/Label";
 import { Input } from "../ui/Input";
 import { cn } from "@/lib/utils";
 import logo from "../../assets/logo.png";
