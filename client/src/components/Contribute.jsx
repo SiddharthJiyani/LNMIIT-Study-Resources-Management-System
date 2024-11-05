@@ -148,6 +148,7 @@ export default function Contribute() {
                     Select Department
                   </option>
                   <option value="CSE">CSE</option>
+                  <option value="CCE">CCE</option>
                   <option value="ECE">ECE</option>
                   <option value="MME">MME</option>
                 </select>
