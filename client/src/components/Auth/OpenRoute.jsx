@@ -8,7 +8,7 @@ function OpenRoute({ children }) {
   if (token === null || token === 'undefined') {
     return children
   } else {
-    return <Navigate to="/login" />
+    return <Navigate to="/my-courses" />
   }
 }
 
