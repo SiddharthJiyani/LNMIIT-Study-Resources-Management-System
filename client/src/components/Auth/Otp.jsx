@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import OtpInput from "react-otp-input";
-import { Label } from "../ui/label";
+import { Label } from "../ui/Label";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
