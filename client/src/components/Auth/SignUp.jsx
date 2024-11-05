@@ -33,7 +33,7 @@ export function SignupFormDemo() {
     e.preventDefault();
     toast.loading("Sending OTP...");
 
-    localStorage.setItem("signupData", JSON.stringify(formData));
+    localStorage.setItem("user", JSON.stringify(formData));
 
     try {
       const response = await fetch(`${BACKEND}/api/auth/sendotp`, {
