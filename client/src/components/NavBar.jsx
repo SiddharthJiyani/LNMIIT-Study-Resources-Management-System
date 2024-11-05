@@ -92,7 +92,7 @@ export default function NavBar() {
             <Link to="/my-profile">
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </Link>
-            <Link onClick={handleLogout} to="/login">
+            <Link onClick={handleLogout}>
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
@@ -104,24 +104,26 @@ export default function NavBar() {
           {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
-      {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
-          <div className="flex flex-col items-start p-4 space-y-2">
-            {navLinks.map(({ to, label, icon }) => (
-              (label === "Approve" || label === "Manage Course") && accountType !== "admin" ? null :
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
-                >
-                  <span className="">{icon}</span>
-                  <span className="font-medium text-gray-900">{label}</span>
-                </Link>
-            ))}
+      {
+        isMenuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
+            <div className="flex flex-col items-start p-4 space-y-2">
+              {navLinks.map(({ to, label, icon }) => (
+                (label === "Approve" || label === "Manage Course") && accountType !== "admin" ? null :
+                  <Link
+                    key={to}
+                    to={to}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
+                  >
+                    <span className="">{icon}</span>
+                    <span className="font-medium text-gray-900">{label}</span>
+                  </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </header>
+        )
+      }
+    </header >
   );
 }
