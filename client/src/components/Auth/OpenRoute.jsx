@@ -5,10 +5,10 @@ function OpenRoute({ children }) {
 
   const token = localStorage.getItem("token")
 
-  if (token === null) {
+  if (token === null || token === 'undefined') {
     return children
   } else {
-    return <Navigate to="/my-courses" />
+    return <Navigate to="/login" />
   }
 }
 

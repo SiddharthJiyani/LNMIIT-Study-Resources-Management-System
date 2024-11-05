@@ -28,7 +28,7 @@ export function Login() {
   };
 
   const handleSubmit = async (e) => {
-    toast.loading('Logging in...');
+    // toast.loading('Logging in...');
     e.preventDefault();
 
     const loginData = {
@@ -36,7 +36,7 @@ export function Login() {
       password: formData.password,
     };
 
-    console.log("BACKEND", BACKEND);
+    // console.log("BACKEND", BACKEND);
 
     setLoading(true);
     try {

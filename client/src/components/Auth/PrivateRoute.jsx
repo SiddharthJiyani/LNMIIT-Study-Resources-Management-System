@@ -15,19 +15,25 @@
 // export default PrivateRoute
 
 import { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 
 function PrivateRoute({ children }) {
   const location = useLocation();
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
 
   const isTokenExpired = () => {
     const expiryTime = localStorage.getItem("tokenExpiryTime");
     return expiryTime && new Date().getTime() > Number(expiryTime);
   };
+  console.log("Token", typeof(token), token);
+  if( token === undefined || token === 'undefined' || token === null || token === 'null') {
+    navigate('/login');
 
-  const isAuthenticated = token && !isTokenExpired();
+  }
+  const isAuthenticated = token !== null && token !== undefined && !isTokenExpired();
 
   useEffect(() => {
     if (!isAuthenticated) {

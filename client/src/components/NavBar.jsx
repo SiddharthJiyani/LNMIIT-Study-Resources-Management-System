@@ -47,6 +47,7 @@ export default function NavBar() {
       const data = await response.json();
       if (response.ok && data.success) {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         toast.dismiss();
         toast.success("Logged out successfully");
         setTimeout(() => {

@@ -17,7 +17,7 @@ export const Otp = () => {
     setLoading(true);
   
     // Retrieve the signup data from localStorage
-    const signupData = JSON.parse(localStorage.getItem('signupData'));
+    const signupData = JSON.parse(localStorage.getItem('user'));
   
     try {
       const response = await fetch(`${BACKEND}/api/auth/signup`, {
@@ -27,9 +27,12 @@ export const Otp = () => {
         },
         body: JSON.stringify({ ...signupData, otp }), // Send all signup data along with OTP for verification
       });
-  
+
+      
       const data = await response.json();
+      console.log('data', data);
       const token = data.token;
+      console.log('token', token);
       if (response.ok && data.success) {
         toast.dismiss();
         localStorage.setItem('token', token);
@@ -37,7 +40,7 @@ export const Otp = () => {
         localStorage.removeItem('signupData');
         toast.success('Signup successful');
         setTimeout(() => {
-          navigate('/my-courses');
+          navigate('/login');
         }, 1000);
       } else {
         toast.dismiss();

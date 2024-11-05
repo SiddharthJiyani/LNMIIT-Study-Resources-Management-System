@@ -32,8 +32,8 @@ export function SignupFormDemo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     toast.loading("Sending OTP...");
-
-    localStorage.setItem("user", JSON.stringify(formData));
+    console.log('formData' , formData);
+    localStorage.setItem('user', JSON.stringify(formData));
 
     try {
       const response = await fetch(`${BACKEND}/api/auth/sendotp`, {
@@ -86,6 +86,7 @@ export function SignupFormDemo() {
               id="firstName"
               placeholder="John"
               type="text"
+              required
               value={formData.firstName}
               onChange={handleChange}
             />
@@ -97,6 +98,7 @@ export function SignupFormDemo() {
               id="lastName"
               placeholder="Doe"
               type="text"
+              required
               value={formData.lastName}
               onChange={handleChange}
             />
@@ -111,6 +113,7 @@ export function SignupFormDemo() {
               id="email"
               placeholder="2xxxxxx@lnmiit.ac.in"
               type="email"
+              required
               value={formData.email}
               onChange={handleChange}
             />
@@ -154,6 +157,12 @@ export function SignupFormDemo() {
               <option value="8" className="text-black">
                 8
               </option>
+              <option value="9" className="text-black">
+                9
+              </option>
+              <option value="10" className="text-black">
+                10
+              </option>
             </select>
           </LabelInputContainer>
         </div>
@@ -166,6 +175,7 @@ export function SignupFormDemo() {
               id="password"
               placeholder="••••••••"
               type="password"
+              required
               value={formData.password}
               onChange={handleChange}
             />
@@ -177,6 +187,7 @@ export function SignupFormDemo() {
               id="confirmPassword"
               placeholder="••••••••"
               type="password"
+              required
               value={formData.confirmPassword}
               onChange={handleChange}
             />
