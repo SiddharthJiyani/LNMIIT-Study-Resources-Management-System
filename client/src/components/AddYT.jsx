@@ -75,10 +75,8 @@ export const AddYT = () => {
       <Toaster />
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden md:block md:w-[200px] bg-background border-r">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6 bg-gray-50 dark:bg-zinc-900">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-4 p-4 bg-white shadow rounded-md">
             <h2 className="text-2xl font-semibold text-center">Add YouTube Link</h2>
 

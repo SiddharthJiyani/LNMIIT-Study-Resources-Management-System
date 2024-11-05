@@ -70,14 +70,14 @@ export default function Favourites() {
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background">
+    <div className="flex min-h-screen w-full flex-col bg-[#f4f4f5]">
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <Card className="transition-transform hover:scale-100 col-span-1 md:col-span-2">
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]  ">
+          <Card className="max-w-5xl mx-auto">
             <CardHeader>
-              <CardTitle>Favorite Materials</CardTitle>
+              <CardTitle className="text-center text-[28px]">Favorite Materials</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="mb-4">

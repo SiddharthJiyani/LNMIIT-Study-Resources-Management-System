@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck } from 'lucide-react';
+import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, Users, Youtube } from 'lucide-react';
 import logo from "../assets/navLogo.png";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
@@ -19,9 +19,11 @@ const navLinks = [
   { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
   { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
   { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
+  { to: "/feedback", label: "Feedback", icon: <MessageCircle /> },
+  { to: "/about-developers", label: "Our Team", icon: <Users /> },
   { to: "/approve", label: "Approve", icon: <FileCheck /> },
   { to: "/manage-course", label: "Manage Course", icon: <BookMarked /> },
-  { to: "/feedback", label: "Feedback", icon: <MessageCircle /> }
+  { to: "/add-yt", label: "Manage YouTube", icon: <Youtube /> }
 ];
 
 export default function NavBar() {
@@ -109,7 +111,7 @@ export default function NavBar() {
           <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
             <div className="flex flex-col items-start p-4 space-y-2">
               {navLinks.map(({ to, label, icon }) => (
-                (label === "Approve" || label === "Manage Course") && accountType !== "admin" ? null :
+                (label === "Approve" || label === "Manage Course" || label === "Manage YouTube") && accountType !== "admin" ? null :
                   <Link
                     key={to}
                     to={to}

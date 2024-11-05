@@ -26,7 +26,7 @@ export default function Feedback() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem("user"));
-		const email = user.email;
+        const email = user.email;
         const studentName = user.firstName + " " + user.lastName;
         if (!subject || !feedbackType || !subType || !description) {
             setMessage("Please enter all required fields.");
@@ -42,7 +42,7 @@ export default function Feedback() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ subject, feedbackType, subType, description , studentName , email }),
+                body: JSON.stringify({ subject, feedbackType, subType, description, studentName, email }),
             });
 
             if (response.ok) {
@@ -66,9 +66,9 @@ export default function Feedback() {
     };
 
     return (
-        <div className="flex min-h-screen w-full flex-col bg-background">
+        <div className="flex min-h-screen w-full flex-col bg-[#f4f4f5]">
             <NavBar />
-            <div className="flex flex-1">
+            <div className="flex flex-1 h-screen">
                 <SideBar />
                 <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
                     <Card className="max-w-xl mx-auto shadow-lg">

@@ -107,10 +107,8 @@ const Approve = () => {
       <Toaster />
       <NavBar />
       <div className="flex flex-1">
-        <aside className="hidden md:block md:w-[200px] bg-background border-r">
-          <SideBar />
-        </aside>
-        <main className="flex-1 p-4 md:p-6 bg-gray-50 dark:bg-zinc-900">
+        <SideBar />
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
               Pending Resource Approvals

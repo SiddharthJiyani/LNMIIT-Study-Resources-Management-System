@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { YTLinks } from "./YTLinks";
+import { set } from "react-hook-form";
 const BACKEND = import.meta.env.VITE_BACKEND_URL
 
 export const CourseList = () => {
@@ -12,6 +13,7 @@ export const CourseList = () => {
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState("");
+  const [courseName, setCourseName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,14 +27,16 @@ export const CourseList = () => {
           },
         };
         const response = await fetch(
-          `${
-            BACKEND
+          `${BACKEND
           }/api/resource/showByCourse/${courseId}`,
           options
         );
         if (!response.ok) throw new Error("Network response was not ok");
 
-        const data = await response.json();
+        let data = await response.json();
+        // console.log(data);
+        setCourseName(data.name);
+        data = data.resources;
         setResources(data);
         setLoading(false);
 
@@ -130,7 +134,8 @@ export const CourseList = () => {
       <div className="flex flex-1">
         <SideBar />
         <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="flex flex-col max-w-3xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+          <div className="flex flex-col max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+            <p className="text-[30px] text-center mb-2">{courseName}</p>
             <div className="mb-4">
               <input
                 type="text"

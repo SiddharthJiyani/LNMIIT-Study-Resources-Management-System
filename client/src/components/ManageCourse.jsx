@@ -19,7 +19,7 @@ const CustomSelect = ({ value, onChange, children, className }) => {
     <select
       value={value}
       onChange={onChange}
-      className={`w-full p-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${className}`}>
+      className={`w-full p-2 rounded-md border border-gray-300 dark:border-gray-700 bg-[#f9fafb] dark:bg-zinc-800  dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${className}`}>
       {children}
     </select>
   );
@@ -200,11 +200,9 @@ const ManageCourse = () => {
       <Toaster />
       <NavBar />
       <div className="flex">
-        <aside className="hidden lg:block w-64 ">
-          <SideBar />
-        </aside>
+        <SideBar />
 
-        <main className="flex-1 px-4 py-8 md:px-6 lg:px-8">
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
             <div className="flex items-center justify-between">
@@ -252,7 +250,7 @@ const ManageCourse = () => {
                         }
                         className="w-full"
                         required>
-                        <option value="">Select Department</option>
+                        <option value="" disabled>Select Department</option>
                         <option value="CSE">CSE</option>
                         <option value="CCE">CCE</option>
                         <option value="ECE">ECE</option>
@@ -274,7 +272,7 @@ const ManageCourse = () => {
                         }
                         className="w-full"
                         required>
-                        <option value="">Select Semester</option>
+                        <option value="" disabled>Select Semester</option>
                         {[...Array(8)].map((_, i) => (
                           <option key={i} value={i + 1}>
                             {" "}
@@ -299,7 +297,7 @@ const ManageCourse = () => {
                       />
                     </div>
                     {/* isElective? */}
-                    <div className="space-y-2">
+                    <div className="flex items-center ml-1">
                       <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         Is Elective?
                       </label>
@@ -314,7 +312,7 @@ const ManageCourse = () => {
                             isElective: e.target.checked,
                           })
                         }
-                        className="w-6 h-6 text-blue-600 dark:text-blue-500"
+                        className="w-6 h-6 text-blue-600 dark:text-blue-500 ml-2"
                       />
                     </div>
 
@@ -349,11 +347,11 @@ const ManageCourse = () => {
                   <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">
                     Existing Courses
                   </CardTitle>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center min-w-40">
                     <CustomSelect
                       value={selectedDepartment}
                       onChange={(e) => setSelectedDepartment(e.target.value)}
-                      className="w-32">
+                      className="">
                       <option value="CSE">CSE</option>
                       <option value="CCE">CCE</option>
                       <option value="ECE">ECE</option>
@@ -362,7 +360,7 @@ const ManageCourse = () => {
                     <CustomSelect
                       value={selectedSemester}
                       onChange={(e) => setSelectedSemester(e.target.value)}
-                      className="w-32">
+                      className="ml-2">
                       {[...Array(8)].map((_, i) => (
                         <option key={i} value={i + 1}>
                           {i + 1}

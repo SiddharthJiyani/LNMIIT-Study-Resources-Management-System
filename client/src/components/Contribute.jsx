@@ -111,7 +111,7 @@ export default function Contribute() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background">
+    <div className="flex min-h-screen w-full flex-col bg-[#f4f4f5]">
       <NavBar />
       <div className="flex flex-1">
         <SideBar />

@@ -112,14 +112,14 @@ exports.showResourceByCourse = async (req, res) => {
       match: { isApproved: true }, // Only fetch approved resources
       populate: { path: "uploadedBy", select: "name" }, // Populate uploadedBy with the user's name
     });
-
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
 
     // Return only approved resources for the found course
-    res.json(course.resources);
+    res.json({ resources: course.resources, name: course.name });
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server error");
   }
 };
@@ -161,7 +161,7 @@ exports.addFavourite = async (req, res) => {
     }
 
     const user = await User.findById(userId).select("favorites");
-    user.favorites = user.favorites || []; 
+    user.favorites = user.favorites || [];
 
     const isFavourite = user.favorites.includes(id);
 
@@ -280,21 +280,21 @@ exports.deleteResource = async (req, res) => {
     const publicId = resource.fileUrl.split("/").pop().split(".")[0]; // Extract public ID from URL
     console.log("Public ID: ", publicId);
     await cloudinary.uploader
-    .destroy(
-      `resources/${publicId}`,
-      //! ### may need more modification and testing  ####
-      {resource_type:res_type || "image"},
-    )
-    .then((result) => {
-      console.log("Deleted resource from Cloudinary", result);
-    }
-    )
-    .catch((error) => {
-      console.error("Error deleting resource from Cloudinary:", error);
-      res.status(500).json({ error: "Server error while deleting resource" });
-    }
-    );
-    
+      .destroy(
+        `resources/${publicId}`,
+        //! ### may need more modification and testing  ####
+        { resource_type: res_type || "image" },
+      )
+      .then((result) => {
+        console.log("Deleted resource from Cloudinary", result);
+      }
+      )
+      .catch((error) => {
+        console.error("Error deleting resource from Cloudinary:", error);
+        res.status(500).json({ error: "Server error while deleting resource" });
+      }
+      );
+
 
 
     // await cloudinary.v2.api
@@ -304,7 +304,7 @@ exports.deleteResource = async (req, res) => {
     //       resource_type: fileExtension === "pdf" ? "image" : "auto",
 
     //     }
-        
+
     //   )
 
     // Remove resource from course
@@ -337,7 +337,7 @@ exports.showAllResource = async (req, res) => {
 //get all unapproved (newly uploaded resources) --> for admin
 exports.showNewUploads = async (req, res) => {
   try {
-    const unapprovedResources = await Resource.find({ isApproved: false }).populate('uploadedBy').populate('course' , 'department semester name');
+    const unapprovedResources = await Resource.find({ isApproved: false }).populate('uploadedBy').populate('course', 'department semester name');
     res.json(unapprovedResources);
   } catch (err) {
     res.status(500).send("Server error");
@@ -351,48 +351,48 @@ exports.rateResource = async (req, res) => {
   const { userId, rating } = req.body;
 
   try {
-      // Fetch the existing resource document
-      const resource = await Resource.findById(resourceId);
-      if (!resource) return res.status(404).json({ error: "Resource not found" });
+    // Fetch the existing resource document
+    const resource = await Resource.findById(resourceId);
+    if (!resource) return res.status(404).json({ error: "Resource not found" });
 
-      // Check if the user has already rated this resource
-      const existingRatingIndex = resource.ratings.findIndex(r => r.user.toString() === userId);
-      console.log(existingRatingIndex);
-      
+    // Check if the user has already rated this resource
+    const existingRatingIndex = resource.ratings.findIndex(r => r.user.toString() === userId);
+    console.log(existingRatingIndex);
 
-      if (existingRatingIndex !== -1) {
-        console.log("old user rating");
-          // Update existing rating
-          resource.ratings[existingRatingIndex].score = rating;
-      } else {
-        console.log("new user rating");
-          // Add new rating
-          resource.ratings.push({ user: userId, score: rating });
-      }
 
-      // Calculate and update the average rating
-      const total = resource.ratings.reduce((sum, r) => sum + r.score, 0);
-      const updatedAverageRating = total / resource.ratings.length;
+    if (existingRatingIndex !== -1) {
+      console.log("old user rating");
+      // Update existing rating
+      resource.ratings[existingRatingIndex].score = rating;
+    } else {
+      console.log("new user rating");
+      // Add new rating
+      resource.ratings.push({ user: userId, score: rating });
+    }
 
-      // Update the resource document with new ratings and average
-      resource.averageRating = updatedAverageRating; // Update average rating directly
+    // Calculate and update the average rating
+    const total = resource.ratings.reduce((sum, r) => sum + r.score, 0);
+    const updatedAverageRating = total / resource.ratings.length;
 
-      // Save the updated resource document
-      await resource.save(); 
+    // Update the resource document with new ratings and average
+    resource.averageRating = updatedAverageRating; // Update average rating directly
 
-      // console.log(resource.ratings.length);
-      // console.log(resource.ratings);
-      // console.log(resource.averageRating);
+    // Save the updated resource document
+    await resource.save();
 
-      res.status(200).json({
-          message: "Rating updated successfully",
-          ratings: resource.ratings,
-          averageRating: updatedAverageRating
-      });
+    // console.log(resource.ratings.length);
+    // console.log(resource.ratings);
+    // console.log(resource.averageRating);
+
+    res.status(200).json({
+      message: "Rating updated successfully",
+      ratings: resource.ratings,
+      averageRating: updatedAverageRating
+    });
 
   } catch (error) {
-      console.error("Error updating rating:", error);
-      res.status(500).json({ error: "Server error" });
+    console.error("Error updating rating:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -401,11 +401,11 @@ exports.getUserRating = async (req, res) => {
   const { resourceId, userId } = req.params;
 
   try {
-    const resource = await Resource.findById(resourceId); 
+    const resource = await Resource.findById(resourceId);
     if (!resource) return res.status(404).json({ error: "Resource not found" });
 
     const userRating = resource.ratings.find(rating => rating.user.toString() === userId);
-    
+
     if (userRating) {
       return res.status(200).json({ rating: userRating.score });
     } else {

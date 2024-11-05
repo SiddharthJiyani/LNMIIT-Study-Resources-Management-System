@@ -6,6 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { useNavigate } from "react-router-dom";
+import { set } from "react-hook-form";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,8 +24,14 @@ export default function MyProfile() {
     semester: profileData?.semester,
     cgpa: profileData?.cgpa,
   });
+  const [oldState, setOldState] = useState({ ...editableData });
 
+  const handleCancel = () => {
+    setEditableData(oldState);
+    setEditProfile(false);
+  };
   const handleEditToggle = () => {
+    setOldState(editableData);
     setEditProfile(!editProfile);
   };
 
@@ -159,7 +166,7 @@ export default function MyProfile() {
                         Save
                       </Button>
                       <Button
-                        onClick={handleEditToggle}
+                        onClick={handleCancel}
                         className="w-full bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 rounded-md transition duration-200">
                         Cancel
                       </Button>
