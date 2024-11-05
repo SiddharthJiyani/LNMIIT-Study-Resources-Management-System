@@ -15,11 +15,11 @@ app.use(express.json());
 
 // CORS configuration
 const corsOptions = {
-    origin: ["http://localhost:5173","https://lnmiit-study-resouces-management-system-m1h8.vercel.app/"], // Replace with your frontend URL
+    origin: ["http://localhost:5173","https://lnmiit-study-resouces-management-system-m1h8.vercel.app"], // Replace with your frontend URL
     credentials: true,
     optionsSuccessStatus: 200
 };
-app.use(cors(corsOptions));
+app.use("*",cors(corsOptions));
 app.use(
 	fileUpload({
 		useTempFiles: true,
@@ -48,7 +48,13 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/ytlink", YTLinkRoutes); 
 
-
+// Testing the server
+app.get("/", (req, res) => {
+	return res.json({
+		success: true,
+		message: "Your server is up and running ...",
+	});
+});
 
 // Start the server
 app.listen(port, () => {
