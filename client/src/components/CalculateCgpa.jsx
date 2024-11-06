@@ -10,7 +10,7 @@ import {
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { Button } from "@/components/ui/button";
-import { Pencil } from 'lucide-react';
+import { Pencil, SquareArrowOutUpRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { set } from "react-hook-form";
 import { Label } from "../components/ui/Label";
@@ -97,7 +97,7 @@ export default function CalculateCgpa() {
         // const currSemCredits = Number(currSemCredits);
         // const currCgpa = Number(currentCGPA);
         const ans = (Number(targetCgpa) * (Number(creditsCompleted) + Number(currSemCredits)) - (Number(currentCGPA) * Number(creditsCompleted))) / Number(currSemCredits);
-        console.log(ans);
+        console.log(currSemCredits, creditsCompleted, targetCgpa, currentCGPA, ans);
         setReqSgpa(ans.toFixed(2));
     };
     const calculateCgpa = () => {
@@ -202,6 +202,12 @@ export default function CalculateCgpa() {
                                     <p className="mt-4 text-lg font-semibold">
                                         Required SGPA: {reqSgpa}
                                     </p>
+                                    <a href="https://sgpa-calculator-lnmiit.netlify.app/" target="_blank">
+                                        <p className="flex items-center mt-2">
+                                            SGPA Calculator
+                                            <SquareArrowOutUpRight className="h-5 w-5 ml-2" />
+                                        </p>
+                                    </a>
                                 </>
                             )}
                         </CardFooter>
