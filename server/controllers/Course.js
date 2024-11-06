@@ -14,13 +14,13 @@ exports.createCourse = async (req, res) => {
       });
     }
     // check if course already exists
-    const courseExists = await Course.findOne({ name });
-    if (courseExists) {
-      return res.status(400).json({
-        success: false,
-        message: "Course already exists",
-      });
-    }
+    // const courseExists = await Course.findOne({ name });
+    // if (courseExists) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Course already exists",
+    //   });
+    // }
 
 
     const newCourse = new Course({
