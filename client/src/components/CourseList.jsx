@@ -26,22 +26,30 @@ export const CourseList = () => {
             "Content-Type": "application/json",
           },
         };
-        const response = await fetch(
+        const response1 = await fetch(
           `${BACKEND
           }/api/resource/showByCourse/${courseId}`,
           options
         );
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response1.ok) throw new Error("Network response was not ok");
 
-        let data = await response.json();
+        let data1 = await response1.json();
+        let courseName = data1.name;
         // console.log(data);
-        setCourseName(data.name);
-        data = data.resources;
-        setResources(data);
+        setCourseName(data1.name);
+        const response2 = await fetch(
+          `${BACKEND
+          }/api/resource/showByCourseName/${courseName}`,
+          options
+        );
+        if (!response2.ok) throw new Error("Network response was not ok");
+        let data2 = await response2.json();
+        data2 = data2.resources;
+        setResources(data2);
         setLoading(false);
 
         // Check favorites for each resource after fetching
-        data.forEach((resource) => {
+        data2.forEach((resource) => {
           fetchFavoriteStatus(resource._id);
         });
       } catch (error) {

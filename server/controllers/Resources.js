@@ -124,6 +124,36 @@ exports.showResourceByCourse = async (req, res) => {
   }
 };
 
+
+exports.showResourceByCourseName = async (req, res) => {
+  try {
+    const { courseName } = req.params;
+    // console.log(courseName);
+    // Find all courses by the course name
+    const courses = await Course.find({ name: courseName.trim() }).populate({
+      path: "resources",
+      match: { isApproved: true }, // Only fetch approved resources
+      populate: { path: "uploadedBy", select: "name" }, // Populate uploadedBy with the user's name
+    });
+
+    if (courses.length === 0) {
+      return res.status(404).json({ message: "No courses found with this name" });
+    }
+    // console.log(courses);
+    // Merge resources from all found courses
+    const allResources = courses.reduce((acc, course) => {
+      return acc.concat(course.resources);
+    }, []);
+
+    // Return the merged resources and course name (assuming they all have the same name)
+    res.json({ resources: allResources, name: courseName });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+
 //get resource by user
 exports.getUserResources = async (req, res) => {
   try {
