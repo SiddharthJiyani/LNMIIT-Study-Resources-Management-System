@@ -26,11 +26,8 @@ export const CourseList = () => {
             "Content-Type": "application/json",
           },
         };
-        const response = await fetch(
-          `${BACKEND}/api/resource/showByCourse/${courseId}`,
         const response1 = await fetch(
-          `${BACKEND
-          }/api/resource/showByCourse/${courseId}`,
+          `${BACKEND}/api/resource/showByCourse/${courseId}`,
           options
         );
         if (!response1.ok) throw new Error("Network response was not ok");
