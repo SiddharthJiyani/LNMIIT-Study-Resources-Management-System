@@ -28,7 +28,6 @@ function PrivateRoute({ children }) {
     const expiryTime = localStorage.getItem("tokenExpiryTime");
     return expiryTime && new Date().getTime() > Number(expiryTime);
   };
-  console.log("Token", typeof(token), token);
   if( token === undefined || token === 'undefined' || token === null || token === 'null') {
     navigate('/login');
 

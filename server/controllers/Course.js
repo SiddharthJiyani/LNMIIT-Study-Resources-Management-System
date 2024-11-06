@@ -1,4 +1,6 @@
 const Course = require("../models/Course");
+const Resource = require("../models/Resource");
+const User = require("../models/User");
 
 // Create a new course
 exports.createCourse = async (req, res) => {
@@ -175,10 +177,25 @@ exports.deleteCourse = async (req, res) => {
       });
     }
 
+    // Fetch resources linked to the course
+    const resources = await Resource.find({ course: id });
+
+    // Remove resources associated with the course
+    await Resource.deleteMany({ course: id });
+
+    // Remove resources from user's favorites
+    const resourceIds = resources.map(resource => resource._id);
+    await User.updateMany(
+      { favorites: { $in: resourceIds } },
+      { $pull: { favorites: { $in: resourceIds } } }
+    );
+
+    // Finally, delete the course itself
     await course.deleteOne();
+
     res.status(200).json({
       success: true,
-      message: "Course deleted successfully",
+      message: "Course and associated resources deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
@@ -187,7 +204,8 @@ exports.deleteCourse = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
+
 
 
 

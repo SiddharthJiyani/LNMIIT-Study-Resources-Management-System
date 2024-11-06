@@ -6,6 +6,7 @@ import { Toaster, toast } from 'react-hot-toast';
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export const AddYT = () => {
+  const [department, setDepartment] = useState('');
   const [semester, setSemester] = useState('');
   const [courseId, setCourseId] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
@@ -14,9 +15,9 @@ export const AddYT = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      if (semester) {
+      if (department && semester) {
         try {
-          const response = await fetch(`${BACKEND}/api/course/${semester}`, {
+          const response = await fetch(`${BACKEND}/api/course/${department}/${semester}`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -36,11 +37,11 @@ export const AddYT = () => {
       }
     };
     fetchCourses();
-  }, [semester]);
+  }, [department, semester]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append("courseId", courseId);
     formData.append("url", youtubeLink);
     formData.append("description", description);
@@ -50,9 +51,8 @@ export const AddYT = () => {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
-          credentials: "include"
         },
-        body: formData
+        body: formData,
       });
 
       const data = await response.json();
@@ -81,6 +81,20 @@ export const AddYT = () => {
             <h2 className="text-2xl font-semibold text-center">Add YouTube Link</h2>
 
             <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
+              <option value="" disabled>
+                Select Department
+              </option>
+              <option value="CSE">CSE</option>
+              <option value="CCE">CCE</option>
+              <option value="ECE">ECE</option>
+              <option value="MME">MME</option>
+            </select>
+
+            <select
               value={semester}
               onChange={(e) => setSemester(e.target.value)}
               required
@@ -88,14 +102,9 @@ export const AddYT = () => {
               <option value="" disabled>
                 Select Semester
               </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                <option key={sem} value={sem}>{sem}</option>
+              ))}
             </select>
 
             <select
@@ -131,7 +140,7 @@ export const AddYT = () => {
 
             <button
               type="submit"
-              className="w-full p-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+              className="w-full p-2 bg-black text-white font-semibold rounded-md hover:bg-zinc-900"
             >
               Add YouTube Link
             </button>

@@ -101,7 +101,16 @@ const ManageCourse = () => {
           isElective: false,
           department: "",
         });
-        toast.success("Course added successfully");
+        toast.success("Course added successfully", {
+          style: {
+            background: '#4caf50',
+            color: '#fff',
+          },
+          iconTheme: {
+            primary: '#fff',
+            secondary: '#4caf50',
+          },
+        });
         window.location.reload();
       } else {
         throw new Error();

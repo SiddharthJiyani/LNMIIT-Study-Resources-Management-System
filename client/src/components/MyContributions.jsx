@@ -50,6 +50,7 @@ const MyContributions = () => {
         secondary: "#FFFAEE",
       },
     });
+  
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
@@ -62,8 +63,7 @@ const MyContributions = () => {
           },
         }
       );
-
-      console.log('response', response.status);
+  
       if (response.status === 200) {
         toast.dismiss();
         toast.success("Resource Deleted successfully", {
@@ -77,9 +77,14 @@ const MyContributions = () => {
             secondary: "#FFFAEE",
           },
         });
-        window.location.reload();
-      }
-      else {
+  
+        setResources((prevResources) => ({
+          ...prevResources,
+          resources: prevResources.resources.filter(
+            (resource) => resource._id !== resourceId
+          ),
+        }));
+      } else {
         toast.dismiss();
         toast.error("Failed to delete resource", {
           style: {
@@ -92,12 +97,8 @@ const MyContributions = () => {
             secondary: "#FFFAEE",
           },
         });
-        console.error("Failed to delete resource");
-        console.error("response", response);
       }
-    }
-
-    catch (error) {
+    } catch (error) {
       toast.dismiss();
       toast.error("Server error, Please try again later or report error", {
         style: {
@@ -110,9 +111,11 @@ const MyContributions = () => {
           secondary: "#FFFAEE",
         },
       });
-      console.error("Error delete resource:", error);
+      console.error("Error deleting resource:", error);
     }
   };
+  
+  
 
   if (loading)
     return <div className="text-center mt-10 text-gray-700">Loading...</div>;
