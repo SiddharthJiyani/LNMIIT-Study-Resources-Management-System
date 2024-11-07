@@ -26,7 +26,7 @@ const developers = [
         name: 'Srijan Das',
         // role: 'Batman',
         bio: 'He only comes in darkness',
-        image: 'https://i.pinimg.com/564x/40/53/5d/40535d2f3d21ed43441f4c95b222b968.jpg',
+        image: 'https://media.licdn.com/dms/image/v2/D5603AQHNc6bO45N1Rg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720363416069?e=1736380800&v=beta&t=sDPjyUc9d_-4GCr26fcFsKLIgXDDPEW4FpMNCHsFFBo',
         linkedin: 'https://www.linkedin.com/in/dassrijan16/',
         github: 'https://github.com/thisIsSrijan'
     },
