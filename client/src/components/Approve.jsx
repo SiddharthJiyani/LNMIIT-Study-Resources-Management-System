@@ -4,6 +4,7 @@ import SideBar from "./SideBar";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { FaCheck, FaTimes, FaFileAlt } from "react-icons/fa"; // Icons for Approve, Reject, and File
+import Spinner from "./Spinner";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 const Approve = () => {
@@ -98,18 +99,19 @@ const Approve = () => {
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-10 text-gray-700">Loading...</div>;
-  }
-
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Toaster />
       <NavBar />
       <div className="flex flex-1">
-        <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="max-w-5xl mx-auto">
+        <aside className="hidden md:block md:w-[200px] bg-background border-r">
+          <SideBar />
+        </aside>
+        <main className="flex-1 p-4 md:p-6 bg-gray-50 dark:bg-zinc-900">
+          {loading ? (
+            <Spinner />
+          ) : (
+            <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
               Pending Resource Approvals
             </h2>
@@ -206,6 +208,7 @@ const Approve = () => {
               ))
             )}
           </div>
+          )}
         </main>
       </div>
     </div>

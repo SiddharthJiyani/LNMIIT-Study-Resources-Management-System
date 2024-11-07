@@ -13,6 +13,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "./ui/button";
+import Spinner from "./Spinner";
 
 const CustomSelect = ({ value, onChange, children, className }) => {
   return (
@@ -200,10 +201,6 @@ const ManageCourse = () => {
       course.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
-    return <div className="text-center mt-10 text-gray-700">Loading...</div>;
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
       <Toaster />
@@ -211,8 +208,11 @@ const ManageCourse = () => {
       <div className="flex">
         <SideBar />
 
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="max-w-6xl mx-auto space-y-8">
+        <main className="flex-1 px-4 py-8 md:px-6 lg:px-8">
+          {loading ? (
+            <Spinner />
+          ): (
+            <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -503,6 +503,7 @@ const ManageCourse = () => {
               </CardContent>
             </Card>
           </div>
+          )}
         </main>
       </div>
     </div>
