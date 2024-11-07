@@ -11,15 +11,15 @@ const port = process.env.PORT || 4000;
 
 // Middleware
 app.use(cookieParser());
-app.use(express.json()); 
+app.use(express.json());
 
 // CORS configuration
 const corsOptions = {
-    origin: ["http://localhost:5173","https://lnmiit-study-resouces-management-system-m1h8.vercel.app"], // Replace with your frontend URL
-    credentials: true,
-    optionsSuccessStatus: 200
+	origin: ["http://localhost:5173", "https://lnmiit-study-resouces-management-system-m1h8.vercel.app"], // Replace with your frontend URL
+	credentials: true,
+	optionsSuccessStatus: 200
 };
-app.use("*",cors(corsOptions));
+app.use("*", cors(corsOptions));
 app.use(
 	fileUpload({
 		useTempFiles: true,
@@ -40,14 +40,14 @@ const courseRoutes = require("./routes/Course");
 const profileRoutes = require("./routes/Profile");
 const feedbackRoutes = require("./routes/Feedback");
 const YTLinkRoutes = require("./routes/YTLinks");
-
+const GradeSurveyRoutes = require("./routes/GradeSurvey");
 app.use("/api/auth", userRoutes);
 app.use("/api/resource", resourceRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/feedback", feedbackRoutes);
-app.use("/api/ytlink", YTLinkRoutes); 
-
+app.use("/api/ytlink", YTLinkRoutes);
+app.use("/api/grade-survey", GradeSurveyRoutes);
 // Testing the server
 app.get("/", (req, res) => {
 	return res.json({
@@ -58,5 +58,5 @@ app.get("/", (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+	console.log(`Server is running on port ${port}`);
 });

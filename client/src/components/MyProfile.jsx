@@ -15,6 +15,7 @@ export default function MyProfile() {
   const navigate = useNavigate();
 
   const profileData = JSON.parse(localStorage.getItem("user"));
+  // console.log(profileData);
   const [editableData, setEditableData] = useState({
     firstName: profileData?.firstName,
     lastName: profileData?.lastName,

@@ -146,7 +146,7 @@ exports.showResourceByCourseName = async (req, res) => {
     }, []);
 
     // Return the merged resources and course name (assuming they all have the same name)
-    res.json({ resources: allResources, name: courseName });
+    res.json({ resources: allResources, name: courseName, branches: courses.map(c => c.department) });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");

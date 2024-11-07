@@ -36,7 +36,7 @@ export const YTLinks = ({ courseId }) => {
 
   if (ytLinks.length === 0) {
     return (
-      <p className="text-center text-lg mt-6 text-zinc-500">
+      <p className="text-center mt-6 text-zinc-500">
         No YouTube links available for this course.
       </p>
     );
@@ -44,10 +44,7 @@ export const YTLinks = ({ courseId }) => {
 
   return (
     <section className="my-10 px-4">
-      <h2 className="text-3xl font-bold mb-8 text-left text-zinc-800 dark:text-zinc-200">
-        YouTube Resources
-      </h2>
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ">
         {ytLinks.map((link) => (
           <div
             key={link._id}

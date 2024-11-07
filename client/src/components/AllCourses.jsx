@@ -112,12 +112,12 @@ export default function AllCourses() {
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full lg:px-5 sm:px-5">
                 {courses.length > 0 ? (
                   courses.map((course) => (
                     <Card
                       key={course._id}
-                      className="transition-transform hover:scale-105 cursor-pointer"
+                      className="transition-transform hover:scale-105 cursor-pointer "
                       onClick={() => handleCourseClick(course._id)}
                     >
                       <CardHeader>
@@ -129,7 +129,7 @@ export default function AllCourses() {
                     </Card>
                   ))
                 ) : (
-                  <div className="text-gray-500 dark:text-gray-400 col-span-full">
+                  <div className="text-gray-500 dark:text-gray-400 col-span-full text-center">
                     No courses available for this selection.
                   </div>
                 )}
