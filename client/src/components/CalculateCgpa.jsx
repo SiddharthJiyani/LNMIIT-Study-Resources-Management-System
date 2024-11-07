@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { set } from "react-hook-form";
 import { Label } from "../components/ui/Label";
 import { cn } from "@/lib/utils";
+import Spinner from "./Spinner";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const ELECTIVES_JSON_URL = "https://raw.githubusercontent.com/rahulharpal1603/json/main/electives.json";
 
@@ -214,7 +215,10 @@ export default function CalculateCgpa() {
                     </Card>
 
 
-                    <Card className="max-w-xl mx-auto shadow-lg mt-4">
+                    {loading ? (
+                        <Spinner />
+                    ) : (
+                        <Card className="max-w-xl mx-auto shadow-lg mt-4">
                         <CardHeader>
                             <CardTitle className="text-center text-xl font-semibold">
                                 Calculate CGPA
@@ -295,6 +299,7 @@ export default function CalculateCgpa() {
                             )}
                         </CardFooter>
                     </Card>
+                    )}
                 </main>
             </div>
         </div >

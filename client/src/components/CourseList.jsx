@@ -260,6 +260,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { YTLinks } from "./YTLinks";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import Spinner from "./Spinner";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export const CourseList = () => {
@@ -468,17 +469,17 @@ export const CourseList = () => {
       resource.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  if (loading) {
-    return <div className="text-center text-lg font-semibold mt-20">Loading...</div>;
-  }
-
   return (
     <div className="flex min-h-screen w-full flex-col bg-zinc-100 dark:bg-zinc-900">
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
         <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
-          <div className="flex flex-col max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className="flex flex-col max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
             <p className="text-[28px] text-center mb-2 font-medium">{courseName}</p>
 
             {/* Filter Dropdown */}
@@ -606,6 +607,8 @@ export const CourseList = () => {
 
             </div>
           </div>
+          </>
+        )}
 
         </main>
       </div >
