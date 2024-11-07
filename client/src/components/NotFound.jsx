@@ -1,7 +1,11 @@
 // NotFound.js
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const NotFound = () => {
+
+  useEffect(() => {
+    window.location.reload();
+  }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800 dark:text-white dark:bg-gray-900">
       <h1 className="text-6xl font-bold">404</h1>
