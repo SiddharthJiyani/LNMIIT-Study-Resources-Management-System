@@ -20,8 +20,8 @@ const extractVideoId = (url) => {
 
 exports.addYTLink = async (req, res) => {
   try {
-    const { courseId, url, description } = req.body;
-    // console.log("courseId:", courseId, "url:", url, "description:", description);
+    const { courseId, url, description, courseName } = req.body;
+    console.log("courseId:", courseId, "url:", url, "description:", description, "courseName:", courseName); //debug
 
     if (!courseId || !url) {
       return res.status(400).json({ message: "Course ID and URL are required." });
@@ -37,7 +37,7 @@ exports.addYTLink = async (req, res) => {
     const ytApiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
     const response = await fetch(ytApiUrl);
     const data = await response.json();
-    
+
     // console.log("YouTube API response:", data); //debug
 
     if (!data.items || data.items.length === 0) {
@@ -54,6 +54,7 @@ exports.addYTLink = async (req, res) => {
 
     const newYTLink = new YTLink({
       courseId,
+      courseName,
       title: videoTitle,
       url,
       description,
@@ -62,7 +63,7 @@ exports.addYTLink = async (req, res) => {
     const savedYTLink = await newYTLink.save();
 
     res.status(201).json({ success: true, ytLink: savedYTLink });
-  } 
+  }
   catch (error) {
     console.error("Error adding YouTube link:", error);
     res.status(500).json({ success: false, message: "Error adding YouTube link", error });
@@ -73,15 +74,17 @@ exports.addYTLink = async (req, res) => {
 // Get all YouTube links for a specific course
 exports.getYTLinks = async (req, res) => {
   try {
+    // console.log(req.params); //debug
     const { courseId } = req.params;
-
-    if (!courseId) {
-      return res.status(400).json({ message: "Course ID is required." });
+    courseName = courseId;
+    // console.log("courseName:", courseName); //debug
+    if (!courseName) {
+      return res.status(400).json({ message: "Course Name is required." });
     }
 
-    const ytLinks = await YTLink.find({ courseId });
+    const ytLinks = await YTLink.find({ courseName });
     res.status(200).json({ success: true, ytLinks });
-  } 
+  }
   catch (error) {
     res
       .status(500)
@@ -113,8 +116,8 @@ exports.deleteYTLink = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "YouTube link deleted successfully." });
-  } 
-  
+  }
+
   catch (error) {
     res
       .status(500)

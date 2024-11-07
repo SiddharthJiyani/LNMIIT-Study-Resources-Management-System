@@ -12,7 +12,7 @@ export const AddYT = () => {
   const [youtubeLink, setYoutubeLink] = useState('');
   const [description, setDescription] = useState('');
   const [courses, setCourses] = useState([]);
-
+  const [courseName, setCourseName] = useState('');
   useEffect(() => {
     const fetchCourses = async () => {
       if (department && semester) {
@@ -45,6 +45,7 @@ export const AddYT = () => {
     formData.append("courseId", courseId);
     formData.append("url", youtubeLink);
     formData.append("description", description);
+    formData.append("courseName", courseName);
 
     try {
       const response = await fetch(`${BACKEND}/api/ytlink/addYTLink`, {
@@ -69,7 +70,7 @@ export const AddYT = () => {
       toast.error('Error adding YouTube link');
     }
   };
-
+  // console.log(courseId, courseName)
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Toaster />
@@ -109,7 +110,7 @@ export const AddYT = () => {
 
             <select
               value={courseId}
-              onChange={(e) => setCourseId(e.target.value)}
+              onChange={(e) => { setCourseId(e.target.value); setCourseName(e.target.options[e.target.selectedIndex].text) }}
               required
               className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
               <option value="" disabled>

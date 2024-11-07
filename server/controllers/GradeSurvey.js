@@ -11,7 +11,7 @@ exports.addOrUpdateGradeSurvey = async (req, res) => {
                 message: "Please enter all required fields",
             });
         }
-        console.log(req.body);
+        // console.log(req.body);
         // Check if a record already exists for the given roll number and course name
         let gradeSurvey = await GradeSurvey.findOne({ rollNumber, courseName });
 
@@ -54,10 +54,10 @@ exports.addOrUpdateGradeSurvey = async (req, res) => {
 exports.getGradeSurveysByCourseName = async (req, res) => {
     try {
         const { courseName } = req.params;
-        console.log(req.params);
+        // console.log(req.params);
         // Find all grade surveys for the specified course name
         const gradeSurveys = await GradeSurvey.find({ courseName });
-        console.log(gradeSurveys);
+        // console.log(gradeSurveys);
         if (gradeSurveys.length === 0) {
             return res.status(200).json({
                 success: false,

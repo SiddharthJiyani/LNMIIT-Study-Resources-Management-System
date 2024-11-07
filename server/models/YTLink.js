@@ -6,6 +6,11 @@ const ytLinkSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
+  courseName:
+  {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -17,7 +22,7 @@ const ytLinkSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  thumbnail: { 
+  thumbnail: {
     type: String,
   },
 }, {

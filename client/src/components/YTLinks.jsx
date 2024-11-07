@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-export const YTLinks = ({ courseId }) => {
+export const YTLinks = ({ courseName }) => {
   const [ytLinks, setYtLinks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  // console.log("courseName:", courseName); //debug
   useEffect(() => {
     const fetchYtLinks = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/ytlink/getYTLinks/${courseId}`,
+          `http://localhost:4000/api/ytlink/getYTLinks/${courseName}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,7 +28,7 @@ export const YTLinks = ({ courseId }) => {
     };
 
     fetchYtLinks();
-  }, [courseId]);
+  }, [courseName]);
 
   if (loading) {
     return <p className="text-center text-lg mt-6">Loading YouTube links...</p>;
