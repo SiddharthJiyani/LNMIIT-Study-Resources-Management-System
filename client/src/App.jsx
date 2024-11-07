@@ -20,6 +20,7 @@ import Approve from "./components/Approve";
 import ManageCourse from "./components/ManageCourse";
 import AboutDevelopers from "./components/AboutDevelopers";
 import { AddYT } from "./components/AddYT";
+import NotFound from "./components/NotFound";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
@@ -190,7 +191,8 @@ function App() {
               />
             )
           }
-
+        
+        <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
