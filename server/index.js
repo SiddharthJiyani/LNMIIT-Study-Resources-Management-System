@@ -15,7 +15,7 @@ app.use(express.json());
 
 // CORS configuration
 const corsOptions = {
-	origin: ["http://localhost:5173", "https://lnmiit-study-resouces-management-system-m1h8.vercel.app"], // Replace with your frontend URL
+	origin: ["http://localhost:5173", "https://lnmiit-study-resouces-management-system.vercel.app"], // Replace with your frontend URL
 	credentials: true,
 	optionsSuccessStatus: 200
 };
