@@ -18,7 +18,7 @@ const SideBar = () => {
         { to: "/all-courses", label: "All Courses", icon: <BookCopy /> },
         { to: "/favourites", label: "Favourites", icon: <Star /> },
         { to: "/calculate-cgpa", label: "Calculate CGPA", icon: <Calculator /> },
-        { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
+        // { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
         { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
         { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
         { to: "/feedback", label: "Feedback", icon: <MessageCircle /> },

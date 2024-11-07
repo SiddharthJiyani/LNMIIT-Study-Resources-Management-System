@@ -68,23 +68,32 @@ export default function MyProfile() {
 
   const handleSave = async () => {
     try {
+      // Check for valid CGPA
       if (editableData.cgpa < 0 || editableData.cgpa > 10) {
         alert("CGPA should be between 0 and 10");
         throw new Error("Invalid CGPA");
       }
+      
+      // Retrieve existing data from localStorage
+      const currentProfile = JSON.parse(localStorage.getItem("user")) || {};
+  
+      // Merge current profile data with updated editableData
+      const updatedProfile = { ...currentProfile, ...editableData };
+  
+      // Send only the updated fields to the backend
       const response = await fetch(`${BACKEND}/api/profile/update/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(editableData),
+        body: JSON.stringify(updatedProfile),
         credentials: "include",
       });
-
+  
       const result = await response.json();
       if (response.ok) {
-        // Assuming the response returns the updated profile data, save it locally
-        localStorage.setItem("user", JSON.stringify(editableData));
+        // Update localStorage with the new data
+        localStorage.setItem("user", JSON.stringify(updatedProfile));
         setEditProfile(false); // Exit edit mode
       } else {
         console.error("Failed to update profile:", result.message || "Unknown error");
@@ -93,6 +102,7 @@ export default function MyProfile() {
       console.error("Error updating profile:", error);
     }
   };
+  
 
 
   return (

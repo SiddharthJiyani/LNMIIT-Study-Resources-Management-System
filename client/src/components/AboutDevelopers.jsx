@@ -8,7 +8,7 @@ import SideBar from './SideBar';
 const developers = [
     {
         name: 'Siddharth Jiyani',
-        role: 'Captain Underpants',
+        // role: 'Captain Underpants',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D35AQETRbaqLOl3Bg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1721887061014?e=1731153600&v=beta&t=o1GCvZJ0abOmeZF4r_WBydwAqGwqtGbqTbWvUsaIIr8',
         linkedin: 'https://www.linkedin.com/in/siddharth-jiyani-7584a1266/',
@@ -16,7 +16,7 @@ const developers = [
     },
     {
         name: 'Rahul Harpal',
-        role: 'Frontend Developer',
+        // role: 'Frontend Developer',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1716320503581?e=1731153600&v=beta&t=eGAyH8PFvxgUgYwTaSpFdTCiQ9-XbbSbxwQjpn_YxFY    ',
         linkedin: 'https://www.linkedin.com/in/rahulharpal/',
@@ -24,7 +24,7 @@ const developers = [
     },
     {
         name: 'Srijan Das',
-        role: 'Batman',
+        // role: 'Batman',
         bio: 'He only comes in darkness',
         image: 'https://i.pinimg.com/564x/40/53/5d/40535d2f3d21ed43441f4c95b222b968.jpg',
         linkedin: 'https://www.linkedin.com/in/dassrijan16/',
@@ -32,7 +32,7 @@ const developers = [
     },
     {
         name: 'Naitik Jasani',
-        role: 'Superman',
+        // role: 'Superman',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D03AQFrogHf6JoayA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719034745814?e=1735776000&v=beta&t=Z7In0fgHbMfGrlH3qZr2ZgSb0LoCiZRugc6Rh4aZUms',
         linkedin: 'https://www.linkedin.com/in/naitikjasani/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
@@ -40,7 +40,7 @@ const developers = [
     },
     {
         name: 'Akshat Modi',
-        role: 'Ironman',
+        // role: 'Ironman',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D03AQEvAH-AtBN96A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719410218706?e=1735776000&v=beta&t=HYi0htjB0dWMLwOLgBBea3eZ03l_syY7Kz7RSGxDSU8',
         linkedin: 'https://www.linkedin.com/in/akshat-modi-3048b9270/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
@@ -71,7 +71,7 @@ const AboutDevelopers = () => {
                                         alt={`${developer.name}'s profile`} 
                                     />
                                     <h3 className="text-xl font-semibold text-gray-900">{developer.name}</h3>
-                                    <p className="text-gray-600 text-sm">{developer.role}</p>
+                                    {/* <p className="text-gray-600 text-sm">{developer.role}</p> */}
                                     {/* <p className="text-gray-700 mt-4">{developer.bio}</p> */}
                                     {/* Social Media Links */}
                                     <div className="flex justify-center mt-4 space-x-4">

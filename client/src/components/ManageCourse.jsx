@@ -208,7 +208,7 @@ const ManageCourse = () => {
       <div className="flex">
         <SideBar />
 
-        <main className="flex-1 px-4 py-8 md:px-6 lg:px-8">
+        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
           {loading ? (
             <Spinner />
           ): (

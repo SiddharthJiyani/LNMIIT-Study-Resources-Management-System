@@ -10,6 +10,7 @@ const MyContributions = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log('user' , user)
 
   useEffect(() => {
     const fetchUserResources = async () => {
@@ -78,7 +79,12 @@ const MyContributions = () => {
             secondary: "#FFFAEE",
           },
         });
-        window.location.reload();
+        setResources((prevResources) => ({
+          ...prevResources,
+          resources: prevResources.resources.filter(
+            (resource) => resource._id !== resourceId
+          ),
+        }));
       } 
       else {
         toast.dismiss();
@@ -111,7 +117,7 @@ const MyContributions = () => {
           secondary: "#FFFAEE",
         },
       });
-      console.error("Error delete resource:", error);
+      console.error("Error while deleting resource:", error);
     }
   };
 
@@ -123,7 +129,7 @@ const MyContributions = () => {
         <aside className="hidden md:block md:w-[200px] bg-background border-r">
           <SideBar />
         </aside>
-        <main className="flex-1 p-4 md:p-6 bg-gray-50 dark:bg-zinc-900">
+        <main className="flex-1 p-4 md:p-6 bg-[#f4f4f5] dark:bg-zinc-900">
           {loading ? (
             <Spinner />
           ) : (
@@ -134,7 +140,7 @@ const MyContributions = () => {
             <div className="overflow-hidden rounded-lg shadow-md bg-white dark:bg-zinc-800">
               <table className="min-w-full bg-white dark:bg-zinc-800 text-sm">
                 <thead>
-                  <tr className="bg-gray-100 dark:bg-zinc-700">
+                  <tr className="bg-[#e7e7e7] dark:bg-zinc-700">
                     <th className="py-3 px-4 text-left font-semibold text-gray-700 dark:text-gray-300">
                       S. No.
                     </th>

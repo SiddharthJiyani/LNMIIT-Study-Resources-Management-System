@@ -96,14 +96,14 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/marks-vs-grade"
             element={
               <PrivateRoute>
                 <MarksVsGrade />
               </PrivateRoute>
             }
-          />
+          /> */}
           <Route
             path="/contribute"
             element={
