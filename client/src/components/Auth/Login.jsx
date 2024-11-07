@@ -142,6 +142,17 @@ export function Login() {
         </p>
       </div>
 
+      <div className="text-center">
+        <p className="text-neutral-600 dark:text-neutral-300 text-lg md:text-base">
+          <span
+            className="text-primary-600 dark:text-primary-400 cursor-pointer font-semibold transition-colors duration-200 hover:text-primary-700 dark:hover:text-primary-500 underline"
+            onClick={() => navigate("/forget-password")}
+          >
+            Forget Password
+          </span>
+        </p>
+      </div>
+
     </div>
   );
 }

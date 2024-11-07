@@ -21,6 +21,7 @@ import ManageCourse from "./components/ManageCourse";
 import AboutDevelopers from "./components/AboutDevelopers";
 import { AddYT } from "./components/AddYT";
 import NotFound from "./components/NotFound";
+import ForgetPassword from "./components/Auth/ForgetPassword"
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
@@ -52,6 +53,15 @@ function App() {
             element={
               <OpenRoute>
                 <Otp />
+              </OpenRoute>
+            }
+          />
+
+          <Route
+            path="/forget-password"
+            element={
+              <OpenRoute>
+                <ForgetPassword />
               </OpenRoute>
             }
           />
