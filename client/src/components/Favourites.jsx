@@ -18,7 +18,11 @@ export default function Favourites() {
       const response = await fetch(`${BACKEND}/api/profile/`, {
         method: "GET",
         credentials: "include",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
+      
       const data = await response.json();
       if (response.ok) {
         setFavorites(data.user.favorites);
