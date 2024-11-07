@@ -79,7 +79,6 @@ export const CourseList = () => {
     const token = localStorage.getItem("token");
 
     try {
-      toast.loading("Loading...");
       const response = await fetch(
         `${BACKEND}/api/resource/isFavourite/${resourceId}`,
         {
@@ -91,9 +90,7 @@ export const CourseList = () => {
       );
 
       if (response.ok) {
-        toast.dismiss();
         const data = await response.json();
-        toast.success("Favourites changed successfully.");
         if (data.isFavourite) {
           setFavorites((prevFavorites) => {
             const newFavorites = new Set(prevFavorites);
@@ -102,13 +99,9 @@ export const CourseList = () => {
           });
         }
       } else {
-        toast.dismiss();
-        toast.error("Failed...");
         console.error("Failed to check favorite status:", response.statusText);
       }
     } catch (error) {
-      toast.dismiss();
-      toast.error("Failed...");
       console.error("Error checking favorite status:", error);
     }
   };
@@ -121,6 +114,7 @@ export const CourseList = () => {
     const token = localStorage.getItem("token");
 
     try {
+      toast.loading("Updating favorite...");
       const response = await fetch(
         `${BACKEND}/api/resource/addFavourite/${resourceId}`,
         {
@@ -133,6 +127,8 @@ export const CourseList = () => {
       );
 
       if (response.ok) {
+        toast.dismiss();
+        toast.success("Favorite updated!");
         setFavorites((prevFavorites) => {
           const newFavorites = new Set(prevFavorites);
           newFavorites.has(resourceId)
@@ -141,9 +137,13 @@ export const CourseList = () => {
           return newFavorites;
         });
       } else {
+        toast.dismiss();
+        toast.error("Failed to update favorite");
         console.error("Failed to toggle favorite:", response.statusText);
       }
     } catch (error) {
+      toast.dismiss();
+      toast.error("Failed to update favorite");
       console.error("Error toggling favorite:", error);
     }
   };
