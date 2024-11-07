@@ -79,6 +79,7 @@ export const CourseList = () => {
     const token = localStorage.getItem("token");
 
     try {
+      toast.loading("Loading...");
       const response = await fetch(
         `${BACKEND}/api/resource/isFavourite/${resourceId}`,
         {
@@ -90,7 +91,9 @@ export const CourseList = () => {
       );
 
       if (response.ok) {
+        toast.dismiss();
         const data = await response.json();
+        toast.success("Favourites changed successfully.");
         if (data.isFavourite) {
           setFavorites((prevFavorites) => {
             const newFavorites = new Set(prevFavorites);
@@ -99,9 +102,13 @@ export const CourseList = () => {
           });
         }
       } else {
+        toast.dismiss();
+        toast.error("Failed...");
         console.error("Failed to check favorite status:", response.statusText);
       }
     } catch (error) {
+      toast.dismiss();
+      toast.error("Failed...");
       console.error("Error checking favorite status:", error);
     }
   };
