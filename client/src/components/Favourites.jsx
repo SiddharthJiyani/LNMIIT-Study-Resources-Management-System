@@ -5,11 +5,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { AiFillHeart } from "react-icons/ai";
+import toast, { Toaster } from "react-hot-toast";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export default function Favourites() {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState([]); // Initializing as an array
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -22,12 +23,12 @@ export default function Favourites() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      
+
       const data = await response.json();
       if (response.ok) {
-        setFavorites(data.user.favorites);
+        setFavorites(Array.isArray(data.user.favorites) ? data.user.favorites : []);
       } else {
-        console.error("Failed to fetch favourites:", data.message || "Unknown error");
+        console.error("Failed to fetch favorites:", data.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error fetching favorites:", error);
@@ -36,6 +37,7 @@ export default function Favourites() {
 
   const handleFavoriteToggle = async (resourceId) => {
     const token = localStorage.getItem("token");
+    const loadingToastId = toast.loading("Updating favorite...");
 
     try {
       const response = await fetch(
@@ -50,23 +52,27 @@ export default function Favourites() {
       );
 
       if (response.ok) {
+        toast.success("Favorite updated!", { id: loadingToastId });
         setFavorites((prevFavorites) => {
           const newFavorites = new Set(prevFavorites);
           newFavorites.has(resourceId)
             ? newFavorites.delete(resourceId)
             : newFavorites.add(resourceId);
-          return newFavorites;
+          return Array.from(newFavorites);
         });
+        window.location.reload();
       } else {
+        toast.error("Failed to update favorite", { id: loadingToastId });
         console.error("Failed to toggle favorite:", response.statusText);
       }
     } catch (error) {
+      toast.error("Error updating favorite", { id: loadingToastId });
       console.error("Error toggling favorite:", error);
     }
   };
 
-  const filteredFavorites = favorites.filter((material) =>
-    material.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFavorites = favorites?.filter((material) =>
+    material?.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -75,6 +81,7 @@ export default function Favourites() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-[#f4f4f5]">
+      <Toaster />
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
@@ -119,7 +126,6 @@ export default function Favourites() {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleFavoriteToggle(material._id);
-                                window.location.reload();
                               }}
                               aria-label="Add to favorites"
                             >
