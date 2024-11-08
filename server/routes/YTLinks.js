@@ -8,3 +8,4 @@ router.get("/getYTLinks/:courseId",auth , getYTLinks);
 router.delete("/deleteYTLink",auth , isAdmin, deleteYTLink);
 
 module.exports = router;
+
