@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
 export const YTLinks = ({ courseName }) => {
   const [ytLinks, setYtLinks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,7 +9,7 @@ export const YTLinks = ({ courseName }) => {
     const fetchYtLinks = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/ytlink/getYTLinks/${courseName}`,
+          `${BACKEND}/api/ytlink/getYTLinks/${courseName}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
