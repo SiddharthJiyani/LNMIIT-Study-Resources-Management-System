@@ -262,9 +262,9 @@ export const CourseList = () => {
                     <option value="all">All</option>
                     <option value="notes">Notes</option>
                     <option value="slides">Slides</option>
-                    <option value="assignments">Assignments</option>
+                    <option value="assignment">Assignments</option>
                     <option value="pyqs">PYQs</option>
-                    <option value="others">Others</option>
+                    <option value="other">Others</option>
                   </select>
                 </div>
 
