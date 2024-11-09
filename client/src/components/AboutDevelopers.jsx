@@ -71,7 +71,7 @@ const AboutDevelopers = () => {
                                         alt={`${developer.name}'s profile`} 
                                     />
                                     <h3 className="text-xl font-semibold text-gray-900">{developer.name}</h3>
-                                    {/* <p className="text-gray-600 text-sm">{developer.role}</p> */}
+                                    <p className="text-gray-600 text-sm">{developer.role}</p>
                                     {/* <p className="text-gray-700 mt-4">{developer.bio}</p> */}
                                     {/* Social Media Links */}
                                     <div className="flex justify-center mt-4 space-x-4">
