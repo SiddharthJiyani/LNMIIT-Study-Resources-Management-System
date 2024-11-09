@@ -8,23 +8,23 @@ import SideBar from './SideBar';
 const developers = [
     {
         name: 'Siddharth Jiyani',
-        // role: 'Captain Underpants',
+        role: 'Captain Underpants',
         bio: 'tbd',
-        image: 'https://media.licdn.com/dms/image/v2/D4D35AQETRbaqLOl3Bg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1721887061014?e=1731153600&v=beta&t=o1GCvZJ0abOmeZF4r_WBydwAqGwqtGbqTbWvUsaIIr8',
+        image: 'https://media.licdn.com/dms/image/v2/D4D35AQETRbaqLOl3Bg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1721887061014?e=1731765600&v=beta&t=j9bse2tb5RPCx-BdoMncVMife7wSm3cOSQHWUtyL144',
         linkedin: 'https://www.linkedin.com/in/siddharth-jiyani-7584a1266/',
         github: 'https://github.com/SiddharthJiyani'
     },
     {
         name: 'Rahul Harpal',
-        // role: 'Frontend Developer',
+        role: 'Frontend Developer',
         bio: 'tbd',
-        image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1716320503581?e=1731153600&v=beta&t=eGAyH8PFvxgUgYwTaSpFdTCiQ9-XbbSbxwQjpn_YxFY    ',
+        image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1716320503581?e=1731765600&v=beta&t=PzPzkMjSC26yENVVnuaUXZMYeAOPoQlOIHBdIRvtVG8    ',
         linkedin: 'https://www.linkedin.com/in/rahulharpal/',
         github: 'https://github.com/rahulharpal1603'
     },
     {
         name: 'Srijan Das',
-        // role: 'Batman',
+        role: 'Batman',
         bio: 'He only comes in darkness',
         image: 'https://media.licdn.com/dms/image/v2/D5603AQHNc6bO45N1Rg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720363416069?e=1736380800&v=beta&t=sDPjyUc9d_-4GCr26fcFsKLIgXDDPEW4FpMNCHsFFBo',
         linkedin: 'https://www.linkedin.com/in/dassrijan16/',
@@ -32,7 +32,7 @@ const developers = [
     },
     {
         name: 'Naitik Jasani',
-        // role: 'Superman',
+        role: 'Superman',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D03AQFrogHf6JoayA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719034745814?e=1735776000&v=beta&t=Z7In0fgHbMfGrlH3qZr2ZgSb0LoCiZRugc6Rh4aZUms',
         linkedin: 'https://www.linkedin.com/in/naitikjasani/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
@@ -40,7 +40,7 @@ const developers = [
     },
     {
         name: 'Akshat Modi',
-        // role: 'Ironman',
+        role: 'Ironman',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D03AQEvAH-AtBN96A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719410218706?e=1735776000&v=beta&t=HYi0htjB0dWMLwOLgBBea3eZ03l_syY7Kz7RSGxDSU8',
         linkedin: 'https://www.linkedin.com/in/akshat-modi-3048b9270/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
