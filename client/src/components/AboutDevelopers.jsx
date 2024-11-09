@@ -16,7 +16,7 @@ const developers = [
     },
     {
         name: 'Rahul Harpal',
-        role: 'Frontend Developer',
+        role: 'Spongebob Squarepants',
         bio: 'tbd',
         image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1716320503581?e=1731765600&v=beta&t=PzPzkMjSC26yENVVnuaUXZMYeAOPoQlOIHBdIRvtVG8    ',
         linkedin: 'https://www.linkedin.com/in/rahulharpal/',
