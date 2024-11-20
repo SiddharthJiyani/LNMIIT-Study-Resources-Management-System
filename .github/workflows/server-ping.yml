@@ -1,0 +1,24 @@
+name: Ping Server
+
+on:
+  schedule:
+    # Runs every 5 minutes
+    - cron: "*/5 * * * *"
+
+jobs:
+  ping-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Ping the server
+      run: |
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://lnmiit-study-resouces-management-system.onrender.com/)
+        if [ "$RESPONSE" -ne 200 ]; then
+          echo "Server is down! HTTP Status: $RESPONSE"
+          exit 1
+        else
+          echo "Server is up and running! HTTP Status: $RESPONSE"
+        fi
