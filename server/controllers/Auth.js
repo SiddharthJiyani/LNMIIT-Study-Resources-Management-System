@@ -43,7 +43,7 @@ exports.signup = async (req, res) => {
     else if (department === "UCC" || department === "DCC") {
       department = "CCE";
     }
-    else if (department === "UES" || department === "DES") {
+    else if (department === "UEC" || department === "DEC") {
       department = "ECE";
     }
     else if (department === "UME" || department === "DME") {
