@@ -10,7 +10,7 @@ const developers = [
         name: 'Siddharth Jiyani',
         role: 'Captain Underpants',
         bio: 'tbd',
-        image: 'https://media.licdn.com/dms/image/v2/D4D35AQETRbaqLOl3Bg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1721887061014?e=1731765600&v=beta&t=j9bse2tb5RPCx-BdoMncVMife7wSm3cOSQHWUtyL144',
+        image: 'https://res.cloudinary.com/djodcayme/image/upload/c_crop,ar_1:1/v1732422716/Siddharth/profile_cm4jlg.jpg',
         linkedin: 'https://www.linkedin.com/in/siddharth-jiyani-7584a1266/',
         github: 'https://github.com/SiddharthJiyani'
     },
@@ -18,7 +18,7 @@ const developers = [
         name: 'Rahul Harpal',
         role: 'Spongebob Squarepants',
         bio: 'tbd',
-        image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1716320503581?e=1731765600&v=beta&t=PzPzkMjSC26yENVVnuaUXZMYeAOPoQlOIHBdIRvtVG8    ',
+        image: 'https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1716320503581?e=1733029200&v=beta&t=H78evgYyLv2JsyKDfYmgpsyY5QKLnUCrwft2s2WenPc',
         linkedin: 'https://www.linkedin.com/in/rahulharpal/',
         github: 'https://github.com/rahulharpal1603'
     },
