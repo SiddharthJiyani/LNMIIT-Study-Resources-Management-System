@@ -184,7 +184,7 @@ export default function CalculateCgpa() {
                                         onChange={(e) => setCurrSemCredits(e.target.value)}
                                     />
                                 </LabelInputContainer>
-                                <LabelInputContainer className="mt-6 max-w-[154px] items-center">
+                                <LabelInputContainer className="mt-6 max-w-[154px] text-center">
                                     <Label className="ml-1">Credits Completed</Label>
                                     <Input
                                         placeholder={"Credits Completed"}
