@@ -175,8 +175,8 @@ export default function CalculateCgpa() {
                                     />
                                 </LabelInputContainer>
                             </div>
-                            <div className="flex justify-between px-7 ">
-                                <LabelInputContainer className="mt-6 max-w-[154px]">
+                            <div className="flex justify-between px-7  items-end">
+                                <LabelInputContainer className="mt-6 max-w-[154px] text-center">
                                     <Label className="ml-1">Current Sem Credits</Label>
                                     <Input
                                         placeholder={"Credits"}
@@ -184,7 +184,7 @@ export default function CalculateCgpa() {
                                         onChange={(e) => setCurrSemCredits(e.target.value)}
                                     />
                                 </LabelInputContainer>
-                                <LabelInputContainer className="mt-6 max-w-[154px]">
+                                <LabelInputContainer className="mt-6 max-w-[154px] items-center">
                                     <Label className="ml-1">Credits Completed</Label>
                                     <Input
                                         placeholder={"Credits Completed"}
