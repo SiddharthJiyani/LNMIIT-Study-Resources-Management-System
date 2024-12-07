@@ -6,8 +6,9 @@ const gradeSurveySchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    courseName: {
-        type: String,
+    courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
         required: true,
         trim: true
     },

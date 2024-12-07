@@ -6,15 +6,17 @@ const courseSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    semester: {
-        type: Number,
-        required: true
-    },
-    department: {
-        type: String,
-        enum: ['CSE', 'CCE', 'ECE', "MME"],
-        required: true
-    }, 
+    offeredTo: [{
+        department: {
+            type: String,
+            enum: ['CSE', 'CCE', 'ECE', 'MME'], // Restrict to valid departments
+            required: true
+        },
+        semester: {
+            type: Number,
+            required: true
+        }
+    }],
     description: {
         type: String,
         trim: true
@@ -23,7 +25,7 @@ const courseSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    isElective:{
+    isElective: {
         type: Boolean,
         default: false,
     },

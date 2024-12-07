@@ -17,7 +17,7 @@ exports.uploadFile = async (req, res) => {
   try {
     const { title, description, resource, courseId, fileType } = req.body;
     // assuming course will be a drop down which will already have semester and branch info
-    // console.log("----------Request body:-----------", req.files);
+    console.log("----------Request body:-----------", req.files);
 
     const file = req.files.resource;
     const user = req.user.id;
@@ -61,6 +61,7 @@ exports.uploadFile = async (req, res) => {
       data: newResource,
     });
   } catch (error) {
+    console.log("Error uploading resource: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error uploading resource",
@@ -117,7 +118,7 @@ exports.showResourceByCourse = async (req, res) => {
     }
 
     // Return only approved resources for the found course
-    res.json({ resources: course.resources, name: course.name });
+    res.json({ resources: course.resources, name: course.name, offeredTo: course.offeredTo });
   } catch (err) {
     console.log(err);
     res.status(500).send("Server error");
@@ -125,33 +126,6 @@ exports.showResourceByCourse = async (req, res) => {
 };
 
 
-exports.showResourceByCourseName = async (req, res) => {
-  try {
-    const { courseName } = req.params;
-    // console.log(courseName);
-    // Find all courses by the course name
-    const courses = await Course.find({ name: courseName.trim() }).populate({
-      path: "resources",
-      match: { isApproved: true }, // Only fetch approved resources
-      populate: { path: "uploadedBy", select: "name" }, // Populate uploadedBy with the user's name
-    });
-
-    if (courses.length === 0) {
-      return res.status(404).json({ message: "No courses found with this name" });
-    }
-    // console.log(courses);
-    // Merge resources from all found courses
-    const allResources = courses.reduce((acc, course) => {
-      return acc.concat(course.resources);
-    }, []);
-
-    // Return the merged resources and course name (assuming they all have the same name)
-    res.json({ resources: allResources, name: courseName, branches: courses.map(c => c.department) });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
 
 
 //get resource by user

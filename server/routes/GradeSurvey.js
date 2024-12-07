@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
     addOrUpdateGradeSurvey,
-    getGradeSurveysByCourseName,
+    getGradeSurveysByCourseId,
 } = require("../controllers/GradeSurvey");
 
 const { auth, isAdmin } = require("../middleware/auth");
@@ -11,6 +11,6 @@ const { auth, isAdmin } = require("../middleware/auth");
 router.post("/add-or-update", auth, addOrUpdateGradeSurvey);
 
 // GET: Fetch grade surveys by course name (Only authenticated users)
-router.get("/:courseName", auth, getGradeSurveysByCourseName);
+router.get("/:courseId", auth, getGradeSurveysByCourseId);
 
 module.exports = router;

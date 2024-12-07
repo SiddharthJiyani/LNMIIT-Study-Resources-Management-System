@@ -3,9 +3,9 @@ const GradeSurvey = require("../models/GradeSurvey");
 // Add or Update GradeSurvey data
 exports.addOrUpdateGradeSurvey = async (req, res) => {
     try {
-        const { rollNumber, courseName, grade, marks } = req.body;
+        const { rollNumber, courseId, grade, marks } = req.body;
 
-        if (!rollNumber || !courseName || !grade || marks === undefined) {
+        if (!rollNumber || !courseId || !grade || marks === undefined) {
             return res.status(400).json({
                 success: false,
                 message: "Please enter all required fields",
@@ -13,7 +13,7 @@ exports.addOrUpdateGradeSurvey = async (req, res) => {
         }
         // console.log(req.body);
         // Check if a record already exists for the given roll number and course name
-        let gradeSurvey = await GradeSurvey.findOne({ rollNumber, courseName });
+        let gradeSurvey = await GradeSurvey.findOne({ rollNumber, courseId });
 
         if (gradeSurvey) {
             // Update the existing record
@@ -29,7 +29,7 @@ exports.addOrUpdateGradeSurvey = async (req, res) => {
             // Create a new record
             gradeSurvey = new GradeSurvey({
                 rollNumber,
-                courseName,
+                courseId,
                 grade,
                 marks,
             });
@@ -51,13 +51,13 @@ exports.addOrUpdateGradeSurvey = async (req, res) => {
 };
 
 // Fetch GradeSurvey data by course name
-exports.getGradeSurveysByCourseName = async (req, res) => {
+exports.getGradeSurveysByCourseId = async (req, res) => {
     try {
-        const { courseName } = req.params;
+        const { courseId } = req.params;
         // console.log(req.params);
         // Find all grade surveys for the specified course name
-        const gradeSurveys = await GradeSurvey.find({ courseName });
-        // console.log(gradeSurveys);
+        const gradeSurveys = await GradeSurvey.find({ courseId });
+        console.log(gradeSurveys);
         if (gradeSurveys.length === 0) {
             return res.status(200).json({
                 success: false,

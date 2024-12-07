@@ -21,7 +21,7 @@ export const CourseList = () => {
   const [courseName, setCourseName] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [branches, setBranches] = useState([]);
-  const [gradeSurveyData, setGradeSurveyData] = useState([]);
+  const [gradeSurveyDetails, setGradeSurveyDetails] = useState([]);
   const [marks, setMarks] = useState("");
   const [grade, setGrade] = useState("");
   const [dataExists, setDataExists] = useState(false);
@@ -39,31 +39,36 @@ export const CourseList = () => {
         };
 
         // Fetch course and resources data
-        const response1 = await fetch(`${BACKEND}/api/resource/showByCourse/${courseId}`, options);
-        if (!response1.ok) throw new Error("Network response was not ok");
-        let data1 = await response1.json();
-        let courseName = data1.name;
+        const courseQueryResponse = await fetch(
+          `${BACKEND}/api/resource/showByCourse/${courseId}`,
+          options
+        );
+        if (!courseQueryResponse.ok)
+          throw new Error("Network response was not ok");
+        let courseData = await courseQueryResponse.json();
+        let courseName = courseData.name;
+        let branches = courseData.offeredTo.map((obj) => obj.department);
+        setBranches(branches);
         setCourseName(courseName);
-
-        const response2 = await fetch(`${BACKEND}/api/resource/showByCourseName/${courseName}`, options);
-        if (!response2.ok) throw new Error("Network response was not ok");
-        let data2 = await response2.json();
-        setBranches(data2.branches);
-        setResources(data2.resources);
+        setResources(courseData.resources);
 
         // Fetch grade survey data
-        const response3 = await fetch(`${BACKEND}/api/grade-survey/${courseName}`, options);
-        if (!response3.ok) throw new Error("Network response was not ok");
-        let data3 = await response3.json();
+        const gradeSurveyResponse = await fetch(
+          `${BACKEND}/api/grade-survey/${courseId}`,
+          options
+        );
+        if (!gradeSurveyResponse.ok)
+          throw new Error("Network response was not ok");
+        let gradeSurveyData = await gradeSurveyResponse.json();
         // console.log(data3);
-        if (data3.success) {
+        if (gradeSurveyData.success) {
           setDataExists(true);
         }
         // console.log(dataExists)
-        setGradeSurveyData(data3.survey);
+        setGradeSurveyDetails(gradeSurveyData.survey);
 
         setLoading(false);
-        data2.resources.forEach((resource) => {
+        courseData.resources.forEach((resource) => {
           fetchFavoriteStatus(resource._id);
         });
       } catch (error) {
@@ -167,19 +172,22 @@ export const CourseList = () => {
 
     try {
       toast.loading("Adding your response..");
-      const response = await fetch(`${BACKEND}/api/grade-survey/add-or-update`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rollNumber: rollNumber,
-          courseName: courseName,
-          marks: parseInt(marks, 10),
-          grade: grade,
-        }),
-      });
+      const response = await fetch(
+        `${BACKEND}/api/grade-survey/add-or-update`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rollNumber: rollNumber,
+            courseId: courseId,
+            marks: parseInt(marks, 10),
+            grade: grade,
+          }),
+        }
+      );
 
       if (response.ok) {
         toast.dismiss();
@@ -211,16 +219,23 @@ export const CourseList = () => {
     surveyData.forEach(({ rollNumber, grade, marks }) => {
       const year = getYearFromRoll(rollNumber);
       if (!dataByYear[year]) dataByYear[year] = {};
-      if (!dataByYear[year][grade]) dataByYear[year][grade] = { min: marks, max: marks };
+      if (!dataByYear[year][grade])
+        dataByYear[year][grade] = { min: marks, max: marks };
       else {
-        dataByYear[year][grade].min = Math.min(dataByYear[year][grade].min, marks);
-        dataByYear[year][grade].max = Math.max(dataByYear[year][grade].max, marks);
+        dataByYear[year][grade].min = Math.min(
+          dataByYear[year][grade].min,
+          marks
+        );
+        dataByYear[year][grade].max = Math.max(
+          dataByYear[year][grade].max,
+          marks
+        );
       }
     });
     return dataByYear;
   };
 
-  const surveyByYear = organizeSurveyData(gradeSurveyData);
+  const surveyByYear = organizeSurveyData(gradeSurveyDetails);
   const userDepartment = profileData.department;
   const isUserAllowed = branches.includes(userDepartment);
   const filteredResources = resources
@@ -237,13 +252,15 @@ export const CourseList = () => {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]">
           {loading ? (
             <Spinner />
           ) : (
             <>
               <div className="flex flex-col max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
-                <p className="text-[28px] text-center mb-2 font-medium">{courseName}</p>
+                <p className="text-[28px] text-center mb-2 font-medium">
+                  {courseName}
+                </p>
 
                 {/* Filter Dropdown */}
                 <div className="mb-4 flex justify-between">
@@ -272,29 +289,59 @@ export const CourseList = () => {
                   <table className="w-full border border-zinc-200 shadow-md rounded-lg dark:border-zinc-800">
                     <thead>
                       <tr className="bg-zinc-50 dark:bg-zinc-900">
-                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">S. No.</th>
-                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">Name</th>
-                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">Rating</th>
-                        <th className="py-3 px-2 sm:px-4 border-b text-center dark:border-zinc-800">Favorite</th>
+                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">
+                          S. No.
+                        </th>
+                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">
+                          Name
+                        </th>
+                        <th className="py-3 px-2 sm:px-4 border-b text-left dark:border-zinc-800">
+                          Rating
+                        </th>
+                        <th className="py-3 px-2 sm:px-4 border-b text-center dark:border-zinc-800">
+                          Favorite
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredResources.length > 0 ? (
                         filteredResources.map((resource, index) => (
-                          <tr key={resource._id} className="hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => handleRowClick(resource._id)}>
-                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">{index + 1}</td>
-                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">{resource.title}</td>
-                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">{resource.averageRating || "N/A"}</td>
+                          <tr
+                            key={resource._id}
+                            className="hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                            onClick={() => handleRowClick(resource._id)}
+                          >
+                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">
+                              {index + 1}
+                            </td>
+                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">
+                              {resource.title}
+                            </td>
+                            <td className="py-2 px-2 sm:px-4 border-b dark:border-zinc-800">
+                              {resource.averageRating || "N/A"}
+                            </td>
                             <td className="py-2 px-2 sm:px-4 border-b text-center dark:border-zinc-800">
-                              <button onClick={(e) => { e.stopPropagation(); handleFavoriteToggle(resource._id); }} className="text-2xl">
-                                {favorites.has(resource._id) ? <AiFillHeart className="text-red-500" /> : <AiOutlineHeart />}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleFavoriteToggle(resource._id);
+                                }}
+                                className="text-2xl"
+                              >
+                                {favorites.has(resource._id) ? (
+                                  <AiFillHeart className="text-red-500" />
+                                ) : (
+                                  <AiOutlineHeart />
+                                )}
                               </button>
                             </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="4" className="text-center py-4">No resources found.</td>
+                          <td colSpan="4" className="text-center py-4">
+                            No resources found.
+                          </td>
                         </tr>
                       )}
                     </tbody>
@@ -303,44 +350,51 @@ export const CourseList = () => {
               </div>
 
               <div className="max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border mt-10 ">
-                <p className="text-[28px] text-center mb-2 font-medium">YouTube Resources</p>
+                <p className="text-[28px] text-center mb-2 font-medium">
+                  YouTube Resources
+                </p>
                 <YTLinks courseName={courseName} />
-
               </div>
               <div className="flex flex-col max-w-5xl mx-auto bg-white p-4 md:px-6 rounded-lg shadow-md border mt-10">
-
-                <p className="text-[28px] text-center mb-2 font-medium">Marks V/S Grade</p>
+                <p className="text-[28px] text-center mb-2 font-medium">
+                  Marks V/S Grade
+                </p>
                 {/* Add Marks and Grade (conditionally displayed) */}
-                {isUserAllowed && profileData.email.includes("lnmiit.ac.in") && (
-                  <div className="mt-4 mx-auto">
-                    <h3 className="text-md font-semibold text-center">Add Your Marks and Grade</h3>
-                    <div className="flex items-center">
-                      <Input
-                        type="number"
-                        value={marks}
-                        onChange={(e) => setMarks(e.target.value)}
-                        placeholder="Marks"
-                        className="border p-2  rounded-md max-w-[8rem]"
-                      />
-                      <select
-                        value={grade}
-                        onChange={(e) => setGrade(e.target.value)}
-                        className="border p-2 rounded-md mx-2 h-[40px]"
-                      >
-                        <option value="">Select Grade</option>
-                        <option value="A">A</option>
-                        <option value="AB">AB</option>
-                        <option value="B">B</option>
-                        <option value="BC">BC</option>
-                        <option value="C">C</option>
-                        <option value="CD">CD</option>
-                        <option value="D">D</option>
-                        <option value="F">F</option>
-                      </select>
-                      <Button onClick={handleSubmit} className="btn-primary">Submit</Button>
+                {isUserAllowed &&
+                  profileData.email.includes("lnmiit.ac.in") && (
+                    <div className="mt-4 mx-auto">
+                      <h3 className="text-md font-semibold text-center">
+                        Add Your Marks and Grade
+                      </h3>
+                      <div className="flex items-center">
+                        <Input
+                          type="number"
+                          value={marks}
+                          onChange={(e) => setMarks(e.target.value)}
+                          placeholder="Marks"
+                          className="border p-2  rounded-md max-w-[8rem]"
+                        />
+                        <select
+                          value={grade}
+                          onChange={(e) => setGrade(e.target.value)}
+                          className="border p-2 rounded-md mx-2 h-[40px]"
+                        >
+                          <option value="">Select Grade</option>
+                          <option value="A">A</option>
+                          <option value="AB">AB</option>
+                          <option value="B">B</option>
+                          <option value="BC">BC</option>
+                          <option value="C">C</option>
+                          <option value="CD">CD</option>
+                          <option value="D">D</option>
+                          <option value="F">F</option>
+                        </select>
+                        <Button onClick={handleSubmit} className="btn-primary">
+                          Submit
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 {/* Display Grade Survey by Year */}
 
@@ -348,10 +402,13 @@ export const CourseList = () => {
                   {dataExists ? (
                     Object.keys(surveyByYear).map((year) => (
                       // console.log(surveyByYear),
-                      <Card key={year} className="year-card bg-white rounded-lg shadow-md p-2 my-4">
+                      <Card
+                        key={year}
+                        className="year-card bg-white rounded-lg shadow-md p-2 my-4"
+                      >
                         <CardHeader>
                           <CardTitle className="text-center text-[18px]">
-                            {`Year: 20${year}`}
+                            {`Batch: 20${year}`}
                           </CardTitle>
                         </CardHeader>
                         {/* <h3 className="font-bold text-lg">{`Year: 20${year}`}</h3> */}
@@ -359,25 +416,27 @@ export const CourseList = () => {
                           <ul>
                             {Object.keys(surveyByYear[year]).map((grade) => (
                               <li key={grade}>
-                                <strong>{grade}:</strong> {`${surveyByYear[year][grade].min} - ${surveyByYear[year][grade].max}`}
+                                <strong>{grade}:</strong>{" "}
+                                {`${surveyByYear[year][grade].min} - ${surveyByYear[year][grade].max}`}
                               </li>
                             ))}
                           </ul>
                         </CardContent>
                       </Card>
                     ))
-                  ) : (<p className="col-span-full text-center text-zinc-500 mt-4">No data available</p>)}
-
+                  ) : (
+                    <p className="col-span-full text-center text-zinc-500 mt-4">
+                      No data available
+                    </p>
+                  )}
                 </div>
               </div>
             </>
           )}
-
         </main>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 
 export default CourseList;
-
