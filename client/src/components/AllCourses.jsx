@@ -66,7 +66,7 @@ export default function AllCourses() {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]">
           <div className="flex flex-col items-center space-y-4 md:space-y-6">
             <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="space-y-2 md:space-y-0 md:space-x-4">
@@ -111,7 +111,7 @@ export default function AllCourses() {
             )}
 
             {loading ? (
-              <Spinner/>
+              <Spinner />
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full lg:px-5 sm:px-5">
                 {courses.length > 0 ? (

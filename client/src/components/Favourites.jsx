@@ -26,9 +26,14 @@ export default function Favourites() {
 
       const data = await response.json();
       if (response.ok) {
-        setFavorites(Array.isArray(data.user.favorites) ? data.user.favorites : []);
+        setFavorites(
+          Array.isArray(data.user.favorites) ? data.user.favorites : []
+        );
       } else {
-        console.error("Failed to fetch favorites:", data.message || "Unknown error");
+        console.error(
+          "Failed to fetch favorites:",
+          data.message || "Unknown error"
+        );
       }
     } catch (error) {
       console.error("Error fetching favorites:", error);
@@ -85,10 +90,12 @@ export default function Favourites() {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]  ">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]  ">
           <Card className="max-w-5xl mx-auto">
             <CardHeader>
-              <CardTitle className="text-center text-[28px]">Favorite Materials</CardTitle>
+              <CardTitle className="text-center text-[28px]">
+                Favorite Materials
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
@@ -104,20 +111,35 @@ export default function Favourites() {
                 <table className="w-full border border-zinc-200 shadow-md rounded-lg dark:border-zinc-800">
                   <thead>
                     <tr className="bg-zinc-50 dark:bg-zinc-900">
-                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">S. No.</th>
-                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">Title</th>
-                      <th className="py-3 px-4 border-b text-center dark:border-zinc-800">Action</th>
+                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">
+                        S. No.
+                      </th>
+                      <th className="py-3 px-4 border-b text-left dark:border-zinc-800">
+                        Title
+                      </th>
+                      <th className="py-3 px-4 border-b text-center dark:border-zinc-800">
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredFavorites.length > 0 ? (
                       filteredFavorites.map((material, index) => (
-                        <tr key={material._id} className="hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer">
-                          <td className="py-2 px-4 border-b dark:border-zinc-800">{index + 1}</td>
-                          <td className="py-2 px-4 border-b dark:border-zinc-800">{material.title}</td>
+                        <tr
+                          key={material._id}
+                          className="hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                        >
+                          <td className="py-2 px-4 border-b dark:border-zinc-800">
+                            {index + 1}
+                          </td>
+                          <td className="py-2 px-4 border-b dark:border-zinc-800">
+                            {material.title}
+                          </td>
                           <td className="py-2 px-4 border-b text-center dark:border-zinc-800 flex flex-col sm:flex-row sm:justify-center">
                             <Button
-                              onClick={() => navigate(`/resources/${material._id}`)}
+                              onClick={() =>
+                                navigate(`/resources/${material._id}`)
+                              }
                               className="mb-2 sm:mb-0 sm:mr-2"
                             >
                               View
@@ -136,7 +158,10 @@ export default function Favourites() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="4" className="py-4 text-center dark:text-zinc-400">
+                        <td
+                          colSpan="4"
+                          className="py-4 text-center dark:text-zinc-400"
+                        >
                           No favorite materials found.
                         </td>
                       </tr>

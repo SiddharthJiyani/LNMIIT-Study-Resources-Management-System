@@ -49,10 +49,10 @@ export function Login() {
         credentials: 'include',
       });
 
-      console.log('response', response);
+      // console.log('response', response);
 
       const data = await response.json();
-      console.log('data', data);
+      // console.log('data', data);
       const token = data.token;
       if (response.ok && data.success) {
         toast.dismiss();

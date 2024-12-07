@@ -3,11 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import Spinner from "./Spinner";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
@@ -57,7 +53,7 @@ export default function MyCourses() {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]">
           {loading ? (
             <Spinner />
           ) : (
@@ -66,7 +62,8 @@ export default function MyCourses() {
                 <Card
                   key={course._id}
                   className="transition-transform hover:scale-105"
-                  onClick={() => handleCourseClick(course._id)}>
+                  onClick={() => handleCourseClick(course._id)}
+                >
                   <CardHeader>
                     <CardTitle>{course.name}</CardTitle>
                   </CardHeader>

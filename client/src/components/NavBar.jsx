@@ -1,12 +1,39 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { BookMarked, BookMarkedIcon, Check, FileCheck2, FilePlus, Menu, X } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  BookMarked,
+  BookMarkedIcon,
+  Check,
+  FileCheck2,
+  FilePlus,
+  Menu,
+  X,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import toast, { Toaster } from "react-hot-toast";
-import { User, Book, Star, Calculator, ChartArea, HandHeart, MessageCircle, BookCopy, FileCheck, Users, Youtube } from 'lucide-react';
+import {
+  User,
+  Book,
+  Star,
+  Calculator,
+  ChartArea,
+  HandHeart,
+  MessageCircle,
+  BookCopy,
+  FileCheck,
+  Users,
+  Youtube,
+} from "lucide-react";
 import logo from "../assets/navLogo.png";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
@@ -16,20 +43,18 @@ const navLinks = [
   { to: "/all-courses", label: "All Courses", icon: <BookCopy /> },
   { to: "/favourites", label: "Favourites", icon: <Star /> },
   { to: "/calculate-cgpa", label: "Calculate CGPA", icon: <Calculator /> },
-  { to: "/marks-vs-grade", label: "Marks vs Grade", icon: <ChartArea /> },
-  { to: "/contribute", label: "Contribute", icon: <HandHeart /> },
+  { to: "/contribute", label: "Contribute Resource", icon: <HandHeart /> },
   { to: "/my-contributions", label: "My Contributions", icon: <FilePlus /> },
   { to: "/feedback", label: "Feedback", icon: <MessageCircle /> },
   { to: "/about-developers", label: "Our Team", icon: <Users /> },
   { to: "/approve", label: "Approve", icon: <FileCheck /> },
   { to: "/manage-course", label: "Manage Course", icon: <BookMarked /> },
-  { to: "/add-yt", label: "Manage YouTube", icon: <Youtube /> }
+  { to: "/add-yt", label: "Manage YouTube", icon: <Youtube /> },
 ];
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
 
   const user = JSON.parse(localStorage.getItem("user"));
   const accountType = user.accountType;
@@ -63,10 +88,10 @@ export default function NavBar() {
     }
   };
   const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleDateString('en-US', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short'
+  const formattedDate = currentDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
   });
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
@@ -75,7 +100,10 @@ export default function NavBar() {
         <img src={logo} alt="" className="h-7" />
         <span className="sr-only">LMS</span>
       </Link>
-      <Badge variant="secondary" className="hidden md:flex items-center font-dotMatrix text-[14px]">
+      <Badge
+        variant="secondary"
+        className="hidden md:flex items-center font-dotMatrix text-[14px]"
+      >
         {formattedDate}
       </Badge>
       <div className="flex justify-center items-center gap-4">
@@ -103,29 +131,35 @@ export default function NavBar() {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
         >
-          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
-      {
-        isMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
-            <div className="flex flex-col items-start p-4 space-y-2">
-              {navLinks.map(({ to, label, icon }) => (
-                (label === "Approve" || label === "Manage Course" || label === "Manage YouTube") && accountType !== "admin" ? null :
-                  <Link
-                    key={to}
-                    to={to}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
-                  >
-                    <span className="">{icon}</span>
-                    <span className="font-medium text-gray-900">{label}</span>
-                  </Link>
-              ))}
-            </div>
+      {isMenuOpen && (
+        <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
+          <div className="flex flex-col items-start p-4 space-y-2">
+            {navLinks.map(({ to, label, icon }) =>
+              (label === "Approve" ||
+                label === "Manage Course" ||
+                label === "Manage YouTube") &&
+              accountType !== "admin" ? null : (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
+                >
+                  <span className="">{icon}</span>
+                  <span className="font-medium text-gray-900">{label}</span>
+                </Link>
+              )
+            )}
           </div>
-        )
-      }
-    </header >
+        </div>
+      )}
+    </header>
   );
 }

@@ -34,7 +34,9 @@ const ResourceCard = () => {
           },
         };
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/resource/showById/${resourceId}`,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/resource/showById/${resourceId}`,
           options
         );
         if (!response.ok) throw new Error("Network response was not ok");
@@ -68,7 +70,7 @@ const ResourceCard = () => {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]">
           <Card className="max-w-lg mx-auto rounded-xl shadow-lg border dark:border-zinc-800">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-semibold text-zinc-800 dark:text-zinc-200">
@@ -106,7 +108,9 @@ const ResourceCard = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>Rating</TableCell>
-                    <TableCell>{averageRating || "N/A"} ({resource.ratings.length})</TableCell>
+                    <TableCell>
+                      {averageRating || "N/A"} ({resource.ratings.length})
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

@@ -10,7 +10,7 @@ const MyContributions = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log('user' , user)
+  // console.log('user' , user)
 
   useEffect(() => {
     const fetchUserResources = async () => {

@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input"; // Assuming an Input component is available
-import { AiOutlineCheckCircle, AiOutlineExclamationCircle } from "react-icons/ai";
+import {
+  AiOutlineCheckCircle,
+  AiOutlineExclamationCircle,
+} from "react-icons/ai";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export default function Contribute() {
@@ -60,7 +63,8 @@ export default function Contribute() {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    if (selectedFile && selectedFile.size > 10 * 1024 * 1024) { // 10 MB limit
+    if (selectedFile && selectedFile.size > 10 * 1024 * 1024) {
+      // 10 MB limit
       setFileSizeWarning("File size should be less than 10 MB.");
       // setMessage("File size should be less than 10 MB.")
       setFile(null);
@@ -115,7 +119,7 @@ export default function Contribute() {
       <NavBar />
       <div className="flex flex-1">
         <SideBar />
-        <main className="flex-1 p-4 md:p-6 md:ml-[187px]">
+        <main className="flex-1 p-4 md:p-6 md:ml-[217px]">
           <Card className="max-w-xl mx-auto shadow-lg">
             <CardHeader>
               <CardTitle className="text-center text-xl font-semibold">
@@ -143,7 +147,8 @@ export default function Contribute() {
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                >
                   <option value="" disabled>
                     Select Department
                   </option>
@@ -156,19 +161,23 @@ export default function Contribute() {
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                >
                   <option value="" disabled>
                     Select Semester
                   </option>
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                    <option key={sem} value={sem}>{sem}</option>
+                    <option key={sem} value={sem}>
+                      {sem}
+                    </option>
                   ))}
                 </select>
                 <select
                   value={courseId}
                   onChange={(e) => setCourseId(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                >
                   <option value="" disabled>
                     Select Course
                   </option>
@@ -191,7 +200,8 @@ export default function Contribute() {
                   value={fileType}
                   onChange={(e) => setFileType(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                >
                   <option value="" disabled>
                     Select File Type
                   </option>
@@ -207,7 +217,8 @@ export default function Contribute() {
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full text-white rounded-md">
+                className="w-full text-white rounded-md"
+              >
                 {loading ? (
                   <span className="flex items-center justify-center">
                     <svg
@@ -239,10 +250,12 @@ export default function Contribute() {
 
               {message && (
                 <div
-                  className={`mt-4 flex items-center text-sm px-4 py-3 rounded-md shadow-md transition-colors duration-300 ${message.includes("successfully")
-                    ? "bg-green-100 text-green-700 border border-green-300 dark:bg-green-800 dark:text-green-200"
-                    : "bg-red-100 text-red-700 border border-red-300 dark:bg-red-800 dark:text-red-200"
-                    }`}>
+                  className={`mt-4 flex items-center text-sm px-4 py-3 rounded-md shadow-md transition-colors duration-300 ${
+                    message.includes("successfully")
+                      ? "bg-green-100 text-green-700 border border-green-300 dark:bg-green-800 dark:text-green-200"
+                      : "bg-red-100 text-red-700 border border-red-300 dark:bg-red-800 dark:text-red-200"
+                  }`}
+                >
                   {message.includes("successfully") ? (
                     <AiOutlineCheckCircle className="mr-2" size={18} />
                   ) : (
