@@ -20,7 +20,7 @@ const developers = [
     role: "Spongebob Squarepants",
     bio: "tbd",
     image:
-      "https://media.licdn.com/dms/image/v2/D4D35AQHQGyYef2iYFg/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1716320503581?e=1733029200&v=beta&t=H78evgYyLv2JsyKDfYmgpsyY5QKLnUCrwft2s2WenPc",
+      "https://res.cloudinary.com/dedcazsvk/image/upload/v1733603760/resources/ftbqvwlfzt6bvedvlvup.jpg",
     linkedin: "https://www.linkedin.com/in/rahulharpal/",
     github: "https://github.com/rahulharpal1603",
   },
@@ -29,7 +29,7 @@ const developers = [
     role: "Batman",
     bio: "He only comes in darkness",
     image:
-      "https://media.licdn.com/dms/image/v2/D5603AQHNc6bO45N1Rg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720363416069?e=1736380800&v=beta&t=sDPjyUc9d_-4GCr26fcFsKLIgXDDPEW4FpMNCHsFFBo",
+      "https://res.cloudinary.com/dedcazsvk/image/upload/v1733603527/resources/njvsnzopwtjszuj7zu40.jpg",
     linkedin: "https://www.linkedin.com/in/dassrijan16/",
     github: "https://github.com/thisIsSrijan",
   },
@@ -38,7 +38,7 @@ const developers = [
     role: "Superman",
     bio: "tbd",
     image:
-      "https://media.licdn.com/dms/image/v2/D4D03AQFrogHf6JoayA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719034745814?e=1735776000&v=beta&t=Z7In0fgHbMfGrlH3qZr2ZgSb0LoCiZRugc6Rh4aZUms",
+      "https://res.cloudinary.com/dedcazsvk/image/upload/v1733603830/resources/wqt9j2nz2eb4oafbibxt.jpg",
     linkedin:
       "https://www.linkedin.com/in/naitikjasani/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     github: "https://github.com/flicktoss",
@@ -48,7 +48,7 @@ const developers = [
     role: "Ironman",
     bio: "tbd",
     image:
-      "https://media.licdn.com/dms/image/v2/D4D03AQEvAH-AtBN96A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719410218706?e=1735776000&v=beta&t=HYi0htjB0dWMLwOLgBBea3eZ03l_syY7Kz7RSGxDSU8",
+      "https://res.cloudinary.com/dedcazsvk/image/upload/v1733603883/resources/a8huywvsi4cuy5bc3oau.jpg",
     linkedin:
       "https://www.linkedin.com/in/akshat-modi-3048b9270/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     github: "https://github.com/AUSM1526",
