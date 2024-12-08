@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import { FaPlus, FaSave, FaTimes } from "react-icons/fa";
 import toast from "react-hot-toast";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
