@@ -312,7 +312,7 @@ export default function CalculateCgpa() {
                         ))}
                       </select>
                     </div>
-                  ))}
+                  ))} 
                   {[...Array(electiveCount)].map((_, i) => (
                     <div
                       key={`elective-${i + 1}`}
