@@ -9,4 +9,10 @@ export default defineConfig({
       "@": path.resolve("./src"),
     },
   },
+  server: {
+    host: true,
+    watch: {
+      usePolling: true,
+    }
+  }
 })
