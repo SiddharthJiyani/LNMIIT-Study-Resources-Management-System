@@ -38,6 +38,7 @@ Welcome to the **LNMIIT Study Resources Management System**. This platform enabl
 - **Database**: MongoDB
 - **Authentication**: JWT (JSON Web Tokens)
 - **Deployment**: Render
+- Docker for setting up project locally.
 
 ---
 
