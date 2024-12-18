@@ -12,20 +12,20 @@
 
 1. **Fork the Repository**
    ```bash
-   # Navigate to https://github.com/SiddharthJiyani/LNMIIT-Study-Resouces-Management-System
+   # Navigate to https://github.com/SiddharthJiyani/LNMIIT-Study-Resources-Management-System
    # Click 'Fork' button to create a copy in your GitHub account
    ```
 
 2. **Clone Your Forked Repository**
    ```bash
    # Replace {YOUR_USERNAME} with your GitHub username
-   git clone https://github.com/{YOUR_USERNAME}/LNMIIT-Study-Resouces-Management-System.git
-   cd LNMIIT-Study-Resouces-Management-System
+   git clone https://github.com/{YOUR_USERNAME}/LNMIIT-Study-Resources-Management-System.git
+   cd LNMIIT-Study-Resources-Management-System
    ```
 
 3. **Add Upstream Remote**
    ```bash
-   git remote add upstream https://github.com/SiddharthJiyani/LNMIIT-Study-Resouces-Management-System.git
+   git remote add upstream https://github.com/SiddharthJiyani/LNMIIT-Study-Resources-Management-System.git
    
    # Verify remotes
    git remote -v
@@ -124,9 +124,9 @@
 13. **Create Pull Request**
     - Go to your forked repository on GitHub
     - Click "Pull Request" button
-    - Select base repository: `SiddharthJiyani/LNMIIT-Study-Resouces-Management-System`
+    - Select base repository: `SiddharthJiyani/LNMIIT-Study-Resources-Management-System`
     - Select base branch: `main`
-    - Select head repository: `{YOUR_USERNAME}/LNMIIT-Study-Resouces-Management-System`
+    - Select head repository: `{YOUR_USERNAME}/LNMIIT-Study-Resources-Management-System`
     - Select head branch: `feature/your-feature-name`
     - Write a clear description of your changes
     - Submit Pull Request
