@@ -4,13 +4,14 @@
   "main": "index.js",
   "scripts": {
     "run": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon -L index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "async_hooks": "^1.0.0",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "concurrently": "^9.0.1",

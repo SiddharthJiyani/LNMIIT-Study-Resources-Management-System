@@ -1,0 +1,50 @@
+name: mern-app
+
+services:
+  mongo:
+    image: mongo:8.0.1
+    ports:
+      - 27019:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mern-app
+
+  api:
+    ports:
+      - 4000:4000
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - mern-app
+    depends_on:
+      - mongo
+    command: sh -c "node seed.js && npm run dev"
+
+  client:
+    ports:
+      - 5173:5173
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - mern-app
+    command: npm run dev -- --host
+    depends_on:
+      - api
+volumes:
+  mongo_data:
+networks:
+  mern-app:
+    driver: bridge
