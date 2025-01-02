@@ -15,42 +15,59 @@ cloudinary.config({
 // upload resource
 exports.uploadFile = async (req, res) => {
   try {
-    const { title, description, resource, courseId, fileType } = req.body;
-    // assuming course will be a drop down which will already have semester and branch info
-    console.log("----------Request body:-----------", req.files);
-
-    const file = req.files.resource;
+    // console.log("Request body:", req.body);
+    const { title, description, courseId, fileType,link } = req.body;
     const user = req.user.id;
 
-    //check if all fields are there or not
-    if (!title || !file || !courseId || !fileType) {
+    // Check if all required fields are provided
+    if (!title || !courseId || !fileType) {
       return res.status(400).json({
         success: false,
-        message: "Please enter all fields",
+        message: "Please enter all required fields.",
       });
     }
 
-    // Upload file to Cloudinary
-    const result = await uploadImageToCloudinary(file, "resources");
-    console.log("Result: ", result);
-    // console.log("File uploaded to Cloudinary", result);
+    let fileUrl = null;
+    let resourceType = null;
+
+    // If a file is uploaded, process it
+    if (req.files && req.files.resource) {
+      const file = req.files.resource;
+
+      // Upload file to Cloudinary
+      const result = await uploadImageToCloudinary(file, "resources");
+      console.log("File uploaded to Cloudinary:", result);
+
+      fileUrl = result.secure_url; // File URL from Cloudinary
+      resourceType = result.resource_type; 
+    } 
+    else if (link) {
+      console.log('link')
+      fileUrl = link;
+      resourceType = "url"; 
+    } 
+    else {
+      // If neither file nor URL is provided, return an error
+      return res.status(400).json({
+        success: false,
+        message: "Please upload a file or provide a valid URL.",
+      });
+    }
 
     // Create resource
     const newResource = new Resource({
       title,
-      resource,
       description,
       course: courseId,
       uploadedBy: user,
-      resource_type: result.resource_type,
+      resource_type: resourceType,
       fileType,
-      fileUrl: result.secure_url, // File URL from Cloudinary 
+      fileUrl,
     });
 
-    // Save resource to MongoDB
     await newResource.save();
 
-    // update course with resource
+    // Update course with resource
     const course = await Course.findById(courseId);
     course.resources.push(newResource._id);
     await course.save();
@@ -61,14 +78,15 @@ exports.uploadFile = async (req, res) => {
       data: newResource,
     });
   } catch (error) {
-    console.log("Error uploading resource: ", error.message);
+    console.log("Error uploading resource:", error.message);
     res.status(500).json({
       success: false,
-      message: "Error uploading resource",
+      message: "Error uploading resource.",
       error: error.message,
     });
   }
 };
+
 
 //get all approved resources (for student users)
 exports.showApprovedResource = async (req, res) => {

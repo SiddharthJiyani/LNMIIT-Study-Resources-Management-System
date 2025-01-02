@@ -415,7 +415,7 @@ export default function CalculateCgpa() {
                     ))}
 
                     {/* Custom Subject Form */}
-                    <div className=" p-4 border mt-10 rounded-md bg-gray-50">
+                    <div className="p-4 border mt-10 rounded-md bg-gray-50">
                       <h3 className="text-lg font-semibold mb-4">
                         Add Custom Subject
                       </h3>
@@ -424,8 +424,8 @@ export default function CalculateCgpa() {
                         <div className="mb-4 text-red-500 text-sm">{error}</div>
                       )}
 
-                      <div className="flex space-x-4 ">
-                        <LabelInputContainer className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:space-x-4">
+                        <LabelInputContainer className="flex-1 mb-4 sm:mb-0">
                           <Label>Course Name</Label>
                           <Input
                             value={customSubjectName}
@@ -436,7 +436,7 @@ export default function CalculateCgpa() {
                           />
                         </LabelInputContainer>
 
-                        <LabelInputContainer className="w-32">
+                        <LabelInputContainer className="w-full sm:w-32 mb-4 sm:mb-0">
                           <Label>Credits</Label>
                           <Input
                             value={customSubjectCredits}
@@ -449,7 +449,9 @@ export default function CalculateCgpa() {
                           />
                         </LabelInputContainer>
 
-                        <Button onClick={addCustomSubject} className="mt-7">
+                        <Button
+                          onClick={addCustomSubject}
+                          className="mt-4 sm:mt-7">
                           Add Subject
                         </Button>
                       </div>

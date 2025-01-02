@@ -22,6 +22,7 @@ import AboutDevelopers from "./components/AboutDevelopers";
 import { AddYT } from "./components/AddYT";
 import NotFound from "./components/NotFound";
 import ForgetPassword from "./components/Auth/ForgetPassword"
+import ResetPassword from "./components/Auth/ResetPassword";
 // ! #### Protected and Public Routes must be implemented here ####
 function App() {
 
@@ -62,6 +63,15 @@ function App() {
             element={
               <OpenRoute>
                 <ForgetPassword />
+              </OpenRoute>
+            }
+          />
+
+          <Route
+            path="/reset-password/:token"
+            element={
+              <OpenRoute>
+                <ResetPassword />
               </OpenRoute>
             }
           />

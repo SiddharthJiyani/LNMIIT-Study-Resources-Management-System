@@ -10,25 +10,28 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/Input"; // Assuming an Input component is available
+import { Input } from "@/components/ui/Input";
 import {
   AiOutlineCheckCircle,
   AiOutlineExclamationCircle,
 } from "react-icons/ai";
+
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 export default function Contribute() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
+  const [link, setLink] = useState("");
+  const [fileType, setFileType] = useState("");
   const [department, setDepartment] = useState("");
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState([]);
   const [courseId, setCourseId] = useState("");
-  const [fileType, setFileType] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [fileSizeWarning, setFileSizeWarning] = useState("");
+  const [uploadOption, setUploadOption] = useState("file"); // "file" or "link"
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,9 +67,7 @@ export default function Contribute() {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.size > 10 * 1024 * 1024) {
-      // 10 MB limit
       setFileSizeWarning("File size should be less than 10 MB.");
-      // setMessage("File size should be less than 10 MB.")
       setFile(null);
     } else {
       setFile(selectedFile);
@@ -75,8 +76,9 @@ export default function Contribute() {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
-    if (!title || !file || !courseId || !fileType) {
+    if (!title || !courseId || !fileType || (uploadOption === "file" && !file) || (uploadOption === "link" && !link)) {
       setMessage("Please enter all required fields.");
       return;
     }
@@ -85,9 +87,14 @@ export default function Contribute() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("resource", file);
     formData.append("courseId", courseId);
     formData.append("fileType", fileType);
+
+    if (uploadOption === "file") {
+      formData.append("resource", file);
+    } else if (uploadOption === "link") {
+      formData.append("link", link);
+    }
 
     try {
       const response = await fetch(`${BACKEND}/api/resource/upload`, {
@@ -98,6 +105,8 @@ export default function Contribute() {
         },
         body: formData,
       });
+
+      // console.log('response', response)
 
       if (response.ok) {
         const data = await response.json();
@@ -147,8 +156,7 @@ export default function Contribute() {
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
-                >
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
                   <option value="" disabled>
                     Select Department
                   </option>
@@ -161,8 +169,7 @@ export default function Contribute() {
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
-                >
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
                   <option value="" disabled>
                     Select Semester
                   </option>
@@ -176,8 +183,7 @@ export default function Contribute() {
                   value={courseId}
                   onChange={(e) => setCourseId(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
-                >
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
                   <option value="" disabled>
                     Select Course
                   </option>
@@ -187,21 +193,58 @@ export default function Contribute() {
                     </option>
                   ))}
                 </select>
-                <Input
-                  type="file"
-                  onChange={handleFileChange}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
-                />
-                {fileSizeWarning && (
-                  <div className="text-red-600">{fileSizeWarning}</div>
+                <div>
+                  <label className="block mb-2">Upload Option:</label>
+                  <div className="flex items-center space-x-4">
+                    <label>
+                      <input
+                        type="radio"
+                        value="file"
+                        checked={uploadOption === "file"}
+                        onChange={() => setUploadOption("file")}
+                      />
+                      Upload File
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="link"
+                        checked={uploadOption === "link"}
+                        onChange={() => setUploadOption("link")}
+                      />
+                      Paste Link
+                    </label>
+                  </div>
+                </div>
+                {uploadOption === "file" && (
+                  <>
+                    <Input
+                      type="file"
+                      onChange={handleFileChange}
+                      required
+                      className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                    />
+                    {fileSizeWarning && (
+                      <div className="text-red-600">{fileSizeWarning}</div>
+                    )}
+                  </>
+                )}
+
+                {uploadOption === "link" && (
+                  <Input
+                    type="url"
+                    placeholder="Paste File Link"
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
+                  />
                 )}
                 <select
                   value={fileType}
                   onChange={(e) => setFileType(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700"
-                >
+                  className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700">
                   <option value="" disabled>
                     Select File Type
                   </option>
@@ -217,16 +260,14 @@ export default function Contribute() {
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full text-white rounded-md"
-              >
+                className="w-full text-white rounded-md">
                 {loading ? (
                   <span className="flex items-center justify-center">
                     <svg
                       className="animate-spin h-5 w-5 mr-3 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                      viewBox="0 0 24 24">
                       <circle
                         className="opacity-25"
                         cx="12"
@@ -254,8 +295,7 @@ export default function Contribute() {
                     message.includes("successfully")
                       ? "bg-green-100 text-green-700 border border-green-300 dark:bg-green-800 dark:text-green-200"
                       : "bg-red-100 text-red-700 border border-red-300 dark:bg-red-800 dark:text-red-200"
-                  }`}
-                >
+                  }`}>
                   {message.includes("successfully") ? (
                     <AiOutlineCheckCircle className="mr-2" size={18} />
                   ) : (

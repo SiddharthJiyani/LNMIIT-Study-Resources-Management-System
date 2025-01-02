@@ -97,16 +97,19 @@ export default function NavBar() {
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
       <Toaster />
       <Link to="/" className="mr-6 flex items-center">
-        <img src={logo} alt="" className="h-7" />
+        <img src={logo} alt="Logo" className="h-7" />
         <span className="sr-only">LMS</span>
       </Link>
+
+      {/* Date Badge */}
       <Badge
         variant="secondary"
-        className="hidden md:flex items-center font-dotMatrix text-[14px]"
-      >
+        className="hidden md:flex items-center font-dotMatrix text-[14px]">
         {formattedDate}
       </Badge>
+
       <div className="flex justify-center items-center gap-4">
+        {/* Dropdown Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
@@ -127,10 +130,11 @@ export default function NavBar() {
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Hamburger Menu for Mobile */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
-        >
+          className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2">
           {isMenuOpen ? (
             <X className="w-6 h-6" />
           ) : (
@@ -138,6 +142,8 @@ export default function NavBar() {
           )}
         </button>
       </div>
+
+      {/* Mobile Menu (only shown when `isMenuOpen` is true and on small screens) */}
       {isMenuOpen && (
         <div className="absolute top-16 left-0 w-full bg-white border-t shadow-lg md:hidden rounded-lg">
           <div className="flex flex-col items-start p-4 space-y-2">
@@ -150,9 +156,8 @@ export default function NavBar() {
                   key={to}
                   to={to}
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors"
-                >
-                  <span className="">{icon}</span>
+                  className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-gray-100 text-gray-800 transition-colors">
+                  <span>{icon}</span>
                   <span className="font-medium text-gray-900">{label}</span>
                 </Link>
               )
