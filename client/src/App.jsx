@@ -24,7 +24,7 @@ import NotFound from "./components/NotFound";
 import ForgetPassword from "./components/Auth/ForgetPassword"
 import ResetPassword from "./components/Auth/ResetPassword";
 // ! #### Protected and Public Routes must be implemented here ####
-function App() {
+function App() { 
 
   const user = JSON.parse(localStorage?.getItem("user"));
   const accountType = user?.accountType;
