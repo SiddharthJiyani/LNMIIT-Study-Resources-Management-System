@@ -50,10 +50,11 @@ app.use("/api/ytlink", YTLinkRoutes);
 app.use("/api/grade-survey", GradeSurveyRoutes);
 // Testing the server
 app.get("/", (req, res) => {
-	return res.json({
-		success: true,
-		message: "Your server is up and running ...",
-	});
+	res.status(200).send("server is on");
+	// return res.status(200).json({
+	// 	success: true,
+	// 	message: "Your server is up and running ...",
+	// });
 });
 
 // Start the server
